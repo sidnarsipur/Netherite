@@ -1,14 +1,15 @@
-import { Sidebar } from './sidebar';
+import Sidebar from "@/components/sidebar/sidebar";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 
 export default function RootLayout({
-	children,
+  children,
 }: {
-	children: React.ReactNode;
+  children: React.ReactNode;
 }) {
-	return (
-		<div className="flex h-screen">
-			<Sidebar />
-			<main className="flex-1 overflow-auto">{children}</main>
-		</div>
-	);
+  return (
+    <SidebarProvider>
+      <Sidebar />
+      <main className="flex-1">{children}</main>
+    </SidebarProvider>
+  );
 }
