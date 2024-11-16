@@ -18,15 +18,17 @@ import {
   DialogDescription,
   DialogClose,
 } from "@/components/ui/dialog";
-import { DialogHeader } from "../ui/dialog";
-import { Label } from "../ui/label";
 import { Input } from "../ui/input";
+import Logo from "../Logo";
 
 export default async function AppSidebar() {
   return (
     <Sidebar>
       <SidebarHeader className="flex flex-col gap-4 p-8">
-        <p className="text-xl font-bold">concept.ai</p>
+        <div className="flex items-center gap-3">
+          <p className="text-3xl font-medium">netherite</p>
+          <Logo />
+        </div>
         <div className="flex">
           <Searchbar className="mr-3 flex-1" />
           <Dialog>
