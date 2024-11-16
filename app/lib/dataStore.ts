@@ -1,10 +1,11 @@
 import { db, pc } from "./init";
 import { Block, ContentNode } from "./model";
 import { FieldValue } from "firebase-admin/firestore";
+import { v4 as uuidv4 } from 'uuid';
 
 const model = 'multilingual-e5-large';
 
-export async function EmbedAndInsertBlocks(blocks: Block[]){
+export async function EmbedAndInsertBlocks(blocks: Block[], noteID: string){
     const embeddings = await pc.inference.embed(
         model,
         blocks.map(block => parseRawText(block.content)),
@@ -14,8 +15,9 @@ export async function EmbedAndInsertBlocks(blocks: Block[]){
     const index = pc.index('embeddings');
 
     for(const block of blocks){
+        block.noteID = noteID;
         const res = db.collection('blocks').add({block});
-        block.blockID = (await res).id;
+        block.blockID = uuidv4();
     }
 
     const records = blocks

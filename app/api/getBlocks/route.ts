@@ -1,0 +1,21 @@
+import { db, pc } from "@/app/lib/init";
+
+export async function POST(req: Request){
+    try{
+        const { noteID } = await req.json();
+
+        const notesRef = await db.collection('notes').where('noteID', '==', noteID).get();
+
+        if (notesRef.empty) {
+            return Response.json({ message: 'No notes found for this user' }, { status: 404 });
+        }
+
+        const blockIDs = notesRef.docs[0].data().blockIDs;
+
+        return Response.json({ blocks: blockIDs });
+    }
+
+    catch(error){
+        return new Response(JSON.stringify({ message: 'Failed to create note', error: error.message }), { status: 500 });
+    }
+}

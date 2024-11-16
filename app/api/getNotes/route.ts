@@ -13,7 +13,7 @@ export async function POST(req: Request){
         const noteIDs: string[] = [];
         
         notesSnapshot.forEach(doc => {
-            noteIDs.push(doc.id);
+            noteIDs.push(doc.data().noteID);
         });
 
         return Response.json({ noteIDs });
