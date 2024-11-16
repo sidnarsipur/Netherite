@@ -1,5 +1,5 @@
 import { db, pc } from "./init";
-import { Block } from "./model";
+import { Block, ContentNode } from "./model";
 import { FieldValue } from "firebase-admin/firestore";
 
 const model = 'multilingual-e5-large';
@@ -7,7 +7,7 @@ const model = 'multilingual-e5-large';
 export async function EmbedAndInsertBlocks(blocks: Block[]){
     const embeddings = await pc.inference.embed(
         model,
-        blocks.map(block => block.rawText),
+        blocks.map(block => parseRawText(block.content)),
         { inputType: 'passage', truncate: 'END' }
     );
 
@@ -28,6 +28,25 @@ export async function EmbedAndInsertBlocks(blocks: Block[]){
     index.namespace('namespace').upsert(records);
 
     return blocks.map(block => block.blockID)
+}
+
+function parseRawText(content: ContentNode[]): string {
+    if (!Array.isArray(content)) {
+        // Ensure content is an array
+        console.error("Invalid content: expected an array, got", content);
+        return '';
+    }
+
+    return content
+        .map(node => {
+            if (node.text) {
+                return node.text; // If the node contains text, extract it
+            } else if (Array.isArray(node.content)) {
+                return parseRawText(node.content); // Recursively process nested content
+            }
+            return ''; // Handle nodes without text or nested content
+        })
+        .join(' ');
 }
 
 // export async function addBlocks(userID: string, noteID: string, blocks: Block[]){
