@@ -25,7 +25,7 @@ export default function FolderButton({ item }: { item: Folder }) {
     >
       <FancyCard topBorderOnly={isOpen}>
         <CollapsibleTrigger asChild>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 p-5">
             <FolderIcon className="w-5" />
             <h3 className="mb-1 font-bold">{item.name}</h3>
             <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
