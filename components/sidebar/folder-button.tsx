@@ -1,3 +1,5 @@
+"use client";
+
 import NoteButton from "./note-button";
 import { ChevronDown, Folder as FolderIcon, FolderClosed } from "lucide-react";
 import {
@@ -6,10 +8,18 @@ import {
   CollapsibleContent,
 } from "@radix-ui/react-collapsible";
 import { Folder } from "@/lib/definitions";
+import { useParams } from "next/navigation";
+import { getPageById } from "@/lib/note-manager";
 
 export default function FolderButton({ item }: { item: Folder }) {
+  const { id } = useParams<{ id: string }>();
+  const isOpenedPageInside = getPageById(item.items, id) !== null;
+
   return (
-    <Collapsible className="group/collapsible rounded-lg border border-gray-500 bg-button text-left">
+    <Collapsible
+      defaultOpen={isOpenedPageInside}
+      className="group/collapsible rounded-lg border border-gray-500 bg-button text-left"
+    >
       <CollapsibleTrigger asChild>
         <div className="flex items-center gap-2 p-5">
           <FolderIcon />

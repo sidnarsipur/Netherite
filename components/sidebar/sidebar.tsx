@@ -11,7 +11,7 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
 
-export default function AppSidebar() {
+export default async function AppSidebar() {
   return (
     <Sidebar>
       <SidebarHeader className="flex flex-col gap-4 p-8">
