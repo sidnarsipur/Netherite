@@ -16,7 +16,7 @@ export async function EmbedAndInsertBlocks(blocks: Block[], noteID: string){
 
     for(const block of blocks){
         block.noteID = noteID;
-        const res = db.collection('blocks').add({block});
+        const res = db.collection('blocks').add(block);
         block.blockID = uuidv4();
     }
 
@@ -42,31 +42,11 @@ function parseRawText(content: ContentNode[]): string {
     return content
         .map(node => {
             if (node.text) {
-                return node.text; // If the node contains text, extract it
+                return node.text;
             } else if (Array.isArray(node.content)) {
-                return parseRawText(node.content); // Recursively process nested content
+                return parseRawText(node.content); 
             }
-            return ''; // Handle nodes without text or nested content
+            return '';
         })
         .join(' ');
 }
-
-// export async function addBlocks(userID: string, noteID: string, blocks: Block[]){
-//     // Parse raw text
-
-//     const block_ids = EmbedAndInsertBlocks(blocks);
-
-//     const _ = await db.collection('notes').doc(noteID)
-//         .update({
-//             blockIDs: FieldValue.arrayUnion(block_ids)
-//         })
-    
-        
-//     return true;
-// }
-
-// export async function getNotes(userID: string){
-//     const notes = db.collection('notes').where('uid', '==', userID).get();
-
-//     return notes;
-// }
