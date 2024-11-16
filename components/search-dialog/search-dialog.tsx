@@ -13,7 +13,13 @@ import Highlight from "./highlight";
 
 export function SearchDialog() {
   return (
-    <DialogContent className="flex max-w-6xl flex-col gap-0 p-0">
+    <DialogContent
+      className="flex max-w-6xl flex-col gap-0 p-0"
+      style={{
+        backdropFilter: "blur(90px)",
+        boxShadow: "0px 0px 50px 2px #9187A24D",
+      }}
+    >
       <div className="flex flex-row items-center justify-between">
         <Input
           className="m-2 max-w-sm"
@@ -45,7 +51,13 @@ export function SearchDialog() {
           Quote Highlights Directly
           <BetweenHorizontalEnd />
         </Button>
-        <Button variant="secondary">
+        <Button
+          variant="secondary"
+          style={{
+            background:
+              "linear-gradient(91.7deg, #3E3850 0%, #29252B 43.5%, #322935 100%)",
+          }}
+        >
           Add AI Summary to Notes <Brain />
         </Button>
       </DialogFooter>
