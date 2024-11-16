@@ -4,7 +4,7 @@ import {
   SidebarContent,
   SidebarHeader,
 } from "@/components/ui/sidebar";
-import sidebarData from "@/lib/sidebarDataParser";
+import { notes } from "@/lib/note-manager";
 import NoteButton from "./note-button";
 import FolderButton from "./folder-button";
 import { Input } from "../ui/input";
@@ -28,7 +28,7 @@ export default function AppSidebar() {
       </SidebarHeader>
       <Separator />
       <SidebarContent className="flex flex-col gap-4 px-8 py-6">
-        {sidebarData.map((item) =>
+        {notes.map((item) =>
           item.type === "folder" ? (
             <FolderButton item={item} />
           ) : (

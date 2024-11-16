@@ -1,4 +1,3 @@
-import { Folder, Note } from "@/lib/definitions";
 import NoteButton from "./note-button";
 import { ChevronDown, Folder as FolderIcon, FolderClosed } from "lucide-react";
 import {
@@ -6,6 +5,7 @@ import {
   CollapsibleTrigger,
   CollapsibleContent,
 } from "@radix-ui/react-collapsible";
+import { Folder } from "@/lib/definitions";
 
 export default function FolderButton({ item }: { item: Folder }) {
   return (
