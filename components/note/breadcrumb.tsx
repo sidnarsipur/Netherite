@@ -1,4 +1,4 @@
-import { ChevronDown, Slash } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 
 import {
   Breadcrumb,
@@ -13,14 +13,14 @@ export default function BreadcrumbWithDropdown({ path }: { path: String }) {
     <Breadcrumb>
       <BreadcrumbList>
         {segments.map((segment, idx) => (
-          <>
+          <span key={idx}>
             {idx !== 0 && (
               <BreadcrumbSeparator>
-                <Slash />
+                <ChevronRight />
               </BreadcrumbSeparator>
             )}
             <BreadcrumbItem>{segment}</BreadcrumbItem>
-          </>
+          </span>
         ))}
       </BreadcrumbList>
     </Breadcrumb>
