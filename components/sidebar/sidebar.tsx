@@ -2,6 +2,7 @@ import { Copy, FolderPlus, Plus } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarHeader,
 } from "@/components/ui/sidebar";
 import { notes } from "@/lib/note-manager";
@@ -20,11 +21,12 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "../ui/input";
 import Logo from "../Logo";
+import { NavUser } from "./nav-user";
 
 export default async function AppSidebar() {
   return (
     <Sidebar>
-      <SidebarHeader className="flex flex-col gap-4 p-8">
+      <SidebarHeader className="flex flex-col gap-4 p-6">
         <div className="flex items-center gap-3">
           <p className="text-3xl font-medium">netherite</p>
           <Logo />
@@ -55,7 +57,7 @@ export default async function AppSidebar() {
         </div>
       </SidebarHeader>
       <Separator className="bg-separator-gradient" />
-      <SidebarContent className="flex flex-col gap-4 px-8 py-6">
+      <SidebarContent className="flex flex-col gap-4 p-6">
         {notes.map((item, idx) =>
           item.type === "folder" ? (
             <FolderButton key={idx} item={item} />
@@ -64,6 +66,16 @@ export default async function AppSidebar() {
           ),
         )}
       </SidebarContent>
+      <Separator className="bg-separator-gradient" />
+      <SidebarFooter>
+        <NavUser
+          user={{
+            name: "shadcn",
+            email: "m@example.com",
+            avatar: "/avatars/evil-rabbit.png",
+          }}
+        />
+      </SidebarFooter>
     </Sidebar>
   );
 }
