@@ -11,3 +11,9 @@ export interface Block {
     content: ContentNode[]; // Updated to reflect the hierarchical structure
     rawText: string;
 }
+
+export interface Note {
+    noteID: string;
+    userID: string;
+    blockIDs: string[];
+}
