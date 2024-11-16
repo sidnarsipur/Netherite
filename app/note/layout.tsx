@@ -7,7 +7,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <SidebarProvider>
+    <SidebarProvider className="bg-background-gradient flex-1">
       <Sidebar />
       <main className="flex-1">{children}</main>
     </SidebarProvider>

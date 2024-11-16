@@ -26,7 +26,7 @@ export default async function AppSidebar() {
           </Button>
         </div>
       </SidebarHeader>
-      <Separator />
+      <Separator className="bg-separator-gradient" />
       <SidebarContent className="flex flex-col gap-4 px-8 py-6">
         {notes.map((item, idx) =>
           item.type === "folder" ? (

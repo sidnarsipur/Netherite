@@ -25,7 +25,7 @@ export default async function Page({
           <SidebarTrigger />
           <Breadcrumb path={page.path} />
         </div>
-        <div className="w-full rounded-xl border border-slate-500 bg-gray-950">
+        <div className="w-full rounded-xl border border-border bg-card">
           <h1 className="p-5 text-2xl font-bold">{page.name}</h1>
           <Separator />
           <p className="p-5">{page.content}</p>

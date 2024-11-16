@@ -3,7 +3,7 @@ import { Button } from "../ui/button";
 
 export default function Highlight() {
   return (
-    <div className="flex items-center rounded-md bg-card p-4">
+    <div className="flex items-center justify-between rounded-md bg-card p-4">
       <div>
         <p className="">Transition Function</p>
         <p className="text-sm text-gray-400">

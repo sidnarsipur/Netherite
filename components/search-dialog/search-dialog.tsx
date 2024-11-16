@@ -13,7 +13,7 @@ import Highlight from "./highlight";
 
 export function SearchDialog() {
   return (
-    <DialogContent className="flex flex-col gap-0 p-0">
+    <DialogContent className="flex max-w-6xl flex-col gap-0 p-0">
       <div className="flex flex-row items-center justify-between">
         <Input
           className="m-2 max-w-sm"

@@ -157,16 +157,18 @@ const CarouselContent = React.forwardRef<
   const { carouselRef, orientation } = useCarousel();
 
   return (
-    <div ref={carouselRef} className="overflow-hidden">
-      <div
-        ref={ref}
-        className={cn(
-          "flex",
-          orientation === "horizontal" ? "-ml-4" : "-mt-4 flex-col",
-          className,
-        )}
-        {...props}
-      />
+    <div className="grid w-full place-items-center overflow-hidden">
+      <div ref={carouselRef} className="w-[150%]">
+        <div
+          ref={ref}
+          className={cn(
+            "flex",
+            orientation === "horizontal" ? "-ml-4" : "-mt-4 flex-col",
+            className,
+          )}
+          {...props}
+        />
+      </div>
     </div>
   );
 });
@@ -208,8 +210,8 @@ const CarouselPrevious = React.forwardRef<
       className={cn(
         "absolute h-16 w-8 rounded-md",
         orientation === "horizontal"
-          ? "-left-12 top-1/2 -translate-y-1/2"
-          : "-top-12 left-1/2 -translate-x-1/2 rotate-90",
+          ? "-left-0 top-1/2 -translate-y-1/2"
+          : "-top-0 left-1/2 -translate-x-1/2 rotate-90",
         className,
       )}
       disabled={!canScrollPrev}
@@ -237,8 +239,8 @@ const CarouselNext = React.forwardRef<
       className={cn(
         "absolute h-16 w-8 rounded-md",
         orientation === "horizontal"
-          ? "-right-12 top-1/2 -translate-y-1/2"
-          : "-bottom-12 left-1/2 -translate-x-1/2 rotate-90",
+          ? "-right-0 top-1/2 -translate-y-1/2"
+          : "-bottom-0 left-1/2 -translate-x-1/2 rotate-90",
         className,
       )}
       disabled={!canScrollNext}

@@ -1,4 +1,5 @@
-import type { Config } from "tailwindcss";
+import plugin from "tailwindcss/plugin";
+import type { PluginAPI, Config } from "tailwindcss/types/config";
 
 const config: Config = {
   darkMode: ["class"],
@@ -71,9 +72,28 @@ const config: Config = {
           "linear-gradient(101deg, rgba(255, 255, 255, 0.10) -15.74%, rgba(255, 255, 255, 0.00) 64.28%)",
         "button-selected":
           "linear-gradient(90deg, rgba(255, 255, 255, 0.20) 0%, rgba(255, 255, 255, 0.00) 100%)",
+        "background-gradient":
+          "linear-gradient(114.92deg, #62535A -6.92%, #000000 12.63%, #302B3D 85.63%, #7B6368 104.65%)",
+        "separator-gradient":
+          "linear-gradient(90deg, #41468A 0%, #C4B1CF 36%, #000000 100%)",
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    require("tailwindcss-animate"),
+    plugin(function ({
+      addUtilities,
+    }: {
+      addUtilities: PluginAPI["addUtilities"];
+    }) {
+      addUtilities({
+        ".gradient-border-strong": {
+          "border-image-source":
+            "linear-gradient(90deg, #41468A 0%, #C4B1CF 36%, #000000 100%)",
+          "border-image-slice": "1",
+        },
+      });
+    }),
+  ],
 };
 export default config;
