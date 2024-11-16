@@ -13,14 +13,14 @@ export default function BreadcrumbWithDropdown({ path }: { path: String }) {
     <Breadcrumb>
       <BreadcrumbList>
         {segments.map((segment, idx) => (
-          <span key={idx}>
+          <>
             {idx !== 0 && (
-              <BreadcrumbSeparator>
+              <BreadcrumbSeparator key={idx + "s"}>
                 <ChevronRight />
               </BreadcrumbSeparator>
             )}
-            <BreadcrumbItem>{segment}</BreadcrumbItem>
-          </span>
+            <BreadcrumbItem key={idx}>{segment}</BreadcrumbItem>
+          </>
         ))}
       </BreadcrumbList>
     </Breadcrumb>

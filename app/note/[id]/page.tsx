@@ -32,7 +32,7 @@ export default async function Page({
           </div>
         </div>
         <div className="w-full rounded-xl border border-border bg-card">
-          <h1 className="p-5 text-2xl font-bold">{page.name}</h1>
+          <p className="p-5 text-2xl font-bold">{page.name}</p>
           <Separator />
           <Editor />
         </div>

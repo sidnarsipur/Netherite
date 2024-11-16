@@ -16,7 +16,7 @@ export default function NoteButton({ item }: { item: Note }) {
         <ContextMenu>
           <ContextMenuTrigger>
             <div className="p-5">
-              <h3 className="mb-1 font-bold">{item.name}</h3>
+              <p className="mb-1 font-bold">{item.name}</p>
               <p className="truncate text-sm text-muted-foreground">
                 {item.content}
               </p>
