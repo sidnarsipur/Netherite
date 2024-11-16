@@ -1,9 +1,7 @@
-import { db, pc } from "./init";
+import { db, pc, model, index } from "./init";
 import { Block, ContentNode } from "./model";
 import { FieldValue } from "firebase-admin/firestore";
 import { v4 as uuidv4 } from 'uuid';
-
-const model = 'multilingual-e5-large';
 
 export async function EmbedAndInsertBlocks(blocks: Block[], noteID: string){
     const embeddings = await pc.inference.embed(
@@ -12,11 +10,9 @@ export async function EmbedAndInsertBlocks(blocks: Block[], noteID: string){
         { inputType: 'passage', truncate: 'END' }
     );
 
-    const index = pc.index('embeddings');
-
     for(const block of blocks){
         block.noteID = noteID;
-        const res = db.collection('blocks').add({block});
+        const res = db.collection('blocks').add(block);
         block.blockID = uuidv4();
     }
 
@@ -32,6 +28,30 @@ export async function EmbedAndInsertBlocks(blocks: Block[], noteID: string){
     return blocks.map(block => block.blockID)
 }
 
+export async function BlocksByID(blockIDs: string[]){
+    const blockRef = await db.collection('blocks').where('blockID', 'in', blockIDs).get();
+
+        if (blockRef.empty){
+            return Response.json({ message: 'No blocks found for this note' }, { status: 404 });
+        }
+
+        const blocks: Block[] = [];
+
+        blockRef.forEach(doc => {
+            const block = doc.data();
+
+            blocks.push({
+                blockID: block.blockID,
+                noteID: block.noteID,
+                links: block.links,
+                content: block.content,
+                rawText: block.rawText
+            })
+        })
+
+    return blocks;
+}
+
 function parseRawText(content: ContentNode[]): string {
     if (!Array.isArray(content)) {
         // Ensure content is an array
@@ -42,31 +62,11 @@ function parseRawText(content: ContentNode[]): string {
     return content
         .map(node => {
             if (node.text) {
-                return node.text; // If the node contains text, extract it
+                return node.text;
             } else if (Array.isArray(node.content)) {
-                return parseRawText(node.content); // Recursively process nested content
+                return parseRawText(node.content); 
             }
-            return ''; // Handle nodes without text or nested content
+            return '';
         })
         .join(' ');
 }
-
-// export async function addBlocks(userID: string, noteID: string, blocks: Block[]){
-//     // Parse raw text
-
-//     const block_ids = EmbedAndInsertBlocks(blocks);
-
-//     const _ = await db.collection('notes').doc(noteID)
-//         .update({
-//             blockIDs: FieldValue.arrayUnion(block_ids)
-//         })
-    
-        
-//     return true;
-// }
-
-// export async function getNotes(userID: string){
-//     const notes = db.collection('notes').where('uid', '==', userID).get();
-
-//     return notes;
-// }
