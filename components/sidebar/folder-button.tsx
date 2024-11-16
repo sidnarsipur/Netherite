@@ -28,11 +28,11 @@ export default function FolderButton({ item }: { item: Folder }) {
         </div>
       </CollapsibleTrigger>
       <CollapsibleContent className="flex flex-col gap-4 pl-5">
-        {item.items.map((item) =>
+        {item.items.map((item, idx) =>
           item.type === "folder" ? (
-            <FolderButton item={item} />
+            <FolderButton key={idx} item={item} />
           ) : (
-            <NoteButton item={item} />
+            <NoteButton key={idx} item={item} />
           ),
         )}
       </CollapsibleContent>

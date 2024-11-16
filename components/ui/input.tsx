@@ -1,26 +1,19 @@
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
-import { SearchIcon } from "lucide-react";
 
 const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<"input">>(
   ({ className, type, ...props }, ref) => {
     return (
-      <div
+      <input
+        type={type}
         className={cn(
-          "flex h-10 items-center rounded-full border border-input bg-black pl-3 text-sm ring-offset-background focus-within:ring-1 focus-within:ring-ring focus-within:ring-offset-2",
+          "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
           className,
         )}
-      >
-        <SearchIcon className="h-[16px] w-[16px]" />
-        <input
-          placeholder="Search"
-          {...props}
-          type="search"
-          ref={ref}
-          className="w-full rounded-full bg-black p-2 placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
-        />
-      </div>
+        ref={ref}
+        {...props}
+      />
     );
   },
 );
