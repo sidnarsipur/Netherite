@@ -1,9 +1,7 @@
-import { db, pc } from "./init";
+import { db, pc, model, index } from "./init";
 import { Block, ContentNode } from "./model";
 import { FieldValue } from "firebase-admin/firestore";
 import { v4 as uuidv4 } from 'uuid';
-
-const model = 'multilingual-e5-large';
 
 export async function EmbedAndInsertBlocks(blocks: Block[], noteID: string){
     const embeddings = await pc.inference.embed(
@@ -11,8 +9,6 @@ export async function EmbedAndInsertBlocks(blocks: Block[], noteID: string){
         blocks.map(block => parseRawText(block.content)),
         { inputType: 'passage', truncate: 'END' }
     );
-
-    const index = pc.index('embeddings');
 
     for(const block of blocks){
         block.noteID = noteID;
@@ -30,6 +26,30 @@ export async function EmbedAndInsertBlocks(blocks: Block[], noteID: string){
     index.namespace('namespace').upsert(records);
 
     return blocks.map(block => block.blockID)
+}
+
+export async function BlocksByID(blockIDs: string[]){
+    const blockRef = await db.collection('blocks').where('blockID', 'in', blockIDs).get();
+
+        if (blockRef.empty){
+            return Response.json({ message: 'No blocks found for this note' }, { status: 404 });
+        }
+
+        const blocks: Block[] = [];
+
+        blockRef.forEach(doc => {
+            const block = doc.data();
+
+            blocks.push({
+                blockID: block.blockID,
+                noteID: block.noteID,
+                links: block.links,
+                content: block.content,
+                rawText: block.rawText
+            })
+        })
+
+    return blocks;
 }
 
 function parseRawText(content: ContentNode[]): string {
