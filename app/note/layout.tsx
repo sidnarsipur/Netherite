@@ -7,7 +7,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <SidebarProvider className="bg-background-gradient flex-1">
+    <SidebarProvider
+      className="flex-1"
+      style={{
+        background:
+          "linear-gradient(114deg, #000 -6.94%, #000 13.24%, #302B3D 88.6%, #7B6368 108.23%)",
+      }}
+    >
       <Sidebar />
       <main className="flex-1">{children}</main>
     </SidebarProvider>

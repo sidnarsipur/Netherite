@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 
 export default function FancyCard({
   borderGradient = "linear-gradient(263.62deg, rgba(255, 255, 255, 0.6) 3.64%, rgba(130, 102, 255, 0.0966) 19.2%, rgba(136, 141, 178, 0.6) 71.23%, rgba(184, 188, 255, 0) 110.09%)",
-  backgroundGradient = "linear-gradient(101.16deg, rgba(255, 255, 255, 0.1) -15.74%, rgba(255, 255, 255, 0) 64.28%)",
+  backgroundGradient = "linear-gradient(101.16deg, rgba(255, 255, 255, 0.08) -15.74%, rgba(255, 255, 255, 0) 64.28%)",
   children,
   className,
   isFolder = false,
