@@ -1,7 +1,7 @@
 "use client";
 
 import { Editor } from "@tiptap/react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   Bold,
   Italic,
@@ -20,6 +20,7 @@ import {
   SquareSplitVertical,
   Save,
   Search,
+  Check,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DialogTrigger } from "@radix-ui/react-dialog";
@@ -34,12 +35,17 @@ export function MenuBar({ editor, noteID }: { noteID: string } & MenuBarProps) {
   if (!editor) {
     return null;
   }
+  const [isSaved, setIsSaved] = useState(false);
 
   const handleSave = () => {
     const json = editor.getJSON();
     const content = JSON.stringify(json);
 
     addBlocks(noteID, content);
+    setIsSaved(true);
+    setTimeout(() => {
+      setIsSaved(false);
+    }, 1000);
   };
 
   useEffect(() => {
@@ -74,13 +80,8 @@ export function MenuBar({ editor, noteID }: { noteID: string } & MenuBarProps) {
 
   return (
     <div className="flex flex-wrap gap-2 border-b p-2">
-      <Button
-        size="sm"
-        variant="ghost"
-        onClick={handleSave}
-        className="bg-opacity-0 hover:bg-opacity-100"
-      >
-        <Save className="h-4 w-4" />
+      <Button size="sm" variant="ghost" onClick={handleSave}>
+        {isSaved ? <Check className="h-4 w-4" /> : <Save className="h-4 w-4" />}
       </Button>
 
       <Button
