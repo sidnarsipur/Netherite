@@ -18,3 +18,5 @@ export const pc = new Pinecone({
   apiKey:
     "pcsk_MhrCv_Bz9nnEFuBtBAN1NrX8FZfiAYe1j2sMpoNTFcyUAT3NvQXijF847XnmWxsnbXEbz",
 });
+export const index = pc.Index("embeddings");
+export const model = "multilingual-e5-large";
