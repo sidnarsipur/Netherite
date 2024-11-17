@@ -13,8 +13,23 @@ export async function EmbedAndInsertBlocks(blocks: Block[], noteID: string) {
 
   for (const block of blocks) {
     block.noteID = noteID;
-    const res = db.collection("blocks").add(block);
-    block.id = (await res).id;
+    const existingBlockRef = await db
+      .collection("blocks")
+      .where("noteID", "==", noteID)
+      .where("order", "==", block.order)
+      .get();
+
+    if (!existingBlockRef.empty) {
+      const existingBlock = existingBlockRef.docs[0];
+      await existingBlock.ref.update({
+        content: block.content,
+        links: block.links,
+      });
+      block.id = existingBlock.id;
+    } else {
+      const res = db.collection("blocks").add(block);
+      block.id = (await res).id;
+    }
   }
 
   const records = blocks.map((block, i) => ({
