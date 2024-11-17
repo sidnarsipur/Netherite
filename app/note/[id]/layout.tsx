@@ -1,13 +1,11 @@
 import Breadcrumb from "@/components/note/breadcrumb";
-import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { getNote } from "@/lib/note-manager";
-import { Dialog, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog } from "@/components/ui/dialog";
 import { SearchDialog } from "@/components/search-dialog/search-dialog";
 import NavActions from "@/components/sidebar/nav-actions";
 import Editor from "@/components/editor";
-import { Input } from "@/components/ui/input";
 
 export default async function RootLayout({
   params,
@@ -42,9 +40,6 @@ export default async function RootLayout({
           <Separator />
           <Editor noteID={note.id} />
         </div>
-        <DialogTrigger asChild>
-          <Button>Open Semantic Search</Button>
-        </DialogTrigger>
         <SearchDialog>{children}</SearchDialog>
       </div>
     </Dialog>
