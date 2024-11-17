@@ -64,7 +64,22 @@ export const getJSONByNoteID = async (noteID: string): Promise<string> => {
     content: bl,
   };
 
-  console.log("testtest", content);
+  return JSON.stringify(content);
+};
+
+export const getJSONByBlockID = async (blockID: string): Promise<string> => {
+  const block = await db.collection("blocks").doc(blockID).get();
+
+  if (!block.exists) {
+    throw new Error(`Block with ID ${blockID} not found.`);
+  }
+
+  const blockData = block.data();
+
+  const content = {
+    type: "doc",
+    content: JSON.parse(blockData?.content),
+  };
 
   return JSON.stringify(content);
 };
