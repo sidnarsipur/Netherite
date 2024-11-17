@@ -43,9 +43,8 @@ export const addBlocks = async (noteID: string, content: any) => {
 
 export const getJSONByNoteID = async (noteID: string): Promise<string> => {
   const note = await getNote(noteID);
-
-  if (!note.blockIDs) {
-    throw new Error("No block IDs found for this note");
+  if (!note) {
+    throw new Error(`Note with ID ${noteID} not found.`);
   }
 
   const blocks: Block[] = await BlocksByID(note.blockIDs);
@@ -100,7 +99,6 @@ export const getNote = async (noteID: string) => {
     } as unknown as Note;
   } catch (error: any) {
     console.error("Database Error:", error);
-    throw new Error("Failed to fetch card data.", error.message);
   }
 };
 

@@ -21,6 +21,7 @@ import { FloatingToolbar } from "./floating-toolbar";
 import { BubbleToolbar } from "./bubble-toolbar";
 import { get } from "http";
 import { getJSONByNoteID } from "@/lib/note-manager";
+import { useEffect, useState } from "react";
 
 const getContent = async (noteID: string) => {
   const jsonString = await getJSONByNoteID(noteID);
@@ -29,6 +30,8 @@ const getContent = async (noteID: string) => {
 };
 
 export default function Editor({ noteID }: { noteID: string }) {
+  const [cursorPosition, setCursorPosition] = useState<number | null>(null);
+
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -64,12 +67,36 @@ export default function Editor({ noteID }: { noteID: string }) {
       },
     },
     onCreate: async ({ editor }) => {
-      // const noteID = "eGNKGRIuIeNNUp3fv1MJ";
-      getContent(noteID);
       const content = await getContent(noteID);
       editor.commands.setContent(content);
     },
+    onUpdate: ({ editor }) => {
+      const { from } = editor.state.selection;
+      setCursorPosition(from);
+    },
   });
+
+  useEffect(() => {
+    if (!editor) return;
+
+    const handleFocus = () => {
+      if (cursorPosition !== null) {
+        editor.commands.setTextSelection(cursorPosition);
+      }
+    };
+
+    editor.on("focus", handleFocus);
+
+    return () => {
+      editor.off("focus", handleFocus);
+    };
+  }, [editor, cursorPosition]);
+
+  const insertTextAtCursor = (text: string) => {
+    if (editor && cursorPosition !== null) {
+      editor.chain().focus().insertContentAt(cursorPosition, text).run();
+    }
+  };
 
   if (!editor) {
     return null;

@@ -14,6 +14,7 @@ import TextAlign from "@tiptap/extension-text-align";
 import PageBreak from "@/components/ui/page-break";
 import { BubbleToolbar } from "./bubble-toolbar";
 import { getJSONByNoteID } from "@/lib/note-manager";
+import { Note } from "@/lib/model";
 
 const getContent = async (noteID: string) => {
   const jsonString = await getJSONByNoteID(noteID);
@@ -21,7 +22,7 @@ const getContent = async (noteID: string) => {
   return JSON.parse(jsonString);
 };
 
-export default function Editor({ noteID }: { noteID: string }) {
+export default function Editor({ note }: { note: Note }) {
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -58,7 +59,7 @@ export default function Editor({ noteID }: { noteID: string }) {
     },
     editable: true, // Keep the editor editable
     onCreate: async ({ editor }) => {
-      const content = await getContent(noteID);
+      const content = await getContent(note.id);
       editor.commands.setContent(content);
     },
   });
@@ -83,7 +84,7 @@ export default function Editor({ noteID }: { noteID: string }) {
       {editor && (
         <>
           <BubbleMenu editor={editor}>
-            <BubbleToolbar editor={editor} />
+            <BubbleToolbar editor={editor} title={note.name} />
           </BubbleMenu>
         </>
       )}

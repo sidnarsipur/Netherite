@@ -5,13 +5,17 @@ import { Editor } from "@tiptap/react";
 import { useRef } from "react";
 import { MessageSquareWarning, FileOutput } from "lucide-react"; // Import an icon for page breaks
 import { Button } from "@/components/ui/button";
-import { DialogTrigger } from "@radix-ui/react-dialog";
+import { HighlightStore } from "@/lib/highlightStore";
+import { useParams, useRouter } from "next/navigation";
 
 type BubbleToolbarProps = {
   editor: Editor;
 };
 
-export function BubbleToolbar({ editor }: BubbleToolbarProps) {
+export function BubbleToolbar({
+  editor,
+  title,
+}: { title: string } & BubbleToolbarProps) {
   if (!editor) {
     return null;
   }
@@ -22,12 +26,32 @@ export function BubbleToolbar({ editor }: BubbleToolbarProps) {
     editor.commands.focus();
   };
 
+  const getSelectedText = () => {
+    const { from, to, empty } = editor.state.selection;
+    if (empty) return null;
+    return editor.state.doc.textBetween(from, to, " ");
+  };
+
+  const router = useRouter();
+  const params = useParams();
+  const id = params.id as string;
+
   function handleSelectText(): void {
-    throw new Error("Function not implemented.");
+    const selectedText = getSelectedText();
+    if (!selectedText) return;
+    HighlightStore.update((s) => {
+      s.highlights.push({
+        title,
+        description: selectedText,
+        id: 0,
+      });
+    });
+
+    router.replace(`/note/${id}`);
   }
 
   function handleReport(): void {
-    throw new Error("Function not implemented.");
+    // throw new Error("Function not implemented.");
   }
 
   return (
