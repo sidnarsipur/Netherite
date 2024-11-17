@@ -31,9 +31,9 @@ export async function SearchDialog() {
         backgroundGradient="#111"
         borderGradient="linear-gradient(0deg, rgba(47, 47, 47, 0), rgba(47, 47, 47, 0)), linear-gradient(68.6deg, #41468A 26.03%, #C4B1CF 53.09%, #2C2C2C 99.99%)"
       >
-        <div className="flex flex-row items-center justify-between">
+        <div className="flex flex-row items-center justify-between p-2">
           <Input
-            className="m-2 max-w-sm"
+            className="max-w-sm"
             placeholder="help me write more about dfas"
           />
           <DialogClose asChild>
@@ -81,7 +81,7 @@ const blocks: Block[] = [
   {
     id: "block1",
     order: 1,
-    noteID: "note1",
+    noteID: "VWrZKnSSaYImpplNqGDB",
     links: ["https://example.com", "https://example.org"],
     content: "<p>This is the content of block 1</p>",
     rawText: "This is the content of block 1",
@@ -89,7 +89,7 @@ const blocks: Block[] = [
   {
     id: "block2",
     order: 2,
-    noteID: "note1",
+    noteID: "VWrZKnSSaYImpplNqGDB",
     links: ["https://example.com/block2"],
     content: "<p>This is the content of block 2</p>",
     rawText: "This is the content of block 2",
@@ -97,7 +97,7 @@ const blocks: Block[] = [
   {
     id: "block3",
     order: 3,
-    noteID: "note2",
+    noteID: "VWrZKnSSaYImpplNqGDB",
     links: [],
     content: "<p>This is the content of block 3</p>",
     rawText: "This is the content of block 3",
