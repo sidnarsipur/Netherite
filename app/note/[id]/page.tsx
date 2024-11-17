@@ -1,50 +1,83 @@
-import Breadcrumb from "@/components/note/breadcrumb";
+import Highlight from "@/components/search-dialog/highlight";
+import { Matches } from "@/components/search-dialog/matches";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import { SidebarTrigger } from "@/components/ui/sidebar";
-import { getNote } from "@/lib/note-manager";
-import { Dialog, DialogTrigger } from "@/components/ui/dialog";
-import { SearchDialog } from "@/components/search-dialog/search-dialog";
-import NavActions from "@/components/sidebar/nav-actions";
-import Editor from "@/components/editor";
+import { DialogFooter, DialogClose } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { Separator } from "@/components/ui/separator";
+import { Block } from "@/lib/model";
+import { X, BetweenHorizontalEnd, Brain } from "lucide-react";
 
-export default async function Page({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
-  const id = (await params).id;
-  const note = await getNote(id);
-
-  if (!note) {
-    return <></>;
-  }
-
+export default function Page() {
   return (
-    <Dialog>
-      <div className="flex flex-1 flex-col items-start gap-5 p-10">
-        <div className="flex w-full items-center gap-3">
-          <SidebarTrigger />
-          <Separator orientation="vertical" className="mr-2 h-4" />
-          <Breadcrumb path={note.path} />
-          <div className="ml-auto px-3">
-            <NavActions />
-          </div>
-        </div>
-        <div className="w-full rounded-xl border border-border bg-card">
-          <input
-            className="w-full bg-transparent p-5 text-2xl font-bold focus-visible:outline-none"
-            defaultValue={note.name}
-          />
-          <Separator />
-          <Editor noteID={note.id} />
-        </div>
-        <DialogTrigger asChild>
-          <Button>Open Semantic Search</Button>
-        </DialogTrigger>
-        <SearchDialog />
+    <>
+      <div className="flex flex-row items-center justify-between p-2">
+        <Input
+          className="max-w-sm"
+          placeholder="help me write more about dfas"
+        />
+        <DialogClose asChild>
+          <Button variant="ghost" size="icon">
+            <X />
+          </Button>
+        </DialogClose>
       </div>
-    </Dialog>
+      <Separator />
+      <div className="flex flex-col px-2">
+        <p className="p-2">
+          <span className="font-bold">Closest matches in context</span>{" "}
+          <span className="text-gray-500">(32 results found)</span>
+        </p>
+        <Matches blocks={blocks} />
+        <p className="p-2 font-bold">Saved Highlights</p>
+        <div className="flex flex-col gap-2">
+          {Array.from({ length: 3 }).map((_) => (
+            <Highlight />
+          ))}
+        </div>
+      </div>
+      <Separator />
+      <DialogFooter className="justify-end p-2">
+        <Button variant="outline">
+          Quote Highlights Directly
+          <BetweenHorizontalEnd />
+        </Button>
+        <Button
+          variant="secondary"
+          style={{
+            background:
+              "linear-gradient(91.7deg, #3E3850 0%, #29252B 43.5%, #322935 100%)",
+          }}
+        >
+          Add AI Summary to Notes <Brain />
+        </Button>
+      </DialogFooter>
+    </>
   );
 }
+
+const blocks: Block[] = [
+  {
+    id: "block1",
+    order: 1,
+    noteID: "VWrZKnSSaYImpplNqGDB",
+    links: ["https://example.com", "https://example.org"],
+    content: "<p>This is the content of block 1</p>",
+    rawText: "This is the content of block 1",
+  },
+  {
+    id: "block2",
+    order: 2,
+    noteID: "VWrZKnSSaYImpplNqGDB",
+    links: ["https://example.com/block2"],
+    content: "<p>This is the content of block 2</p>",
+    rawText: "This is the content of block 2",
+  },
+  {
+    id: "block3",
+    order: 3,
+    noteID: "VWrZKnSSaYImpplNqGDB",
+    links: [],
+    content: "<p>This is the content of block 3</p>",
+    rawText: "This is the content of block 3",
+  },
+];
