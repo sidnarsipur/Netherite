@@ -41,8 +41,6 @@ export function MenuBar({ editor, noteID }: { noteID: string } & MenuBarProps) {
     const content = JSON.stringify(json);
 
     addBlocks(noteID, content);
-
-    GetSearchResults("Linear Algebra", 1);
   };
 
   useEffect(() => {
@@ -219,7 +217,7 @@ export function MenuBar({ editor, noteID }: { noteID: string } & MenuBarProps) {
           className="text-gradient justify-start gap-2"
         >
           <Search className="h-4 w-4 text-orange-500" />
-          <span>Semantic Search</span>
+          <span>Vector Search</span>
         </Button>
       </DialogTrigger>
     </div>

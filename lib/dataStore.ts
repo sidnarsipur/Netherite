@@ -77,6 +77,7 @@ export async function EmbedAndInsertBlocks(blocks: Block[], noteID: string) {
   }
 
   if (deletedBlockIDs.length > 0) {
+    console.log("Deleting", deletedBlockIDs);
     await index.namespace("namespace").deleteMany(deletedBlockIDs);
   }
 
@@ -137,11 +138,11 @@ export async function GetSearchResults(query: string, numResults: number = 3) {
 
   const blockIDs: string[] = [];
 
-  console.log("blockIDs", blockIDs);
-
   queryResponse.matches.forEach((match) => {
     blockIDs.push(match.id);
   });
+
+  console.log("Block IDs", blockIDs);
 
   const blocks = await BlocksByID(blockIDs);
 
@@ -156,7 +157,7 @@ export async function GetSearchResults(query: string, numResults: number = 3) {
     }
   });
 
-  return blocks;
+  return blocks.sort((a, b) => (b.score ?? 0) - (a.score ?? 0));
 }
 
 export async function GetSummary(blockIDs: string[]) {

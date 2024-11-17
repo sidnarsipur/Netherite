@@ -173,7 +173,7 @@ function parseBlocks(noteID: string, content: string): Block[] {
         noteID: noteID,
         links: [],
         content: currentBlockContent.map((n) => JSON.stringify(n)),
-        rawText: currentBlockContent.map((n) => extractText(n)).join(""),
+        rawText: currentBlockContent.map((n) => extractText(n)).join("\n"),
       });
       currentBlockContent = [];
     } else {
@@ -187,7 +187,7 @@ function parseBlocks(noteID: string, content: string): Block[] {
     noteID: noteID,
     links: [],
     content: currentBlockContent.map((n) => JSON.stringify(n)),
-    rawText: currentBlockContent.map((n) => extractText(n)).join(""),
+    rawText: currentBlockContent.map((n) => extractText(n)).join("\n"),
   });
 
   return blocks;
@@ -205,18 +205,18 @@ export async function hasText(node: ContentNode[]): boolean {
   return false;
 }
 
-function extractText(node: ContentNode): string[] {
-  let texts: string[] = [];
+function extractText(node: ContentNode): string {
+  let texts: string = "";
 
   if (node.type === "text" && node.text) {
-    texts.push(node?.text);
+    texts += node?.text;
   }
 
   if (node.content) {
     for (const child of node.content) {
-      texts = texts.concat(extractText(child));
+      texts += extractText(child) + " ";
     }
   }
 
-  return texts;
+  return texts.trim();
 }
