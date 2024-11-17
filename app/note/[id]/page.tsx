@@ -22,12 +22,11 @@ export default function Page() {
   }, 500);
 
   const insertText = () => {
-    const highlights = HighlightStore.useState((s) => s.highlights);
     const text = highlights
       .map((highlight) => highlight.description)
       .join("\n");
     HighlightStore.update((s) => {
-      insertText: text;
+      s.insertText = text;
     });
   };
 
@@ -81,7 +80,7 @@ const blocks: Block[] = [
   {
     id: "block1",
     order: 1,
-    noteID: "zquIgHwPNFIxahfXfzmH",
+    noteID: "EkE0MTLjtAcGemWB9FOM",
     links: ["https://example.com", "https://example.org"],
     content: ["<p>This is the content of block 1</p>"],
     rawText: "This is the content of block 1",
@@ -89,7 +88,7 @@ const blocks: Block[] = [
   {
     id: "block2",
     order: 2,
-    noteID: "zquIgHwPNFIxahfXfzmH",
+    noteID: "EkE0MTLjtAcGemWB9FOM",
     links: ["https://example.com/block2"],
     content: ["<p>This is the content of block 2</p>"],
     rawText: "This is the content of block 2",
@@ -97,7 +96,7 @@ const blocks: Block[] = [
   {
     id: "block3",
     order: 3,
-    noteID: "zquIgHwPNFIxahfXfzmH",
+    noteID: "EkE0MTLjtAcGemWB9FOM",
     links: [],
     content: ["<p>This is the content of block 3</p>"],
     rawText: "This is the content of block 3",
