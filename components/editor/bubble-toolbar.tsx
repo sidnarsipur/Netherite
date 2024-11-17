@@ -119,7 +119,7 @@ export function BubbleToolbar({ editor }: BubbleToolbarProps) {
           className="text-gradient justify-start gap-2"
         >
           <Search className="h-4 w-4 text-orange-500" />
-          <span>Semantic Search</span>
+          <span>Search</span>
         </Button>
       </DialogTrigger>
     </div>
