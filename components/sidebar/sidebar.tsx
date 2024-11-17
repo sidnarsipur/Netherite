@@ -6,7 +6,6 @@ import {
   SidebarHeader,
 } from "@/components/ui/sidebar";
 import { getFolders } from "@/lib/note-manager";
-import NoteButton from "./note-button";
 import FolderButton from "./folder-button";
 import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
@@ -16,7 +15,6 @@ import {
   DialogTrigger,
   DialogContent,
   DialogTitle,
-  DialogDescription,
   DialogClose,
 } from "@/components/ui/dialog";
 import { Input } from "../ui/input";
