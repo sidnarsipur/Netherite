@@ -86,7 +86,7 @@ export default function Editor({
   }
 
   return (
-    <div className="relative mx-auto flex h-full w-full flex-col rounded-lg border bg-background shadow-sm">
+    <div className="relative mx-auto flex h-full w-full flex-col">
       {editor && note && (
         <>
           <BubbleMenu editor={editor}>
