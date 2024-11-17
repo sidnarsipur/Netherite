@@ -21,6 +21,7 @@ export function MatchSnippet({ block }: { block?: Block }) {
           <p className="mr-auto">Transition Function</p>
           <p className="text-sm text-muted-foreground">99.46% match</p>
           <Button
+            disabled={isDummy}
             variant="secondary"
             size="icon"
             onClick={() => router.replace(`${pathname}/${data.noteID}`)}
