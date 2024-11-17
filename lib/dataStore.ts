@@ -1,6 +1,6 @@
 import { db, pc, model, index, google, sysPrompt } from "./init";
 import { Block, ContentNode } from "@/lib/model";
-import { FieldValue } from "firebase-admin/firestore";
+import { FieldValue, FieldPath } from "firebase-admin/firestore";
 import { v4 as uuidv4 } from "uuid";
 import { generateText } from "ai";
 
@@ -27,17 +27,19 @@ export async function EmbedAndInsertBlocks(blocks: Block[], noteID: string) {
   return blocks.map((block) => block.id);
 }
 
-export async function BlocksByID(blockIDs: string[]) {
+export async function BlocksByID(blockIDs: string[]): Promise<Block[]> {
+  if (blockIDs.length === 0) {
+    return [];
+  }
+
   const blockRef = await db
     .collection("blocks")
-    .where("blockID", "in", blockIDs)
+    .where(FieldPath.documentId(), "in", blockIDs)
+    .orderBy("order")
     .get();
 
   if (blockRef.empty) {
-    return Response.json(
-      { message: "No blocks found for this note" },
-      { status: 404 },
-    );
+    return [];
   }
 
   const blocks: Block[] = [];
@@ -54,6 +56,8 @@ export async function BlocksByID(blockIDs: string[]) {
       rawText: block.rawText,
     });
   });
+
+  console.log("blocks", blocks);
 
   return blocks;
 }
