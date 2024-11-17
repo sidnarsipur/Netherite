@@ -1,35 +1,37 @@
-import { db, pc, model, index} from "@/app/lib/init";
-import { BlocksByID } from "@/app/lib/dataStore";
+import { db, pc, model, index } from "@/lib/init";
+import { BlocksByID } from "@/lib/dataStore";
 
-export async function POST(req: Request){
-    try{
-        const { query, numResults } = await req.json();
+export async function POST(req: Request) {
+  try {
+    const { query, numResults } = await req.json();
 
-        const queryEmbedding = await pc.inference.embed(
-            model,
-            [query],
-            { inputType: 'query' }
-          );
+    const queryEmbedding = await pc.inference.embed(model, [query], {
+      inputType: "query",
+    });
 
-        const queryResponse = await index.namespace("namespace").query({
-            topK: numResults,
-            vector: queryEmbedding[0].values as number[],
-            includeValues: false,
-            includeMetadata: true
-          });
+    const queryResponse = await index.namespace("namespace").query({
+      topK: numResults,
+      vector: queryEmbedding[0].values as number[],
+      includeValues: false,
+      includeMetadata: true,
+    });
 
-        const blockIDs: string[] = [];
+    const blockIDs: string[] = [];
 
-        queryResponse.matches.forEach(match => {
-            blockIDs.push(match.id);
-        })
+    queryResponse.matches.forEach((match) => {
+      blockIDs.push(match.id);
+    });
 
-        const blocks = await BlocksByID(blockIDs);
-        
-        return Response.json({ blocks: blocks });
-    }
+    const blocks = await BlocksByID(blockIDs);
 
-    catch(error){
-        return new Response(JSON.stringify({ message: 'Failed to get search results', error: error.message }), { status: 500 });
-    }
+    return Response.json({ blocks: blocks });
+  } catch (error) {
+    return new Response(
+      JSON.stringify({
+        message: "Failed to get search results",
+        error: error.message,
+      }),
+      { status: 500 },
+    );
+  }
 }

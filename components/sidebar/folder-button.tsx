@@ -7,9 +7,8 @@ import {
   CollapsibleTrigger,
   CollapsibleContent,
 } from "@radix-ui/react-collapsible";
-import { Folder } from "@/lib/definitions";
+import { Folder } from "@/lib/model";
 import { useParams } from "next/navigation";
-import { getPageById } from "@/lib/note-manager";
 import FancyCard from "../fancy-card";
 import { useState } from "react";
 import {
@@ -23,8 +22,8 @@ import { cn } from "@/lib/utils";
 
 export default function FolderButton({ item }: { item: Folder }) {
   const { id } = useParams<{ id: string }>();
-  const isOpenedPageInside = getPageById(item.items, id) !== null;
-  const [isOpen, setIsOpen] = useState(isOpenedPageInside);
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <Collapsible
       open={isOpen}
@@ -63,13 +62,9 @@ export default function FolderButton({ item }: { item: Folder }) {
         </ContextMenu>
       </FancyCard>
       <CollapsibleContent className="flex flex-col gap-4 pl-5">
-        {item.items.map((item, idx) =>
-          item.type === "folder" ? (
-            <FolderButton key={idx} item={item} />
-          ) : (
-            <NoteButton key={idx} item={item} />
-          ),
-        )}
+        {/* {item.noteIDs.map((item, idx) => (
+          <NoteButton key={idx} item={item} />
+        ))} */}
       </CollapsibleContent>
     </Collapsible>
   );

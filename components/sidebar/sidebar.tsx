@@ -5,7 +5,7 @@ import {
   SidebarFooter,
   SidebarHeader,
 } from "@/components/ui/sidebar";
-import { notes } from "@/lib/note-manager";
+import { getFolders } from "@/lib/note-manager";
 import NoteButton from "./note-button";
 import FolderButton from "./folder-button";
 import { Button } from "../ui/button";
@@ -24,6 +24,7 @@ import Logo from "../Logo";
 import { NavUser } from "./nav-user";
 
 export default async function AppSidebar() {
+  const folders = await getFolders("yS6XFCpOnwEKEUdsiNnC");
   return (
     <Sidebar>
       <SidebarHeader className="flex flex-col gap-4 p-6">
@@ -58,13 +59,16 @@ export default async function AppSidebar() {
       </SidebarHeader>
       <Separator className="bg-separator-gradient" />
       <SidebarContent className="flex flex-col gap-4 p-6">
-        {notes.map((item, idx) =>
+        {/* {folders.map((item, idx) =>
           item.type === "folder" ? (
             <FolderButton key={idx} item={item} />
           ) : (
             <NoteButton key={idx} item={item} />
           ),
-        )}
+        )} */}
+        {folders.map((item, idx) => (
+          <FolderButton key={idx} item={item} />
+        ))}
       </SidebarContent>
       <Separator className="bg-separator-gradient" />
       <SidebarFooter>
