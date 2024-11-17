@@ -20,6 +20,7 @@ export default async function RootLayout({
 
   if (!note) {
     redirect("/note");
+    return null;
   }
 
   return (

@@ -8,8 +8,10 @@ export interface IHighlight {
 
 interface IHighlightStore {
   highlights: IHighlight[];
+  insertText: string;
 }
 
 export const HighlightStore = new Store<IHighlightStore>({
   highlights: [],
+  insertText: "",
 });

@@ -21,7 +21,15 @@ export default function Page() {
     // console.log("fsefas henrnrnr", blocks);
   }, 500);
 
-  const quoteText = () => {};
+  const insertText = () => {
+    const highlights = HighlightStore.useState((s) => s.highlights);
+    const text = highlights
+      .map((highlight) => highlight.description)
+      .join("\n");
+    HighlightStore.update((s) => {
+      insertText: text;
+    });
+  };
 
   return (
     <>
@@ -51,7 +59,7 @@ export default function Page() {
       </div>
       <Separator />
       <DialogFooter className="justify-end p-2">
-        <Button variant="outline" onClick={quoteText}>
+        <Button variant="outline" onClick={insertText}>
           Quote Highlights Directly
           <BetweenHorizontalEnd />
         </Button>

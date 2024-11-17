@@ -22,6 +22,7 @@ import { BubbleToolbar } from "./bubble-toolbar";
 import { get } from "http";
 import { getJSONByNoteID } from "@/lib/note-manager";
 import { useEffect, useState } from "react";
+import { HighlightStore } from "@/lib/highlightStore";
 
 const getContent = async (noteID: string) => {
   const jsonString = await getJSONByNoteID(noteID);
@@ -91,6 +92,11 @@ export default function Editor({ noteID }: { noteID: string }) {
       editor.off("focus", handleFocus);
     };
   }, [editor, cursorPosition]);
+
+  const insertText = HighlightStore.useState((s) => s.insertText);
+  useEffect(() => {
+    insertTextAtCursor(insertText);
+  }, [insertText]);
 
   const insertTextAtCursor = (text: string) => {
     if (editor && cursorPosition !== null) {
