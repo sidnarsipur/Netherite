@@ -1,22 +1,26 @@
+"use client";
+
 import Highlight from "@/components/search-dialog/highlight";
 import { Matches } from "@/components/search-dialog/matches";
 import { Querybar } from "@/components/search-dialog/querybar";
 import { Button } from "@/components/ui/button";
 import { DialogFooter, DialogClose } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import { GetSearchResults } from "@/lib/dataStore";
 import { Block } from "@/lib/model";
 import { X, BetweenHorizontalEnd, Brain } from "lucide-react";
+import { useDebouncedCallback } from "use-debounce";
 
-export default async function Page() {
-  // const blocks = await GetSearchResults("");
-  // console.log("fsefas henrnrnr", blocks);
+export default function Page() {
+  const handleSearch = useDebouncedCallback((term) => {
+    console.log(`Searching... ${term}`);
+    // const blocks = await GetSearchResults("");
+    // console.log("fsefas henrnrnr", blocks);
+  }, 500);
 
   return (
     <>
       <div className="flex flex-row items-center justify-between p-2">
-        <Querybar />
+        <Querybar onChange={(e) => handleSearch(e.target.value)} />
         <DialogClose asChild>
           <Button variant="ghost" size="icon">
             <X />
