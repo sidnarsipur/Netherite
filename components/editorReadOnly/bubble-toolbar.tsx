@@ -12,7 +12,10 @@ type BubbleToolbarProps = {
   editor: Editor;
 };
 
-export function BubbleToolbar({ editor }: BubbleToolbarProps) {
+export function BubbleToolbar({
+  editor,
+  title,
+}: { title: string } & BubbleToolbarProps) {
   if (!editor) {
     return null;
   }
@@ -38,8 +41,8 @@ export function BubbleToolbar({ editor }: BubbleToolbarProps) {
     if (!selectedText) return;
     HighlightStore.update((s) => {
       s.highlights.push({
-        title: selectedText,
-        description: "",
+        title,
+        description: selectedText,
         id: 0,
       });
     });

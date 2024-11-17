@@ -15,6 +15,7 @@ import AddFile from "./add-file";
 
 export default async function AppSidebar() {
   const folders = await getFolders();
+  console.log(folders);
   return (
     <Sidebar>
       <SidebarHeader className="flex flex-col gap-4 p-6">
