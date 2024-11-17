@@ -19,9 +19,12 @@ import {
   Image,
   SquareSplitVertical,
   Save,
+  Search,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { DialogTrigger } from "@radix-ui/react-dialog";
 import { addBlocks } from "@/lib/note-manager";
+import { UrlModal } from "../ui/UrlModal"; // Import the custom modal component
 
 type MenuBarProps = {
   editor: Editor;
@@ -34,9 +37,9 @@ export function MenuBar({ editor }: MenuBarProps) {
 
   const handleSave = () => {
     const json = editor.getJSON();
-    const noteID = "eGNKGRIuIeNNUp3fv1MJ";
+    // const noteID = "eGNKGRIuIeNNUp3fv1MJ";
 
-    addBlocks(noteID, JSON.stringify(json));
+    // addBlocks(noteID, JSON.stringify(json));
   };
 
   useEffect(() => {
@@ -52,6 +55,22 @@ export function MenuBar({ editor }: MenuBarProps) {
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, [editor]);
+
+  const handleUrlSubmit = (url: string) => {
+    if (url) {
+      editor.chain().focus().setLink({ href: url }).run();
+    }
+  };
+
+  const handleImageSubmit = (url: string) => {
+    if (url) {
+      editor.chain().focus().setImage({ src: url }).run();
+    }
+  };
+
+  function handleClick(arg0: () => void) {
+    // throw new Error("Function not implemented.");
+  }
 
   return (
     <div className="flex flex-wrap gap-2 border-b p-2">
@@ -118,6 +137,15 @@ export function MenuBar({ editor }: MenuBarProps) {
         <Code className="h-4 w-4" />
       </Button>
 
+      <Button
+        size="sm"
+        variant="ghost"
+        onClick={() => editor.chain().focus().setPageBreak().run()}
+        className="h-8 w-8 p-1"
+      >
+        <SquareSplitVertical className="h-4 w-4" />
+      </Button>
+
       <div className="mx-2 h-8 w-px bg-border" />
 
       <Button
@@ -174,29 +202,25 @@ export function MenuBar({ editor }: MenuBarProps) {
             editor.chain().focus().setLink({ href: url }).run();
           }
         }}
+        className="h-8 w-8 p-1"
       >
         <Link className="h-4 w-4" />
       </Button>
-      <Button
-        size="sm"
-        variant="ghost"
-        onClick={() => {
-          const url = window.prompt("Enter image URL");
-          if (url) {
-            editor.chain().focus().setImage({ src: url }).run();
-          }
-        }}
-      >
-        <Image className="h-4 w-4" />
-      </Button>
-      <Button
-        size="sm"
-        variant="ghost"
-        onClick={() => editor.chain().focus().setPageBreak().run()}
-        className="h-8 w-8 p-1"
-      >
-        <SquareSplitVertical className="h-4 w-4" />
-      </Button>
+      <UrlModal onSubmit={handleImageSubmit} />
+
+      <DialogTrigger asChild>
+        <Button
+          size="sm"
+          variant="ghost"
+          onClick={() => {
+            handleClick(() => {});
+          }}
+          className="text-gradient justify-start gap-2"
+        >
+          <Search className="h-4 w-4 text-orange-500" />
+          <span>Semantic Search</span>
+        </Button>
+      </DialogTrigger>
     </div>
   );
 }
