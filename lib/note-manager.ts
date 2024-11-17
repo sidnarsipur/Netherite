@@ -3,7 +3,7 @@
 import { db, pc } from "@/lib/init";
 import { BlocksByID, EmbedAndInsertBlocks } from "@/lib/dataStore";
 import { v4 as uuidv4 } from "uuid";
-import { Block, Folder, Note, User } from "@/lib/model";
+import { Block, Folder, Note, User, ContentNode } from "@/lib/model";
 
 // export const addNote = async (userID: string, blocks: Block[]) => {
 //   const noteID = uuidv4();
@@ -17,6 +17,25 @@ import { Block, Folder, Note, User } from "@/lib/model";
 
 //   return res;
 // };
+
+export const getJSONByNote = async (noteID: string): Promise<string> => {
+  const note = await getNote(noteID);
+
+  const mergeContent = (content: ContentNode[]): ContentNode[] => {
+    return content.map((node) => {
+      if (node.content) {
+        node.content = mergeContent(node.content);
+      }
+      return node;
+    });
+  };
+
+  const combinedContent: ContentNode[] = note.block.flatMap((block) => {
+    return mergeContent(block.content);
+  });
+
+  return JSON.stringify(combinedContent, null, 2);
+};
 
 export const getNote = async (noteID: string) => {
   try {

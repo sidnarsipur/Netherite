@@ -58,7 +58,6 @@ export async function BlocksByID(blockIDs: string[]) {
 
 function parseRawText(content: ContentNode[]): string {
   if (!Array.isArray(content)) {
-    // Ensure content is an array
     console.error("Invalid content: expected an array, got", content);
     return "";
   }
