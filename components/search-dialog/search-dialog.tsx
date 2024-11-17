@@ -11,8 +11,13 @@ import { Separator } from "../ui/separator";
 import { Matches } from "./matches";
 import Highlight from "./highlight";
 import FancyCard from "../fancy-card";
+import { GetSearchResults } from "@/lib/dataStore";
+import { DialogTitle } from "@radix-ui/react-dialog";
+import { Block } from "@/lib/model";
 
-export function SearchDialog() {
+export async function SearchDialog() {
+  // const blocks = await GetSearchResults("dfa");
+
   return (
     <DialogContent
       className="flex max-w-6xl flex-col gap-0 p-0"
@@ -21,6 +26,7 @@ export function SearchDialog() {
         boxShadow: "0px 0px 50px 0px rgba(145, 135, 162, 0.30)",
       }}
     >
+      <DialogTitle></DialogTitle>
       <FancyCard
         backgroundGradient="#111"
         borderGradient="linear-gradient(0deg, rgba(47, 47, 47, 0), rgba(47, 47, 47, 0)), linear-gradient(68.6deg, #41468A 26.03%, #C4B1CF 53.09%, #2C2C2C 99.99%)"
@@ -42,7 +48,7 @@ export function SearchDialog() {
             <span className="font-bold">Closest matches in context</span>{" "}
             <span className="text-gray-500">(32 results found)</span>
           </p>
-          <Matches />
+          <Matches blocks={blocks} />
           <p className="p-2 font-bold">Saved Highlights</p>
           <div className="flex flex-col gap-2">
             {Array.from({ length: 3 }).map((_) => (
@@ -70,3 +76,30 @@ export function SearchDialog() {
     </DialogContent>
   );
 }
+
+const blocks: Block[] = [
+  {
+    id: "block1",
+    order: 1,
+    noteID: "note1",
+    links: ["https://example.com", "https://example.org"],
+    content: "<p>This is the content of block 1</p>",
+    rawText: "This is the content of block 1",
+  },
+  {
+    id: "block2",
+    order: 2,
+    noteID: "note1",
+    links: ["https://example.com/block2"],
+    content: "<p>This is the content of block 2</p>",
+    rawText: "This is the content of block 2",
+  },
+  {
+    id: "block3",
+    order: 3,
+    noteID: "note2",
+    links: [],
+    content: "<p>This is the content of block 3</p>",
+    rawText: "This is the content of block 3",
+  },
+];

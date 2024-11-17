@@ -21,7 +21,6 @@ import { FloatingToolbar } from "./floating-toolbar";
 import { BubbleToolbar } from "./bubble-toolbar";
 
 export default function Editor({ noteID }: { noteID: string }) {
-  console.log(noteID);
   const editor = useEditor({
     extensions: [
       StarterKit.configure({

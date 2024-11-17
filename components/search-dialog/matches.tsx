@@ -7,6 +7,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { MatchSnippet } from "./match-snippet";
+import { Block } from "@/lib/model";
 
 const customStyle = {
   mask: `linear-gradient(to right, 
@@ -17,8 +18,8 @@ const customStyle = {
   100% 50% / 100% 100% repeat-x`,
 };
 
-const LENGTH = 5;
-export function Matches() {
+const LENGTH = 3;
+export function Matches({ blocks }: { blocks: Block[] }) {
   return (
     <Carousel
       opts={{
@@ -27,9 +28,11 @@ export function Matches() {
     >
       <div style={customStyle}>
         <CarouselContent>
-          {Array.from({ length: LENGTH }).map((_, idx) => (
-            <MatchSnippet key={idx} />
+          <MatchSnippet />
+          {blocks.map((block, idx) => (
+            <MatchSnippet key={idx} block={block} />
           ))}
+          <MatchSnippet />
         </CarouselContent>
       </div>
       <CarouselPrevious />
