@@ -23,14 +23,22 @@ export function BubbleToolbar({ editor }: BubbleToolbarProps) {
     editor.commands.focus();
   };
 
+  const getSelectedText = () => {
+    const { from, to, empty } = editor.state.selection;
+    if (empty) return null;
+    return editor.state.doc.textBetween(from, to, " ");
+  };
+
   const router = useRouter();
   const params = useParams();
   const id = params.id as string;
 
   function handleSelectText(): void {
+    const selectedText = getSelectedText();
+    if (!selectedText) return;
     HighlightStore.update((s) => {
       s.highlights.push({
-        title: editor.getText(),
+        title: selectedText,
         description: "",
         id: 0,
       });
