@@ -1,8 +1,12 @@
 // index.tsx
 "use client";
 
-import { useEffect, useState } from "react";
-import { useEditor, EditorContent, BubbleMenu } from "@tiptap/react";
+import {
+  useEditor,
+  EditorContent,
+  BubbleMenu,
+  FloatingMenu,
+} from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import TaskList from "@tiptap/extension-task-list";
 import TaskItem from "@tiptap/extension-task-item";
@@ -12,8 +16,12 @@ import Link from "@tiptap/extension-link";
 import Image from "@tiptap/extension-image";
 import TextAlign from "@tiptap/extension-text-align";
 import PageBreak from "@/components/ui/page-break";
+import { MenuBar } from "./menu-bar";
+import { FloatingToolbar } from "./floating-toolbar";
 import { BubbleToolbar } from "./bubble-toolbar";
+import { get } from "http";
 import { getJSONByNoteID } from "@/lib/note-manager";
+import { useEffect, useState } from "react";
 
 const getContent = async (noteID: string) => {
   const jsonString = await getJSONByNoteID(noteID);
@@ -96,11 +104,28 @@ export default function Editor({ noteID }: { noteID: string }) {
 
   return (
     <div className="relative mx-auto flex h-full w-full flex-col rounded-lg border bg-background shadow-sm">
+      <MenuBar editor={editor} noteID={noteID} />
+
       {editor && (
         <>
           <BubbleMenu editor={editor}>
             <BubbleToolbar editor={editor} />
           </BubbleMenu>
+          <FloatingMenu
+            editor={editor}
+            shouldShow={({ state }) => {
+              const { $from } = state.selection;
+              const currentLineText = $from.nodeBefore?.textContent;
+              return currentLineText === "/";
+            }}
+            tippyOptions={{
+              interactive: true,
+              placement: "bottom-start",
+              appendTo: () => document.body,
+            }}
+          >
+            <FloatingToolbar editor={editor} />
+          </FloatingMenu>
         </>
       )}
 
