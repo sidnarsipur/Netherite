@@ -1,6 +1,6 @@
 "use server";
 
-import { db, pc, model, index, google, sysPrompt } from "./init";
+import { db, pc, model, google, sysPrompt } from "./init";
 import { Block, ContentNode } from "@/lib/model";
 import { FieldValue, FieldPath } from "firebase-admin/firestore";
 import { generateText } from "ai";
@@ -29,9 +29,7 @@ export async function EmbedAndInsertBlocks(blocks: Block[], noteID: string) {
     .doc(noteID)
     .update({ blockIDs: null });
 
-  if (deletedBlockIDs.length > 0) {
-    await index.namespace("namespace").deleteMany(deletedBlockIDs);
-  }
+  const index = pc.Index("embeddings");
 
   const cleanBlocks: Block[] = [];
 
@@ -61,6 +59,8 @@ export async function EmbedAndInsertBlocks(blocks: Block[], noteID: string) {
     block.id = (await ref).id;
   }
 
+  const index1 = pc.Index("embeddings");
+
   const embeddings = await pc.inference.embed(
     model,
     cleanBlocks.map((cleanBlocks) => cleanBlocks.rawText),
@@ -73,8 +73,11 @@ export async function EmbedAndInsertBlocks(blocks: Block[], noteID: string) {
   }));
 
   if (cleanBlocks.length > 0) {
-    console.log(cleanBlocks.length, "blocks to index", records.length);
-    await index.namespace("namespace").upsert(records);
+    await index1.namespace("namespace").upsert(records);
+  }
+
+  if (deletedBlockIDs.length > 0) {
+    await index.namespace("namespace").deleteMany(deletedBlockIDs);
   }
 
   return cleanBlocks.map((block) => block.id);
@@ -123,6 +126,8 @@ export async function GetSearchResults(query: string, numResults: number = 3) {
     inputType: "query",
   });
 
+  const index = pc.Index("embeddings");
+
   const queryResponse = await index.namespace("namespace").query({
     topK: numResults,
     vector: queryEmbedding[0].values as number[],
@@ -131,6 +136,8 @@ export async function GetSearchResults(query: string, numResults: number = 3) {
   });
 
   const blockIDs: string[] = [];
+
+  console.log("blockIDs", blockIDs);
 
   queryResponse.matches.forEach((match) => {
     blockIDs.push(match.id);
@@ -148,8 +155,6 @@ export async function GetSearchResults(query: string, numResults: number = 3) {
       );
     }
   });
-
-  console.log(blocks);
 
   return blocks;
 }

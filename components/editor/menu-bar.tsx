@@ -42,7 +42,7 @@ export function MenuBar({ editor, noteID }: { noteID: string } & MenuBarProps) {
 
     addBlocks(noteID, content);
 
-    GetSearchResults("Linear Algebra", 5);
+    GetSearchResults("Linear Algebra", 1);
   };
 
   useEffect(() => {
