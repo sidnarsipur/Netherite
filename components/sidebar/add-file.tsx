@@ -1,13 +1,7 @@
 import { Button } from "../ui/button";
-import {
-  DialogContent,
-  DialogTrigger,
-  Dialog,
-  DialogTitle,
-  DialogClose,
-} from "../ui/dialog";
-import { Input } from "../ui/input";
+import { DialogTrigger, Dialog } from "../ui/dialog";
 import { Plus } from "lucide-react";
+import AddFileDialog from "./add-file-dialog";
 
 export default function AddFile() {
   return (
@@ -17,15 +11,7 @@ export default function AddFile() {
           <Plus />
         </Button>
       </DialogTrigger>
-      <DialogContent className="w-80">
-        <DialogTitle>New File</DialogTitle>
-        <Input id="link" placeholder="Name" />
-        <DialogClose asChild>
-          <Button type="submit" size="sm" className="px-3">
-            Add
-          </Button>
-        </DialogClose>
-      </DialogContent>
+      <AddFileDialog />
     </Dialog>
   );
 }
