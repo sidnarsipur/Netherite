@@ -5,31 +5,51 @@ import { v4 as uuidv4 } from "uuid";
 import { generateText } from "ai";
 
 export async function EmbedAndInsertBlocks(blocks: Block[], noteID: string) {
+  const firebase = require("firebase/app");
+  require("firebase/firestore");
+
+  const deletedBlockIDs: string[] = [];
+
+  const blocksRef = db.collection("blocks");
+  const snapshot = await blocksRef.where("noteID", "==", noteID).get();
+
+  if (!snapshot.empty) {
+    snapshot.forEach((doc) => {
+      deletedBlockIDs.push(doc.id);
+    });
+
+    const deletePromises = snapshot.docs.map((doc) => doc.ref.delete());
+    await Promise.all(deletePromises);
+  }
+
+  const notesSnapshot = await db
+    .collection("notes")
+    .doc(noteID)
+    .update({ blockIDs: null });
+
+  if (deletedBlockIDs.length > 0) {
+    await index.namespace("namespace").deleteMany(deletedBlockIDs);
+  }
+
   const embeddings = await pc.inference.embed(
     model,
-    blocks.map((block) => block.rawText),
+    blocks.map((blocks) => blocks.rawText),
     { inputType: "passage", truncate: "END" },
   );
 
   for (const block of blocks) {
     block.noteID = noteID;
-    const existingBlockRef = await db
-      .collection("blocks")
-      .where("noteID", "==", noteID)
-      .where("order", "==", block.order)
-      .get();
 
-    if (!existingBlockRef.empty) {
-      const existingBlock = existingBlockRef.docs[0];
-      await existingBlock.ref.update({
-        content: block.content,
-        links: block.links,
-      });
-      block.id = existingBlock.id;
-    } else {
-      const res = db.collection("blocks").add(block);
-      block.id = (await res).id;
-    }
+    const ref = blocksRef.add({
+      id: block.id,
+      noteID: block.noteID,
+      order: block.order,
+      links: block.links,
+      content: block.content,
+      rawText: block.rawText,
+    });
+
+    block.id = (await ref).id;
   }
 
   const records = blocks.map((block, i) => ({
@@ -37,7 +57,7 @@ export async function EmbedAndInsertBlocks(blocks: Block[], noteID: string) {
     values: embeddings[i].values as number[],
   }));
 
-  index.namespace("namespace").upsert(records);
+  await index.namespace("namespace").upsert(records);
 
   return blocks.map((block) => block.id);
 }

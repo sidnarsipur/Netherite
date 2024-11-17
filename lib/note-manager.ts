@@ -169,20 +169,20 @@ function parseBlocks(noteID: string, content: string): Block[] {
 
   node.content.forEach((node: any) => {
     if (node.type == "pageBreak") {
-      currentBlockContent.push(JSON.stringify(node));
+      currentBlockContent.push(node);
       blocks.push({
         id: uuidv4(),
         order: order++,
         noteID: noteID,
         links: [],
-        content: currentBlockContent,
+        content: currentBlockContent.map((n) => JSON.stringify(n)),
         rawText: currentBlockContent
           .map((n) => n.content?.[0]?.text || "")
           .join(" "),
       });
       currentBlockContent = [];
     } else {
-      currentBlockContent.push(JSON.stringify(node));
+      currentBlockContent.push(node);
     }
   });
 
@@ -191,7 +191,7 @@ function parseBlocks(noteID: string, content: string): Block[] {
     order: order++,
     noteID: noteID,
     links: [],
-    content: currentBlockContent,
+    content: currentBlockContent.map((n) => JSON.stringify(n)),
     rawText: currentBlockContent
       .map((n) => n.content?.[0]?.text || "")
       .join(" "),
