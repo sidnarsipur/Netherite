@@ -1,7 +1,8 @@
-import { db, pc, model, index } from "./init";
+import { db, pc, model, index, google, sysPrompt } from "./init";
 import { Block, ContentNode } from "@/lib/model";
 import { FieldValue } from "firebase-admin/firestore";
 import { v4 as uuidv4 } from "uuid";
+import { generateText } from "ai";
 
 export async function EmbedAndInsertBlocks(blocks: Block[], noteID: string) {
   const embeddings = await pc.inference.embed(
@@ -54,6 +55,41 @@ export async function BlocksByID(blockIDs: string[]) {
   });
 
   return blocks;
+}
+
+export async function GetSearchResults(query: string, numResults: number) {
+  const queryEmbedding = await pc.inference.embed(model, [query], {
+    inputType: "query",
+  });
+
+  const queryResponse = await index.namespace("namespace").query({
+    topK: numResults,
+    vector: queryEmbedding[0].values as number[],
+    includeValues: false,
+    includeMetadata: true,
+  });
+
+  const blockIDs: string[] = [];
+
+  queryResponse.matches.forEach((match) => {
+    blockIDs.push(match.id);
+  });
+
+  const blocks = await BlocksByID(blockIDs);
+
+  return blocks;
+}
+
+export async function GetSummary(blockText: string[]) {
+  const union = blockText.join("\nNEW NOTE\n");
+
+  const { text } = await generateText({
+    model: google("gemini-1.5-pro-latest"),
+    system: sysPrompt,
+    prompt: union,
+  });
+
+  return JSON.stringify(text, null, 2);
 }
 
 function parseRawText(content: ContentNode[]): string {
