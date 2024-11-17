@@ -101,7 +101,6 @@ export const getNote = async (noteID: string) => {
     } as unknown as Note;
   } catch (error: any) {
     console.error("Database Error:", error);
-    throw new Error("Failed to fetch card data.", error.message);
   }
 };
 

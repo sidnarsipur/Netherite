@@ -5,12 +5,16 @@ import { Matches } from "@/components/search-dialog/matches";
 import { Querybar } from "@/components/search-dialog/querybar";
 import { Button } from "@/components/ui/button";
 import { DialogFooter, DialogClose } from "@/components/ui/dialog";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
+import { HighlightStore } from "@/lib/highlightStore";
 import { Block } from "@/lib/model";
 import { X, BetweenHorizontalEnd, Brain } from "lucide-react";
 import { useDebouncedCallback } from "use-debounce";
 
 export default function Page() {
+  const highlights = HighlightStore.useState((s) => s.highlights);
+
   const handleSearch = useDebouncedCallback((term) => {
     console.log(`Searching... ${term}`);
     // const blocks = await GetSearchResults("");
@@ -34,12 +38,14 @@ export default function Page() {
           <span className="text-gray-500">(32 results found)</span>
         </p>
         <Matches blocks={blocks} />
-        <p className="p-2 font-bold">Saved Highlights</p>
-        <div className="flex flex-col gap-2">
-          {Array.from({ length: 3 }).map((_) => (
-            <Highlight />
-          ))}
-        </div>
+        <ScrollArea className="h-80">
+          <p className="p-2 font-bold">Saved Highlights</p>
+          <div className="flex flex-col gap-2 pb-2">
+            {highlights.map((highlight, idx) => (
+              <Highlight highlight={highlight} key={idx} />
+            ))}
+          </div>
+        </ScrollArea>
       </div>
       <Separator />
       <DialogFooter className="justify-end p-2">
