@@ -18,6 +18,10 @@ import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import AddFileDialog from "./add-file-dialog";
 
 export default function FolderButton({ item }: { item: Folder }) {
+  if (item.path === "/") {
+    return item.notes.map((note, idx) => <NoteButton key={idx} note={note} />);
+  }
+
   return (
     <Dialog>
       <Collapsible className="group/collapsible">

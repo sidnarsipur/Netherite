@@ -1,6 +1,7 @@
 "use server";
 import { auth, db } from "./init"; // Assuming auth is correctly initialized
 import { User } from "./model";
+import { addFolder } from "./note-manager";
 
 export async function createUser(formData: FormData) {
   try {
@@ -27,6 +28,9 @@ export async function createUser(formData: FormData) {
       email: email,
       name: displayName,
     });
+
+    // add the root folder
+    await addFolder("");
 
     console.log("Successfully created new user:", userRecord.uid);
   } catch (error) {

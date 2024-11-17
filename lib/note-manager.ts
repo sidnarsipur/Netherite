@@ -17,6 +17,7 @@ export const createNote = async (name: string, path: string) => {
     blockIDs: [],
   });
   console.log(note);
+
   // add note under the folder
   const folderCollection = await getFolderCollection();
   const folderDoc = await folderCollection.where("path", "==", path).get();
@@ -127,12 +128,11 @@ export const getFolders = async () => {
   return folderObjs;
 };
 
-export const addFolder = async (formData: FormData) => {
-  const folderName = formData.get("name") as string;
+export const addFolder = async (name: string) => {
   const folderCollection = await getFolderCollection();
   await folderCollection.add({
-    name: folderName,
-    path: `${folderName}/`,
+    name: name,
+    path: `${name}/`,
     noteIDs: [],
   });
   revalidatePath("/note");
