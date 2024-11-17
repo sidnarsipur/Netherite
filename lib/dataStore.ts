@@ -159,7 +159,11 @@ export async function GetSearchResults(query: string, numResults: number = 3) {
   return blocks;
 }
 
-export async function GetSummary(blockText: string[]) {
+export async function GetSummary(blockIDs: string[]) {
+  const blocks = await BlocksByID(blockIDs);
+
+  const blockText = blocks.map((block) => block.rawText);
+
   const union = blockText.join("\nNEW NOTE\n");
 
   const { text } = await generateText({
@@ -167,6 +171,8 @@ export async function GetSummary(blockText: string[]) {
     system: sysPrompt,
     prompt: union,
   });
+
+  console.log("Summary", text);
 
   return JSON.stringify(text, null, 2);
 }
