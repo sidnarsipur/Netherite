@@ -34,6 +34,8 @@ export const addBlocks = async (noteID: string, content: any) => {
   const blocks = parseBlocks(noteID, content);
   const block_ids = await EmbedAndInsertBlocks(blocks, noteID);
 
+  console.log("block_ids", block_ids);
+
   const res = await db
     .collection("notes")
     .doc(noteID)
@@ -41,7 +43,7 @@ export const addBlocks = async (noteID: string, content: any) => {
       blockIDs: FieldValue.arrayUnion(...block_ids),
     });
 
-  return res;
+  // return res;
 };
 
 export const getJSONByNoteID = async (noteID: string): Promise<string> => {
@@ -86,7 +88,7 @@ export const getNote = async (noteID: string) => {
       ...noteObj,
       blocks,
     } as unknown as Note;
-  } catch (error) {
+  } catch (error: any) {
     console.error("Database Error:", error);
     throw new Error("Failed to fetch card data.", error.message);
   }
@@ -154,7 +156,7 @@ function parseBlocks(noteID: string, content: string): Block[] {
 
   const node = JSON.parse(content);
 
-  node.content.forEach((node: ContentNode) => {
+  node.content.forEach((node: any) => {
     if (node.type == "pageBreak") {
       currentBlockContent.push(JSON.stringify(node));
       blocks.push({
