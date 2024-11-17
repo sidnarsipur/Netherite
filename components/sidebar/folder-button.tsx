@@ -39,7 +39,7 @@ export default function FolderButton({ item }: { item: Folder }) {
             <ContextMenuContent className="w-64">
               <DialogTrigger asChild>
                 <ContextMenuItem inset>
-                  New Note
+                  New File
                   <ContextMenuShortcut>⌘N</ContextMenuShortcut>
                 </ContextMenuItem>
               </DialogTrigger>

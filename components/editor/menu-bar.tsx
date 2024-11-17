@@ -25,6 +25,7 @@ import { Button } from "@/components/ui/button";
 import { DialogTrigger } from "@radix-ui/react-dialog";
 import { addBlocks } from "@/lib/note-manager";
 import { UrlModal } from "../ui/UrlModal"; // Import the custom modal component
+import { GetSearchResults } from "@/lib/dataStore";
 
 type MenuBarProps = {
   editor: Editor;
@@ -40,6 +41,8 @@ export function MenuBar({ editor, noteID }: { noteID: string } & MenuBarProps) {
     const content = JSON.stringify(json);
 
     addBlocks(noteID, content);
+
+    GetSearchResults("Linear Algebra", 5);
   };
 
   useEffect(() => {
