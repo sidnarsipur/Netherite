@@ -17,20 +17,23 @@ export function MatchSnippet({ block }: { block?: Block }) {
   return (
     <CarouselItem className="basis-1/3">
       <Card className="flex h-60 flex-col bg-[#202020]">
-        <div className="flex items-center justify-end gap-2 p-3">
-          <p className="mr-auto">Transition Function</p>
-          <p className="text-sm text-muted-foreground">99.46% match</p>
-          <Button
-            disabled={isDummy}
-            variant="secondary"
-            size="icon"
-            onClick={() => router.replace(`${pathname}/${data.noteID}`)}
-          >
-            <PlusIcon />
-          </Button>
-        </div>
-        <Separator />
-        <p className="p-3 text-sm">{data.content}</p>
+        {!isDummy && (
+          <>
+            <div className="flex items-center justify-end gap-2 p-3">
+              <p className="mr-auto">Transition Function</p>
+              <p className="text-sm text-muted-foreground">99.46% match</p>
+              <Button
+                variant="secondary"
+                size="icon"
+                onClick={() => router.replace(`${pathname}/${data.noteID}`)}
+              >
+                <PlusIcon />
+              </Button>
+            </div>
+            <Separator />
+            <p className="p-3 text-sm">{data.content}</p>
+          </>
+        )}
       </Card>
     </CarouselItem>
   );
@@ -38,9 +41,9 @@ export function MatchSnippet({ block }: { block?: Block }) {
 
 const dummyBlock: Block = {
   id: "block3",
-  order: 3,
+  order: 0,
   noteID: "VWrZKnSSaYImpplNqGDB",
   links: [],
-  content: "<p>This is the content of block 3</p>",
-  rawText: "This is the content of block 3",
+  content: [""],
+  rawText: "",
 };

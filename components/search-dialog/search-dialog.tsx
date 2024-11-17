@@ -7,8 +7,6 @@ export async function SearchDialog({
 }: {
   children: React.ReactNode;
 }) {
-  // const blocks = await GetSearchResults("dfa");
-
   return (
     <DialogContent
       className="flex max-w-6xl flex-col gap-0 p-0"

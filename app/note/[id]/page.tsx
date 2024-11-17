@@ -4,10 +4,14 @@ import { Button } from "@/components/ui/button";
 import { DialogFooter, DialogClose } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
+import { GetSearchResults } from "@/lib/dataStore";
 import { Block } from "@/lib/model";
 import { X, BetweenHorizontalEnd, Brain } from "lucide-react";
 
-export default function Page() {
+export default async function Page() {
+  // const blocks = await GetSearchResults("");
+  // console.log("fsefas henrnrnr", blocks);
+
   return (
     <>
       <div className="flex flex-row items-center justify-between p-2">
@@ -61,7 +65,7 @@ const blocks: Block[] = [
     order: 1,
     noteID: "VWrZKnSSaYImpplNqGDB",
     links: ["https://example.com", "https://example.org"],
-    content: "<p>This is the content of block 1</p>",
+    content: ["<p>This is the content of block 1</p>"],
     rawText: "This is the content of block 1",
   },
   {
@@ -69,7 +73,7 @@ const blocks: Block[] = [
     order: 2,
     noteID: "VWrZKnSSaYImpplNqGDB",
     links: ["https://example.com/block2"],
-    content: "<p>This is the content of block 2</p>",
+    content: ["<p>This is the content of block 2</p>"],
     rawText: "This is the content of block 2",
   },
   {
@@ -77,7 +81,7 @@ const blocks: Block[] = [
     order: 3,
     noteID: "VWrZKnSSaYImpplNqGDB",
     links: [],
-    content: "<p>This is the content of block 3</p>",
+    content: ["<p>This is the content of block 3</p>"],
     rawText: "This is the content of block 3",
   },
 ];
