@@ -34,7 +34,9 @@ export function MenuBar({ editor }: MenuBarProps) {
 
   const handleSave = () => {
     const json = editor.getJSON();
-    addBlocks("eGNKGRIuIeNNUp3fv1MJ", JSON.stringify(json));
+    const noteID = "eGNKGRIuIeNNUp3fv1MJ";
+
+    addBlocks(noteID, JSON.stringify(json));
   };
 
   useEffect(() => {
