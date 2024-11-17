@@ -42,7 +42,7 @@ export async function createUser(formData: FormData) {
   }
 }
 
-export const userID = "flXcgkVjZ7Ghf6eRfitT";
+const userID = "flXcgkVjZ7Ghf6eRfitT";
 export async function getCurrentUserSnapshot() {
   const user = await db.collection("users").doc(userID).get();
   return user;
