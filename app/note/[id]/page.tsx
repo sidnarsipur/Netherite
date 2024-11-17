@@ -1,5 +1,6 @@
 import Highlight from "@/components/search-dialog/highlight";
 import { Matches } from "@/components/search-dialog/matches";
+import { Querybar } from "@/components/search-dialog/querybar";
 import { Button } from "@/components/ui/button";
 import { DialogFooter, DialogClose } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -15,10 +16,7 @@ export default async function Page() {
   return (
     <>
       <div className="flex flex-row items-center justify-between p-2">
-        <Input
-          className="max-w-sm"
-          placeholder="help me write more about dfas"
-        />
+        <Querybar />
         <DialogClose asChild>
           <Button variant="ghost" size="icon">
             <X />
