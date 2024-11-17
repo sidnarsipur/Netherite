@@ -45,11 +45,11 @@ export default async function AppSidebar() {
               </Button>
             </DialogTrigger>
             <DialogContent className="w-80">
-              <DialogTitle>New File</DialogTitle>
+              <DialogTitle>New Note</DialogTitle>
               <Input id="link" placeholder="Name" />
               <DialogClose asChild>
                 <Button type="submit" size="sm" className="px-3">
-                  Save
+                  Add
                 </Button>
               </DialogClose>
             </DialogContent>

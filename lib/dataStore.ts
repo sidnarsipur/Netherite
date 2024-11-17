@@ -14,17 +14,17 @@ export async function EmbedAndInsertBlocks(blocks: Block[], noteID: string) {
   for (const block of blocks) {
     block.noteID = noteID;
     const res = db.collection("blocks").add(block);
-    block.blockID = uuidv4();
+    block.id = (await res).id;
   }
 
   const records = blocks.map((block, i) => ({
-    id: block.blockID,
+    id: block.id,
     values: embeddings[i].values as number[],
   }));
 
   index.namespace("namespace").upsert(records);
 
-  return blocks.map((block) => block.blockID);
+  return blocks.map((block) => block.id);
 }
 
 export async function BlocksByID(blockIDs: string[]) {
@@ -46,7 +46,7 @@ export async function BlocksByID(blockIDs: string[]) {
     const block = doc.data();
 
     blocks.push({
-      blockID: block.blockID,
+      id: block.id,
       noteID: block.noteID,
       links: block.links,
       content: block.content,

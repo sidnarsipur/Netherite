@@ -1,19 +1,37 @@
 "use server";
 
-import { db, pc } from "@/lib/init";
+import { db } from "@/lib/init";
 import { BlocksByID, EmbedAndInsertBlocks } from "@/lib/dataStore";
 import { v4 as uuidv4 } from "uuid";
+import { FieldValue } from "firebase-admin/firestore";
 import { Block, Folder, Note, ContentNode } from "@/lib/model";
 
-export const addNote = async (userID: string, blocks: Block[]) => {
+export const createNote = async (
+  userID: string,
+  name: string,
+  path: string,
+) => {
   const noteID = uuidv4();
-  const block_ids = await EmbedAndInsertBlocks(blocks, noteID);
 
   const res = await db.collection("notes").add({
     noteID: noteID,
     userID: userID,
-    blockIDs: block_ids,
+    name: name,
+    path: path,
   });
+
+  return res;
+};
+
+export const addBlocks = async (noteID: string, blocks: Block[]) => {
+  const block_ids = await EmbedAndInsertBlocks(blocks, noteID);
+
+  const res = await db
+    .collection("notes")
+    .doc(noteID)
+    .update({
+      blockIDs: FieldValue.arrayUnion(block_ids),
+    });
 
   return res;
 };
@@ -79,7 +97,7 @@ export const getNotes = async (userID: string) => {
 };
 
 export const getFolders = async (userID: string) => {
-  const userRef = db.collection("users").doc(userID); // Replace "users" with your collection name
+  const userRef = db.collection("users").doc(userID);
   const userDoc = await userRef.get();
   if (!userDoc.exists) {
     throw new Error("no such user!");

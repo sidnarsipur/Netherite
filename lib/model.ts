@@ -5,7 +5,7 @@ export interface ContentNode {
 }
 
 export interface Block {
-  blockID: string;
+  id: string;
   noteID: string;
   links: string[];
   content: ContentNode[]; // Updated to reflect the hierarchical structure
