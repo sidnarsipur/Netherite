@@ -42,7 +42,7 @@ export function SignUpForm() {
             <Input id="password" type="password" name="password" required />
           </div>
           <Button type="submit" className="w-full">
-            SignUp
+            Sign Up
           </Button>
         </form>
         <div className="mt-4 text-center text-sm">
