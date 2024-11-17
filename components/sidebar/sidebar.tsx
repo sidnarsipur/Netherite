@@ -20,7 +20,7 @@ export default async function AppSidebar() {
     <Sidebar>
       <SidebarHeader className="flex flex-col gap-4 p-6">
         <div className="flex items-center gap-3">
-          <p className="text-3xl font-medium">netherite</p>
+          <p className="text-3xl font-semibold">netherite</p>
           <Logo />
         </div>
         <div className="flex">

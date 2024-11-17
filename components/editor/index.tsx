@@ -103,7 +103,7 @@ export default function Editor({ noteID }: { noteID: string }) {
   }
 
   return (
-    <div className="relative mx-auto flex h-full w-full flex-col rounded-lg border bg-background shadow-sm">
+    <div className="relative mx-auto flex h-full w-full flex-col">
       <MenuBar editor={editor} noteID={noteID} />
 
       {editor && (
