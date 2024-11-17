@@ -15,7 +15,7 @@ import Typography from "@tiptap/extension-typography";
 import Link from "@tiptap/extension-link";
 import Image from "@tiptap/extension-image";
 import TextAlign from "@tiptap/extension-text-align";
-import PageBreak from "@/components/ui/page-break"; // Import the PageBreak extension
+import PageBreak from "@/components/ui/page-break";
 import { MenuBar } from "./menu-bar";
 import { FloatingToolbar } from "./floating-toolbar";
 import { BubbleToolbar } from "./bubble-toolbar";
@@ -51,10 +51,10 @@ export default function Editor() {
           "prose prose-sm sm:prose-base dark:prose-invert focus:outline-none max-w-full min-h-[500px] px-8 py-4",
       },
     },
-    onUpdate: ({ editor }) => {
-      const json = editor.getJSON();
-      console.log(json);
-    },
+    // onUpdate: ({ editor }) => {
+    //   const json = editor.getJSON();
+    //   console.log(json);
+    // },
   });
 
   if (!editor) {
@@ -62,7 +62,7 @@ export default function Editor() {
   }
 
   return (
-    <div className="relative mx-auto min-h-[500px] w-full max-w-4xl rounded-lg border bg-background shadow-sm">
+    <div className="relative mx-auto flex h-full w-full flex-col rounded-lg border bg-background shadow-sm">
       <MenuBar editor={editor} />
 
       {editor && (

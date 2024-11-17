@@ -1,6 +1,7 @@
 "use client";
 
 import { Editor } from "@tiptap/react";
+import { useEffect } from "react";
 import {
   Bold,
   Italic,
@@ -16,7 +17,8 @@ import {
   AlignRight,
   Link,
   Image,
-  Layout,
+  SquareSplitVertical,
+  Save,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -29,8 +31,32 @@ export function MenuBar({ editor }: MenuBarProps) {
     return null;
   }
 
+  const handleSave = () => {
+    const content = editor.getJSON();
+    console.log("Saving content:", content);
+    //Implement the save functionality here
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.ctrlKey && event.key === "s") {
+        event.preventDefault();
+        handleSave();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [editor]);
+
   return (
     <div className="flex flex-wrap gap-2 border-b p-2">
+      <Button size="sm" variant="default" onClick={handleSave}>
+        <Save className="h-4 w-4" />
+      </Button>
+
       <Button
         size="sm"
         variant={
@@ -167,7 +193,7 @@ export function MenuBar({ editor }: MenuBarProps) {
         onClick={() => editor.chain().focus().setPageBreak().run()}
         className="h-8 w-8 p-1"
       >
-        <Layout className="h-4 w-4" />
+        <SquareSplitVertical className="h-4 w-4" />
       </Button>
     </div>
   );

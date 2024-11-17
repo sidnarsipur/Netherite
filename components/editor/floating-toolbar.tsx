@@ -84,11 +84,11 @@ export function FloatingToolbar({ editor }: FloatingToolbarProps) {
           }}
           className="text-gradient justify-start gap-2"
         >
-          <Search className="h-4 w-4" />
+          <Search className="h-4 w-4 text-orange-500" />
           <span>Perform Semantic Search Here</span>
         </Button>
       </DialogTrigger>
-
+      <div className="my-1 h-px w-full bg-border" />
       <Button
         ref={(el) => {
           if (el) {
