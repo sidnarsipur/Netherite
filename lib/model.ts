@@ -6,9 +6,10 @@ export interface ContentNode {
 
 export interface Block {
   id: string;
+  order: number;
   noteID: string;
   links: string[];
-  content: ContentNode[]; // Updated to reflect the hierarchical structure
+  content: string;
   rawText: string;
 }
 

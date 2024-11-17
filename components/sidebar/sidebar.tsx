@@ -22,7 +22,7 @@ import Logo from "../Logo";
 import { NavUser } from "./nav-user";
 
 export default async function AppSidebar() {
-  const folders = await getFolders("yS6XFCpOnwEKEUdsiNnC");
+  const folders = await getFolders("p08IOziatZeJjDp9U35box6xxQy2");
   console.log(folders);
   return (
     <Sidebar>
@@ -65,9 +65,9 @@ export default async function AppSidebar() {
             <NoteButton key={idx} item={item} />
           ),
         )} */}
-        {folders.map((item, idx) => (
+        {/* {folders.map((item, idx) => (
           <FolderButton key={idx} item={item} />
-        ))}
+        ))} */}
       </SidebarContent>
       <Separator className="bg-separator-gradient" />
       <SidebarFooter>

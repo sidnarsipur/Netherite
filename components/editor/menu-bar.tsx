@@ -21,6 +21,7 @@ import {
   Save,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { addBlocks } from "@/lib/note-manager";
 
 type MenuBarProps = {
   editor: Editor;
@@ -32,11 +33,8 @@ export function MenuBar({ editor }: MenuBarProps) {
   }
 
   const handleSave = () => {
-    const content = editor.getHTML();
     const json = editor.getJSON();
-    console.log("Saving HTML content:", content);
-    console.log("Saving JSON content:", json);
-    //Implement the save functionality here
+    addBlocks("eGNKGRIuIeNNUp3fv1MJ", JSON.stringify(json));
   };
 
   useEffect(() => {

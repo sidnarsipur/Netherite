@@ -7,7 +7,7 @@ import { generateText } from "ai";
 export async function EmbedAndInsertBlocks(blocks: Block[], noteID: string) {
   const embeddings = await pc.inference.embed(
     model,
-    blocks.map((block) => parseRawText(block.content)),
+    blocks.map((block) => block.rawText),
     { inputType: "passage", truncate: "END" },
   );
 
@@ -48,6 +48,7 @@ export async function BlocksByID(blockIDs: string[]) {
     blocks.push({
       id: block.id,
       noteID: block.noteID,
+      order: block.order,
       links: block.links,
       content: block.content,
       rawText: block.rawText,
@@ -90,22 +91,4 @@ export async function GetSummary(blockText: string[]) {
   });
 
   return JSON.stringify(text, null, 2);
-}
-
-function parseRawText(content: ContentNode[]): string {
-  if (!Array.isArray(content)) {
-    console.error("Invalid content: expected an array, got", content);
-    return "";
-  }
-
-  return content
-    .map((node) => {
-      if (node.text) {
-        return node.text;
-      } else if (Array.isArray(node.content)) {
-        return parseRawText(node.content);
-      }
-      return "";
-    })
-    .join(" ");
 }

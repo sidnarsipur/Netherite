@@ -23,37 +23,37 @@ export const createNote = async (
   return res;
 };
 
-export const addBlocks = async (noteID: string, blocks: Block[]) => {
+export const addBlocks = async (noteID: string, content: any) => {
+  const blocks = parseBlocks(noteID, content);
   const block_ids = await EmbedAndInsertBlocks(blocks, noteID);
+
+  console.log("block_ids", block_ids);
 
   const res = await db
     .collection("notes")
     .doc(noteID)
     .update({
-      blockIDs: FieldValue.arrayUnion(block_ids),
+      blockIDs: FieldValue.arrayUnion(...block_ids),
     });
 
-  return res;
+  // return res;
 };
 
-export const getJSONByNote = async (noteID: string): Promise<string> => {
-  const note = await getNote(noteID);
-
-  const mergeContent = (content: ContentNode[]): ContentNode[] => {
-    return content.map((node) => {
-      if (node.content) {
-        node.content = mergeContent(node.content);
-      }
-      return node;
-    });
-  };
-
-  const combinedContent: ContentNode[] = note.block.flatMap((block) => {
-    return mergeContent(block.content);
-  });
-
-  return JSON.stringify(combinedContent, null, 2);
-};
+// export const getJSONByNote = async (noteID: string): Promise<string> => {
+//   // const note = await getNote(noteID);
+//   // const mergeContent = (content: ContentNode[]): ContentNode[] => {
+//   //   return content.map((node) => {
+//   //     if (node.content) {
+//   //       node.content = mergeContent(node.content);
+//   //     }
+//   //     return node;
+//   //   });
+//   // };
+//   // const combinedContent: ContentNode[] = note.block.flatMap((block) => {
+//   //   return mergeContent(block.content);
+//   // });
+//   // return JSON.stringify(combinedContent, null, 2);
+// };
 
 export const getNote = async (noteID: string) => {
   try {
@@ -73,7 +73,7 @@ export const getNote = async (noteID: string) => {
     } as unknown as Note;
   } catch (error) {
     console.error("Database Error:", error);
-    throw new Error("Failed to fetch card data.");
+    throw new Error("Failed to fetch card data.", error.message);
   }
 };
 
@@ -118,3 +118,45 @@ export const getFolders = async (userID: string) => {
   );
   return folderObjs;
 };
+
+function parseBlocks(noteID: string, content: any): Block[] {
+  const parsedContent = JSON.parse(content);
+  const blocks: Block[] = [];
+  let currentBlockContent: any[] = [];
+  let order = 0;
+
+  parsedContent.content.forEach((node: any) => {
+    if (node.type === "pageBreak") {
+      if (currentBlockContent.length > 0) {
+        blocks.push({
+          id: uuidv4(),
+          noteID: noteID,
+          links: [],
+          content: JSON.stringify(currentBlockContent),
+          rawText: currentBlockContent
+            .map((n) => n.content?.[0]?.text || "")
+            .join(" "),
+          order: order++,
+        });
+        currentBlockContent = [];
+      }
+    } else {
+      currentBlockContent.push(node);
+    }
+  });
+
+  if (currentBlockContent.length > 0) {
+    blocks.push({
+      id: uuidv4(),
+      noteID: noteID,
+      links: [],
+      content: JSON.stringify(currentBlockContent),
+      rawText: currentBlockContent
+        .map((n) => n.content?.[0]?.text || "")
+        .join(" "),
+      order: order++,
+    });
+  }
+
+  return blocks;
+}
