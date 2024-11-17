@@ -32,8 +32,10 @@ export function MenuBar({ editor }: MenuBarProps) {
   }
 
   const handleSave = () => {
-    const content = editor.getJSON();
-    console.log("Saving content:", content);
+    const content = editor.getHTML();
+    const json = editor.getJSON();
+    console.log("Saving HTML content:", content);
+    console.log("Saving JSON content:", json);
     //Implement the save functionality here
   };
 
