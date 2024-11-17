@@ -15,7 +15,7 @@ export async function createUser(formData: FormData) {
     }
 
     // Create user in Firebase Authentication
-    const userRecord = await auth.createUser({
+    const userRecord = await db.collection("users").add({
       email: email,
       emailVerified: false,
       password: password,
@@ -23,16 +23,10 @@ export async function createUser(formData: FormData) {
       disabled: false, // Set to `true` if you want to disable the user account
     });
 
-    const userRef = db.collection("users").doc(userRecord.uid);
-    await userRef.set({
-      email: email,
-      name: displayName,
-    });
-
     // add the root folder
     await addFolder("");
 
-    console.log("Successfully created new user:", userRecord.uid);
+    console.log("Successfully created new user:", userRecord.id);
   } catch (error) {
     console.error("Error creating new user:", error);
     throw new Error("User creation failed");
