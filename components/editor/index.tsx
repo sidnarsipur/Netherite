@@ -19,6 +19,7 @@ import PageBreak from "@/components/ui/page-break";
 import { MenuBar } from "./menu-bar";
 import { FloatingToolbar } from "./floating-toolbar";
 import { BubbleToolbar } from "./bubble-toolbar";
+import { getJSONByNote } from "@/lib/note-manager";
 
 export default function Editor() {
   const editor = useEditor({
@@ -51,10 +52,11 @@ export default function Editor() {
           "prose prose-sm sm:prose-base dark:prose-invert focus:outline-none max-w-full min-h-[500px] px-8 py-4",
       },
     },
-    // onUpdate: ({ editor }) => {
-    //   const json = editor.getJSON();
-    //   console.log(json);
-    // },
+    onUpdate: async ({ editor }) => {
+      const noteID = "acKeMCW2AvdRidCZ3mYS";
+      const json = await getJSONByNote(noteID);
+      console.log(json);
+    },
   });
 
   if (!editor) {
