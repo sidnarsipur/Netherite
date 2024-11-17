@@ -95,11 +95,11 @@ export default function Editor({ noteID }: { noteID: string }) {
 
   const insertText = HighlightStore.useState((s) => s.insertText);
   useEffect(() => {
-    console.log("insertText", insertText);
     insertTextAtCursor(insertText);
-  }, [insertText, cursorPosition]);
+  }, [insertText]);
 
   const insertTextAtCursor = (text: string) => {
+    console.log("inserting text", text, cursorPosition);
     if (editor && cursorPosition !== null) {
       console.log("doing somethin");
       editor.chain().focus().insertContentAt(cursorPosition, text).run();

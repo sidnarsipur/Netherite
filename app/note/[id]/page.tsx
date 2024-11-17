@@ -26,6 +26,10 @@ export default function Page() {
     console.log(blocks);
   }, 500);
 
+  useEffect(() => {
+    handleSearch(query);
+  }, [query]);
+
   const insertText = () => {
     const text = highlights
       .map((highlight) => highlight.description)
