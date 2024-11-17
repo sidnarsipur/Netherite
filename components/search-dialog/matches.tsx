@@ -27,12 +27,16 @@ export function Matches({ blocks }: { blocks: Block[] }) {
       }}
     >
       <div style={customStyle}>
-        <CarouselContent>
-          <MatchSnippet />
-          {blocks.map((block, idx) => (
-            <MatchSnippet key={idx} block={block} />
-          ))}
-          <MatchSnippet />
+        <CarouselContent className="h-80">
+          {blocks.length > 0 && (
+            <>
+              <MatchSnippet />
+              {blocks.map((block, idx) => (
+                <MatchSnippet key={idx} block={block} />
+              ))}
+              <MatchSnippet />
+            </>
+          )}
         </CarouselContent>
       </div>
       <CarouselPrevious />

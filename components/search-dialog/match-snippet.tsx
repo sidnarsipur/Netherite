@@ -16,7 +16,7 @@ export function MatchSnippet({ block }: { block?: Block }) {
 
   return (
     <CarouselItem className="basis-1/3">
-      <Card className="flex h-60 flex-col bg-[#202020]">
+      <Card className="flex h-80 flex-col overflow-hidden bg-[#202020] pb-3">
         {!isDummy && (
           <>
             <div className="flex items-center justify-end gap-2 p-3">
@@ -31,7 +31,9 @@ export function MatchSnippet({ block }: { block?: Block }) {
               </Button>
             </div>
             <Separator />
-            <p className="p-3 text-sm">{data.content}</p>
+            <p className="overflow-hidden p-3 text-sm leading-7">
+              {data.rawText}
+            </p>
           </>
         )}
       </Card>
