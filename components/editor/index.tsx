@@ -64,7 +64,7 @@ export default function Editor({ noteID }: { noteID: string }) {
       },
     },
     onCreate: async ({ editor }) => {
-      const noteID = "eGNKGRIuIeNNUp3fv1MJ";
+      // const noteID = "eGNKGRIuIeNNUp3fv1MJ";
       getContent(noteID);
       const content = await getContent(noteID);
       editor.commands.setContent(content);

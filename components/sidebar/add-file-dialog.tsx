@@ -12,7 +12,7 @@ export default function AddFileDialog({ path }: { path: string }) {
 
   return (
     <DialogContent className="w-80">
-      <DialogTitle>New File</DialogTitle>
+      <DialogTitle>New Note</DialogTitle>
       <form action={handleSubmit} className="flex flex-col gap-4">
         <Input id="link" placeholder="Name" name="name" />
         <DialogClose asChild>

@@ -24,7 +24,7 @@ export default function NoteButton({ note }: { note: Note }) {
           </ContextMenuTrigger>
           <ContextMenuContent className="w-64">
             <ContextMenuItem inset>
-              New File
+              New Note
               <ContextMenuShortcut>⌘M</ContextMenuShortcut>
             </ContextMenuItem>
             <ContextMenuItem inset>
