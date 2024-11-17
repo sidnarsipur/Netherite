@@ -18,7 +18,9 @@ import { Block, Folder, Note, User, ContentNode } from "@/lib/model";
 //   return res;
 // };
 
-export const combineBlocks = async (blocks: Block[]): Promise<string> => {
+export const getJSONByNote = async (noteID: string): Promise<string> => {
+  const note = await getNote(noteID);
+
   const mergeContent = (content: ContentNode[]): ContentNode[] => {
     return content.map((node) => {
       if (node.content) {
@@ -28,7 +30,7 @@ export const combineBlocks = async (blocks: Block[]): Promise<string> => {
     });
   };
 
-  const combinedContent: ContentNode[] = blocks.flatMap((block) => {
+  const combinedContent: ContentNode[] = note.block.flatMap((block) => {
     return mergeContent(block.content);
   });
 
