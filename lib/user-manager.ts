@@ -24,7 +24,16 @@ export async function createUser(formData: FormData) {
     });
 
     // add the root folder
-    await addFolder("");
+    const folderRef = db
+      .collection("users")
+      .doc(userRecord.id)
+      .collection("folders");
+
+    await folderRef.add({
+      path: "/",
+      noteIDs: [],
+      name: "",
+    });
 
     console.log("Successfully created new user:", userRecord.id);
   } catch (error) {
