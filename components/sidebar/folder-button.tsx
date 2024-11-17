@@ -1,5 +1,3 @@
-"use client";
-
 import NoteButton from "./note-button";
 import { ChevronDown, FolderIcon } from "lucide-react";
 import {
@@ -8,9 +6,7 @@ import {
   CollapsibleContent,
 } from "@radix-ui/react-collapsible";
 import { Folder } from "@/lib/model";
-import { useParams } from "next/navigation";
 import FancyCard from "../fancy-card";
-import { useState } from "react";
 import {
   ContextMenu,
   ContextMenuContent,
@@ -18,18 +14,10 @@ import {
   ContextMenuShortcut,
   ContextMenuTrigger,
 } from "../ui/context-menu";
-import { cn } from "@/lib/utils";
 
 export default function FolderButton({ item }: { item: Folder }) {
-  const { id } = useParams<{ id: string }>();
-  const [isOpen, setIsOpen] = useState(false);
-
   return (
-    <Collapsible
-      open={isOpen}
-      onOpenChange={setIsOpen}
-      className="group/collapsible"
-    >
+    <Collapsible defaultOpen className="group/collapsible">
       <FancyCard isFolder>
         <ContextMenu>
           <ContextMenuTrigger>

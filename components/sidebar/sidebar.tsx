@@ -58,13 +58,6 @@ export default async function AppSidebar() {
       </SidebarHeader>
       <Separator className="bg-separator-gradient" />
       <SidebarContent className="flex flex-col gap-4 p-6">
-        {/* {folders.map((item, idx) =>
-          item.type === "folder" ? (
-            <FolderButton key={idx} item={item} />
-          ) : (
-            <NoteButton key={idx} item={item} />
-          ),
-        )} */}
         {folders.map((item, idx) => (
           <FolderButton key={idx} item={item} />
         ))}
