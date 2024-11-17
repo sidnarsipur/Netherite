@@ -42,7 +42,7 @@ export function MatchSnippet({ block }: { block?: Block }) {
 const dummyBlock: Block = {
   id: "block3",
   order: 0,
-  noteID: "VWrZKnSSaYImpplNqGDB",
+  noteID: "",
   links: [],
   content: [""],
   rawText: "",

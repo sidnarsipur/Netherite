@@ -44,9 +44,8 @@ export const addBlocks = async (noteID: string, content: any) => {
 
 export const getJSONByNoteID = async (noteID: string): Promise<string> => {
   const note = await getNote(noteID);
-
-  if (!note.blockIDs) {
-    throw new Error("No block IDs found for this note");
+  if (!note) {
+    throw new Error(`Note with ID ${noteID} not found.`);
   }
 
   const blocks: Block[] = await BlocksByID(note.blockIDs);
