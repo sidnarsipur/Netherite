@@ -16,8 +16,10 @@ import { useDebouncedCallback } from "use-debounce";
 
 export default function Page() {
   const highlights = HighlightStore.useState((s) => s.highlights);
-  const [blocks, setBlocks] = useState<Block[]>([]);
-  const [query, setQuery] = useState("");
+  const [blocks, setBlocks] = useState<Block[]>(
+    HighlightStore.useState((s) => s.blocks),
+  );
+  const [query, setQuery] = useState(HighlightStore.useState((s) => s.query));
 
   const handleSearch = useDebouncedCallback(async (term) => {
     if (term === "") {
@@ -27,7 +29,10 @@ export default function Page() {
 
     const blocks = await GetSearchResults(term);
     setBlocks(blocks);
-    console.log(blocks);
+    HighlightStore.update((s) => {
+      s.query = term;
+      s.blocks = blocks;
+    });
   }, 500);
 
   useEffect(() => {

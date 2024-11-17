@@ -22,7 +22,6 @@ export function MatchSnippet({ block }: { block?: Block }) {
   useEffect(() => {
     if (!noteID) return;
     getNote(noteID).then((note) => {
-      console.log(note);
       setNote(note);
     });
   }, [noteID]);
