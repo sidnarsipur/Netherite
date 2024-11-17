@@ -34,7 +34,9 @@ export function MenuBar({ editor, noteID }: { noteID: string } & MenuBarProps) {
 
   const handleSave = () => {
     const json = editor.getJSON();
-    addBlocks(noteID, JSON.stringify(json));
+    const content = JSON.stringify(json);
+
+    addBlocks(noteID, content);
   };
 
   useEffect(() => {
