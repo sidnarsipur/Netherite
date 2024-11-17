@@ -1,7 +1,7 @@
 export interface ContentNode {
   type: string;
-  content?: ContentNode[]; // Recursive structure for nested content
-  text?: string; // Text field for leaf nodes
+  content?: ContentNode[];
+  text?: string;
 }
 
 export interface Block {
@@ -9,7 +9,7 @@ export interface Block {
   order: number;
   noteID: string;
   links: string[];
-  content: string;
+  content: string[];
   rawText: string;
 }
 

@@ -13,8 +13,23 @@ export async function EmbedAndInsertBlocks(blocks: Block[], noteID: string) {
 
   for (const block of blocks) {
     block.noteID = noteID;
-    const res = db.collection("blocks").add(block);
-    block.id = (await res).id;
+    const existingBlockRef = await db
+      .collection("blocks")
+      .where("noteID", "==", noteID)
+      .where("order", "==", block.order)
+      .get();
+
+    if (!existingBlockRef.empty) {
+      const existingBlock = existingBlockRef.docs[0];
+      await existingBlock.ref.update({
+        content: block.content,
+        links: block.links,
+      });
+      block.id = existingBlock.id;
+    } else {
+      const res = db.collection("blocks").add(block);
+      block.id = (await res).id;
+    }
   }
 
   const records = blocks.map((block, i) => ({
@@ -28,38 +43,41 @@ export async function EmbedAndInsertBlocks(blocks: Block[], noteID: string) {
 }
 
 export async function BlocksByID(blockIDs: string[]): Promise<Block[]> {
-  if (blockIDs.length === 0) {
-    return [];
-  }
+  try {
+    if (blockIDs.length === 0) {
+      return [];
+    }
 
-  const blockRef = await db
-    .collection("blocks")
-    .where(FieldPath.documentId(), "in", blockIDs)
-    .orderBy("order")
-    .get();
+    const blockRef = await db
+      .collection("blocks")
+      .where(FieldPath.documentId(), "in", blockIDs)
+      .orderBy("order")
+      .get();
 
-  if (blockRef.empty) {
-    return [];
-  }
+    if (blockRef.empty) {
+      return [];
+    }
 
-  const blocks: Block[] = [];
+    const blocks: Block[] = [];
 
-  blockRef.forEach((doc) => {
-    const block = doc.data();
+    blockRef.forEach((doc) => {
+      const block = doc.data();
 
-    blocks.push({
-      id: block.id,
-      noteID: block.noteID,
-      order: block.order,
-      links: block.links,
-      content: block.content,
-      rawText: block.rawText,
+      blocks.push({
+        id: block.id,
+        noteID: block.noteID,
+        order: block.order,
+        links: block.links,
+        content: block.content,
+        rawText: block.rawText,
+      });
     });
-  });
 
-  console.log("blocks", blocks);
-
-  return blocks;
+    return blocks;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to BlocksByID", error.message);
+  }
 }
 
 export async function GetSearchResults(query: string, numResults: number = 3) {
