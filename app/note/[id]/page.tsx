@@ -7,6 +7,7 @@ import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { SearchDialog } from "@/components/search-dialog/search-dialog";
 import NavActions from "@/components/sidebar/nav-actions";
 import Editor from "@/components/editor";
+import { Input } from "@/components/ui/input";
 
 export default async function Page({
   params,
@@ -32,9 +33,12 @@ export default async function Page({
           </div>
         </div>
         <div className="w-full rounded-xl border border-border bg-card">
-          <p className="p-5 text-2xl font-bold">{note.name}</p>
+          <input
+            className="w-full bg-transparent p-5 text-2xl font-bold focus-visible:outline-none"
+            defaultValue={note.name}
+          />
           <Separator />
-          <Editor />
+          <Editor noteID={note.id} />
         </div>
         <DialogTrigger asChild>
           <Button>Open Semantic Search</Button>

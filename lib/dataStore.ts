@@ -80,7 +80,7 @@ export async function BlocksByID(blockIDs: string[]): Promise<Block[]> {
   }
 }
 
-export async function GetSearchResults(query: string, numResults: number) {
+export async function GetSearchResults(query: string, numResults: number = 3) {
   const queryEmbedding = await pc.inference.embed(model, [query], {
     inputType: "query",
   });
@@ -99,7 +99,6 @@ export async function GetSearchResults(query: string, numResults: number) {
   });
 
   const blocks = await BlocksByID(blockIDs);
-
   return blocks;
 }
 

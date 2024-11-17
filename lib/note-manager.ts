@@ -4,23 +4,30 @@ import { db } from "@/lib/init";
 import { BlocksByID, EmbedAndInsertBlocks } from "@/lib/dataStore";
 import { v4 as uuidv4 } from "uuid";
 import { FieldValue } from "firebase-admin/firestore";
-import { Block, Folder, Note, ContentNode } from "@/lib/model";
+import { Block, Folder, Note } from "@/lib/model";
+import { getCurrentUser, getCurrentUserSnapshot } from "./user-manager";
+import { revalidatePath } from "next/cache";
 
-export const createNote = async (
-  userID: string,
-  name: string,
-  path: string,
-) => {
-  const noteID = uuidv4();
-
-  const res = await db.collection("notes").add({
-    noteID: noteID,
+export const createNote = async (name: string, path: string) => {
+  const userID = (await getCurrentUser()).id;
+  const note = await db.collection("notes").add({
     userID: userID,
     name: name,
-    path: path,
+    path: `${path}${name}`,
+    blockIDs: [],
+  });
+  console.log(note);
+
+  // add note under the folder
+  const folderCollection = await getFolderCollection();
+  const folderDoc = await folderCollection.where("path", "==", path).get();
+  const folderID = folderDoc.docs[0].id;
+  const folderRef = folderCollection.doc(folderID);
+  await folderRef.update({
+    noteIDs: FieldValue.arrayUnion(note.id),
   });
 
-  return res;
+  revalidatePath("/note");
 };
 
 export const addBlocks = async (noteID: string, content: any) => {
@@ -67,9 +74,8 @@ export const getJSONByNoteID = async (noteID: string): Promise<string> => {
 export const getNote = async (noteID: string) => {
   try {
     const noteSnapshot = await db.collection("notes").doc(noteID).get();
-
     if (!noteSnapshot.exists) {
-      throw new Error("No notes found for this noteID");
+      throw new Error(`Note with ID ${noteID} not found.`);
     }
 
     const noteObj = noteSnapshot.data();
@@ -81,8 +87,8 @@ export const getNote = async (noteID: string) => {
       blocks,
     } as unknown as Note;
   } catch (error) {
-    console.error("Database Error:", error, noteID);
-    throw new Error("Failed to fetch getNote.", error.message);
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch card data.", error.message);
   }
 };
 
@@ -105,15 +111,17 @@ export const getNotes = async (userID: string) => {
   return noteIDs;
 };
 
-export const getFolders = async (userID: string) => {
-  const userRef = db.collection("users").doc(userID);
-  const userDoc = await userRef.get();
-  if (!userDoc.exists) {
-    throw new Error("no such user!");
-  }
+const getFolderCollection = async () => {
+  const userSnapshot = await getCurrentUserSnapshot();
+  return userSnapshot.ref.collection("folders");
+};
 
-  const foldersDoc = await userDoc.ref.collection("folders").get();
-  const folders = foldersDoc.docs.map((folderDoc) => folderDoc.data());
+export const getFolders = async () => {
+  const folderCollection = await getFolderCollection();
+  const folders = (await folderCollection.get()).docs.map((folderDoc) =>
+    folderDoc.data(),
+  );
+
   const folderObjs = await Promise.all(
     folders.map(async (folder) => {
       const notes = await Promise.all(
@@ -125,7 +133,18 @@ export const getFolders = async (userID: string) => {
       } as Folder;
     }),
   );
+
   return folderObjs;
+};
+
+export const addFolder = async (name: string) => {
+  const folderCollection = await getFolderCollection();
+  await folderCollection.add({
+    name: name,
+    path: `${name}/`,
+    noteIDs: [],
+  });
+  revalidatePath("/note");
 };
 
 function parseBlocks(noteID: string, content: string): Block[] {

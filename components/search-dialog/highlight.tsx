@@ -11,7 +11,7 @@ export default function Highlight() {
           consequuntur elige
         </p>
       </div>
-      <Button variant="secondary" size="icon">
+      <Button variant="destructive" size="icon">
         <Trash2 />
       </Button>
     </div>

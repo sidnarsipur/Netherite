@@ -28,7 +28,7 @@ const getContent = async (noteID: string) => {
   return JSON.parse(jsonString);
 };
 
-export default function Editor() {
+export default function Editor({ noteID }: { noteID: string }) {
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -73,7 +73,7 @@ export default function Editor() {
 
   return (
     <div className="relative mx-auto flex h-full w-full flex-col rounded-lg border bg-background shadow-sm">
-      <MenuBar editor={editor} />
+      <MenuBar editor={editor} noteID={noteID} />
 
       {editor && (
         <>
