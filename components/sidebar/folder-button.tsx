@@ -12,6 +12,14 @@ import { useParams } from "next/navigation";
 import { getPageById } from "@/lib/note-manager";
 import FancyCard from "../fancy-card";
 import { useState } from "react";
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuShortcut,
+  ContextMenuTrigger,
+} from "../ui/context-menu";
+import { cn } from "@/lib/utils";
 
 export default function FolderButton({ item }: { item: Folder }) {
   const { id } = useParams<{ id: string }>();
@@ -23,14 +31,36 @@ export default function FolderButton({ item }: { item: Folder }) {
       onOpenChange={setIsOpen}
       className="group/collapsible"
     >
-      <FancyCard topBorderOnly={isOpen}>
-        <CollapsibleTrigger asChild>
-          <div className="flex items-center gap-2 p-5">
-            <FolderIcon className="w-5" />
-            <h3 className="mb-1 font-bold">{item.name}</h3>
-            <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
-          </div>
-        </CollapsibleTrigger>
+      <FancyCard isFolder>
+        <ContextMenu>
+          <ContextMenuTrigger>
+            <CollapsibleTrigger className="w-full">
+              <div className="flex items-center gap-2 p-5">
+                <FolderIcon className="w-5" />
+                <p className="mb-1 font-bold">{item.name}</p>
+                <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
+              </div>
+            </CollapsibleTrigger>
+          </ContextMenuTrigger>
+          <ContextMenuContent className="w-64">
+            <ContextMenuItem inset>
+              New File
+              <ContextMenuShortcut>⌘M</ContextMenuShortcut>
+            </ContextMenuItem>
+            <ContextMenuItem inset>
+              New Folder
+              <ContextMenuShortcut>⌘N</ContextMenuShortcut>
+            </ContextMenuItem>
+            <ContextMenuItem inset>
+              Rename
+              <ContextMenuShortcut>F2</ContextMenuShortcut>
+            </ContextMenuItem>
+            <ContextMenuItem inset>
+              Delete
+              <ContextMenuShortcut>Del</ContextMenuShortcut>
+            </ContextMenuItem>
+          </ContextMenuContent>
+        </ContextMenu>
       </FancyCard>
       <CollapsibleContent className="flex flex-col gap-4 pl-5">
         {item.items.map((item, idx) =>

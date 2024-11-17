@@ -5,6 +5,8 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 import { notes, getPageById } from "@/lib/note-manager";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { SearchDialog } from "@/components/search-dialog/search-dialog";
+import NavActions from "@/components/sidebar/nav-actions";
+import Editor from "@/components/editor";
 
 export default async function Page({
   params,
@@ -21,14 +23,18 @@ export default async function Page({
   return (
     <Dialog>
       <div className="flex flex-1 flex-col items-start gap-5 p-10">
-        <div className="flex items-center gap-3">
+        <div className="flex w-full items-center gap-3">
           <SidebarTrigger />
+          <Separator orientation="vertical" className="mr-2 h-4" />
           <Breadcrumb path={page.path} />
+          <div className="ml-auto px-3">
+            <NavActions />
+          </div>
         </div>
         <div className="w-full rounded-xl border border-border bg-card">
-          <h1 className="p-5 text-2xl font-bold">{page.name}</h1>
+          <p className="p-5 text-2xl font-bold">{page.name}</p>
           <Separator />
-          <p className="p-5">{page.content}</p>
+          <Editor />
         </div>
         <DialogTrigger asChild>
           <Button>Open Semantic Search</Button>

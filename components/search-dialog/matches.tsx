@@ -27,12 +27,9 @@ export function Matches() {
     >
       <div style={customStyle}>
         <CarouselContent>
-          {Array.from({ length: LENGTH }).map((_, idx) => {
-            let maskDirection = "none";
-            if (idx === 0) maskDirection = "left";
-            if (idx === LENGTH - 1) maskDirection = "right";
-            return <MatchSnippet key={idx} />;
-          })}
+          {Array.from({ length: LENGTH }).map((_, idx) => (
+            <MatchSnippet key={idx} />
+          ))}
         </CarouselContent>
       </div>
       <CarouselPrevious />
