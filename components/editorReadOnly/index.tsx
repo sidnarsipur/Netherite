@@ -12,7 +12,7 @@ import Link from "@tiptap/extension-link";
 import Image from "@tiptap/extension-image";
 import TextAlign from "@tiptap/extension-text-align";
 import PageBreak from "@/components/ui/page-break";
-import { BubbleToolbar } from "./bubble-toolbar";
+import { BubbleToolbar } from "../editor/bubble-toolbar";
 import { getJSONByNoteID } from "@/lib/note-manager";
 
 const getContent = async (noteID: string) => {

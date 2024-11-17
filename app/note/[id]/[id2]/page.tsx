@@ -1,5 +1,5 @@
 "use client";
-import Editor from "@/components/editor";
+import Editor from "@/components/editorReadOnly";
 import { Button } from "@/components/ui/button";
 import { DialogClose } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
