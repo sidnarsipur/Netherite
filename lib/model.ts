@@ -13,7 +13,6 @@ export interface Block {
 }
 
 export interface Note {
-  noteID: string;
   userID: string;
   name: string;
   path: string;

@@ -20,16 +20,13 @@ import { Block, Folder, Note, User } from "@/lib/model";
 
 export const getNote = async (noteID: string) => {
   try {
-    const notesRef = await db
-      .collection("notes")
-      .where("noteID", "==", noteID)
-      .get();
+    const noteSnapshot = await db.collection("notes").doc(noteID).get();
 
-    if (notesRef.empty) {
+    if (!noteSnapshot.exists) {
       throw new Error("No notes found for this user");
     }
 
-    const noteObj = notesRef.docs[0].data() as Note;
+    const noteObj = noteSnapshot.data() as Note;
     const blocks = await BlocksByID(noteObj.blockIDs);
 
     return {
