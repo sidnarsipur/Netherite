@@ -169,7 +169,7 @@ export async function GetSummary(strs: string[]) {
     prompt: union,
   });
 
-  console.log("Summary", text);
+  const cleanedText = text.replace(/>\n/g, "> ");
 
-  return JSON.stringify(text, null, 2);
+  return JSON.stringify(cleanedText, null, 2);
 }

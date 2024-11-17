@@ -75,7 +75,12 @@ export function MenuBar({ editor, noteID }: { noteID: string } & MenuBarProps) {
 
   return (
     <div className="flex flex-wrap gap-2 border-b p-2">
-      <Button size="sm" variant="default" onClick={handleSave}>
+      <Button
+        size="sm"
+        variant="ghost"
+        onClick={handleSave}
+        className="bg-opacity-0 hover:bg-opacity-100"
+      >
         <Save className="h-4 w-4" />
       </Button>
 

@@ -52,7 +52,8 @@ export default function Page() {
 
   const generateSummary = async () => {
     const strs = highlights.map((highlight) => highlight.description);
-    const summary = await GetSummary(strs);
+    const summary = (await GetSummary(strs)).replace(/^"|"$/g, "");
+    console.log(summary);
     HighlightStore.update((s) => {
       s.insertText = summary;
     });
