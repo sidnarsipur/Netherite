@@ -52,10 +52,11 @@ export default function Editor() {
           "prose prose-sm sm:prose-base dark:prose-invert focus:outline-none max-w-full min-h-[500px] px-8 py-4",
       },
     },
-    onUpdate: async ({ editor }) => {
+    onCreate: async ({ editor }) => {
       const noteID = "acKeMCW2AvdRidCZ3mYS";
       const json = await getJSONByNote(noteID);
       console.log(json);
+      editor.commands.setContent(json);
     },
   });
 
