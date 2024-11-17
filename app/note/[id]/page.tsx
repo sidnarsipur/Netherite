@@ -7,19 +7,39 @@ import { Button } from "@/components/ui/button";
 import { DialogFooter, DialogClose } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
+import { GetSearchResults, GetSummary } from "@/lib/dataStore";
 import { HighlightStore } from "@/lib/highlightStore";
 import { Block } from "@/lib/model";
 import { X, BetweenHorizontalEnd, Brain } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 
 export default function Page() {
   const highlights = HighlightStore.useState((s) => s.highlights);
+  const [blocks, setBlocks] = useState<Block[]>(
+    HighlightStore.useState((s) => s.blocks),
+  );
+  const [query, setQuery] = useState(HighlightStore.useState((s) => s.query));
+  const [isProcessing, setIsProcessing] = useState(false);
 
-  const handleSearch = useDebouncedCallback((term) => {
-    console.log(`Searching... ${term}`);
-    // const blocks = await GetSearchResults("");
-    // console.log("fsefas henrnrnr", blocks);
+  const handleSearch = useDebouncedCallback(async (term) => {
+    if (term === "") {
+      setBlocks([]);
+      return;
+    }
+    const blocks = await GetSearchResults(term);
+    setBlocks(blocks);
+    HighlightStore.update((s) => {
+      s.query = term;
+      s.blocks = blocks;
+    });
+    setIsProcessing(false);
   }, 500);
+
+  useEffect(() => {
+    setIsProcessing(true);
+    handleSearch(query);
+  }, [query]);
 
   const insertText = () => {
     const text = highlights
@@ -30,10 +50,18 @@ export default function Page() {
     });
   };
 
+  const generateSummary = async () => {
+    const strs = highlights.map((highlight) => highlight.description);
+    const summary = await GetSummary(strs);
+    HighlightStore.update((s) => {
+      s.insertText = summary;
+    });
+  };
+
   return (
     <>
       <div className="flex flex-row items-center justify-between p-2">
-        <Querybar onChange={(e) => handleSearch(e.target.value)} />
+        <Querybar value={query} onChange={(e) => setQuery(e.target.value)} />
         <DialogClose asChild>
           <Button variant="ghost" size="icon">
             <X />
@@ -46,7 +74,7 @@ export default function Page() {
           <span className="font-bold">Closest matches in context</span>{" "}
           <span className="text-gray-500">(32 results found)</span>
         </p>
-        <Matches blocks={blocks} />
+        <Matches blocks={blocks} isProcessing={isProcessing} />
         <ScrollArea className="h-80">
           <p className="p-2 font-bold">Saved Highlights</p>
           <div className="flex flex-col gap-2 pb-2">
@@ -58,47 +86,25 @@ export default function Page() {
       </div>
       <Separator />
       <DialogFooter className="justify-end p-2">
-        <Button variant="outline" onClick={insertText}>
-          Quote Highlights Directly
-          <BetweenHorizontalEnd />
-        </Button>
-        <Button
-          variant="secondary"
-          style={{
-            background:
-              "linear-gradient(91.7deg, #3E3850 0%, #29252B 43.5%, #322935 100%)",
-          }}
-        >
-          Add AI Summary to Notes <Brain />
-        </Button>
+        <DialogClose asChild>
+          <Button variant="outline" onClick={insertText}>
+            Quote Highlights Directly
+            <BetweenHorizontalEnd />
+          </Button>
+        </DialogClose>
+        <DialogClose asChild>
+          <Button
+            variant="secondary"
+            style={{
+              background:
+                "linear-gradient(91.7deg, #3E3850 0%, #29252B 43.5%, #322935 100%)",
+            }}
+            onClick={generateSummary}
+          >
+            Add AI Summary to Notes <Brain />
+          </Button>
+        </DialogClose>
       </DialogFooter>
     </>
   );
 }
-
-const blocks: Block[] = [
-  {
-    id: "block1",
-    order: 1,
-    noteID: "EkE0MTLjtAcGemWB9FOM",
-    links: ["https://example.com", "https://example.org"],
-    content: ["<p>This is the content of block 1</p>"],
-    rawText: "This is the content of block 1",
-  },
-  {
-    id: "block2",
-    order: 2,
-    noteID: "EkE0MTLjtAcGemWB9FOM",
-    links: ["https://example.com/block2"],
-    content: ["<p>This is the content of block 2</p>"],
-    rawText: "This is the content of block 2",
-  },
-  {
-    id: "block3",
-    order: 3,
-    noteID: "EkE0MTLjtAcGemWB9FOM",
-    links: [],
-    content: ["<p>This is the content of block 3</p>"],
-    rawText: "This is the content of block 3",
-  },
-];

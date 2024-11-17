@@ -1,8 +1,10 @@
-import { db, pc, model, index, google, sysPrompt } from "./init";
+"use server";
+
+import { db, pc, model, google, sysPrompt } from "./init";
 import { Block, ContentNode } from "@/lib/model";
 import { FieldValue, FieldPath } from "firebase-admin/firestore";
-import { v4 as uuidv4 } from "uuid";
 import { generateText } from "ai";
+import { hasText } from "./note-manager";
 
 export async function EmbedAndInsertBlocks(blocks: Block[], noteID: string) {
   const firebase = require("firebase/app");
@@ -27,17 +29,22 @@ export async function EmbedAndInsertBlocks(blocks: Block[], noteID: string) {
     .doc(noteID)
     .update({ blockIDs: null });
 
-  if (deletedBlockIDs.length > 0) {
-    await index.namespace("namespace").deleteMany(deletedBlockIDs);
-  }
+  const index = pc.Index("embeddings");
 
-  const embeddings = await pc.inference.embed(
-    model,
-    blocks.map((blocks) => blocks.rawText),
-    { inputType: "passage", truncate: "END" },
-  );
+  const cleanBlocks: Block[] = [];
 
   for (const block of blocks) {
+    if (
+      block.content[0] !==
+        '{"type":"paragraph","attrs":{"textAlign":"left"}}' &&
+      hasText(block.content) &&
+      block.content.length > 0
+    ) {
+      cleanBlocks.push(block);
+    }
+  }
+
+  for (const block of cleanBlocks) {
     block.noteID = noteID;
 
     const ref = blocksRef.add({
@@ -52,14 +59,29 @@ export async function EmbedAndInsertBlocks(blocks: Block[], noteID: string) {
     block.id = (await ref).id;
   }
 
-  const records = blocks.map((block, i) => ({
+  const index1 = pc.Index("embeddings");
+
+  const embeddings = await pc.inference.embed(
+    model,
+    cleanBlocks.map((cleanBlocks) => cleanBlocks.rawText),
+    { inputType: "passage", truncate: "END" },
+  );
+
+  const records = cleanBlocks.map((block, i) => ({
     id: block.id,
     values: embeddings[i].values as number[],
   }));
 
-  await index.namespace("namespace").upsert(records);
+  if (cleanBlocks.length > 0) {
+    await index1.namespace("namespace").upsert(records);
+  }
 
-  return blocks.map((block) => block.id);
+  if (deletedBlockIDs.length > 0) {
+    console.log("Deleting", deletedBlockIDs);
+    await index.namespace("namespace").deleteMany(deletedBlockIDs);
+  }
+
+  return cleanBlocks.map((block) => block.id);
 }
 
 export async function BlocksByID(blockIDs: string[]): Promise<Block[]> {
@@ -105,6 +127,8 @@ export async function GetSearchResults(query: string, numResults: number = 3) {
     inputType: "query",
   });
 
+  const index = pc.Index("embeddings");
+
   const queryResponse = await index.namespace("namespace").query({
     topK: numResults,
     vector: queryEmbedding[0].values as number[],
@@ -118,18 +142,34 @@ export async function GetSearchResults(query: string, numResults: number = 3) {
     blockIDs.push(match.id);
   });
 
+  console.log("Block IDs", blockIDs);
+
   const blocks = await BlocksByID(blockIDs);
-  return blocks;
+
+  blocks.forEach((block, i) => {
+    if (
+      queryResponse.matches[i] &&
+      queryResponse.matches[i].score !== undefined
+    ) {
+      block.score = parseFloat(
+        (queryResponse.matches[i].score * 100).toFixed(2),
+      );
+    }
+  });
+
+  return blocks.sort((a, b) => (b.score ?? 0) - (a.score ?? 0));
 }
 
-export async function GetSummary(blockText: string[]) {
-  const union = blockText.join("\nNEW NOTE\n");
+export async function GetSummary(strs: string[]) {
+  const union = strs.join("\nNEW NOTE\n");
 
   const { text } = await generateText({
     model: google("gemini-1.5-pro-latest"),
     system: sysPrompt,
     prompt: union,
   });
+
+  console.log("Summary", text);
 
   return JSON.stringify(text, null, 2);
 }

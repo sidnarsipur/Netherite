@@ -4,7 +4,7 @@ import { db } from "@/lib/init";
 import { BlocksByID, EmbedAndInsertBlocks } from "@/lib/dataStore";
 import { v4 as uuidv4 } from "uuid";
 import { FieldValue } from "firebase-admin/firestore";
-import { Block, Folder, Note } from "@/lib/model";
+import { Block, Folder, Note, ContentNode } from "@/lib/model";
 import { getCurrentUser, getCurrentUserSnapshot } from "./user-manager";
 import { revalidatePath } from "next/cache";
 
@@ -16,7 +16,6 @@ export const createNote = async (name: string, path: string) => {
     path: `${path}${name}`,
     blockIDs: [],
   });
-  console.log(note);
 
   // add note under the folder
   const folderCollection = await getFolderCollection();
@@ -174,9 +173,7 @@ function parseBlocks(noteID: string, content: string): Block[] {
         noteID: noteID,
         links: [],
         content: currentBlockContent.map((n) => JSON.stringify(n)),
-        rawText: currentBlockContent
-          .map((n) => n.content?.[0]?.text || "")
-          .join(" "),
+        rawText: currentBlockContent.map((n) => extractText(n)).join("\n"),
       });
       currentBlockContent = [];
     } else {
@@ -190,10 +187,36 @@ function parseBlocks(noteID: string, content: string): Block[] {
     noteID: noteID,
     links: [],
     content: currentBlockContent.map((n) => JSON.stringify(n)),
-    rawText: currentBlockContent
-      .map((n) => n.content?.[0]?.text || "")
-      .join(" "),
+    rawText: currentBlockContent.map((n) => extractText(n)).join("\n"),
   });
 
   return blocks;
+}
+
+export async function hasText(node: ContentNode[]): boolean {
+  for (const child of node) {
+    if (child.type === "text") {
+      return true;
+    }
+    if (child.content && hasText(child.content)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function extractText(node: ContentNode): string {
+  let texts: string = "";
+
+  if (node.type === "text" && node.text) {
+    texts += node?.text;
+  }
+
+  if (node.content) {
+    for (const child of node.content) {
+      texts += extractText(child) + " ";
+    }
+  }
+
+  return texts.trim();
 }
