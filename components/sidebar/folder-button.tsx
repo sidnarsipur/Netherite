@@ -15,7 +15,6 @@ import {
   ContextMenuTrigger,
 } from "../ui/context-menu";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
-import AddFolderDialog from "./add-folder-dialog";
 import AddFileDialog from "./add-file-dialog";
 
 export default function FolderButton({ item }: { item: Folder }) {
