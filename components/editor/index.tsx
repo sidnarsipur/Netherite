@@ -74,6 +74,7 @@ export default function Editor({ noteID }: { noteID: string }) {
     onUpdate: ({ editor }) => {
       const { from } = editor.state.selection;
       setCursorPosition(from);
+      console.log(cursorPosition);
     },
   });
 
@@ -101,7 +102,6 @@ export default function Editor({ noteID }: { noteID: string }) {
 
   const insertTextAtCursor = (text: string) => {
     if (editor && cursorPosition !== null) {
-      console.log("doing somethin");
       editor.chain().focus().insertContentAt(cursorPosition, text).run();
     }
   };
