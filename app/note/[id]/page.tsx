@@ -21,6 +21,8 @@ export default function Page() {
     // console.log("fsefas henrnrnr", blocks);
   }, 500);
 
+  const quoteText = () => {};
+
   return (
     <>
       <div className="flex flex-row items-center justify-between p-2">
@@ -49,7 +51,7 @@ export default function Page() {
       </div>
       <Separator />
       <DialogFooter className="justify-end p-2">
-        <Button variant="outline">
+        <Button variant="outline" onClick={quoteText}>
           Quote Highlights Directly
           <BetweenHorizontalEnd />
         </Button>

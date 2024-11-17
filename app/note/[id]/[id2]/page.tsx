@@ -27,7 +27,7 @@ export default function Page() {
   }, []);
 
   return (
-    <div className="flex flex-col">
+    <div className="flex min-h-80 flex-col">
       <div className="flex flex-row items-center justify-between p-2">
         <Button
           variant="ghost"
