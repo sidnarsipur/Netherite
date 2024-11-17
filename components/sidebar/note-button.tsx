@@ -1,4 +1,3 @@
-import { Note } from "@/lib/model";
 import Link from "next/link";
 import FancyCard from "../fancy-card";
 import {
@@ -8,15 +7,17 @@ import {
   ContextMenuShortcut,
   ContextMenuTrigger,
 } from "../ui/context-menu";
+import { getNote } from "@/lib/note-manager";
+import { Note } from "@/lib/model";
 
-export default function NoteButton({ item }: { item: Note }) {
+export default function NoteButton({ note }: { note: Note }) {
   return (
-    <Link href={`/note/${item.id}`}>
+    <Link href={`/note/${note.id}`}>
       <FancyCard>
         <ContextMenu>
           <ContextMenuTrigger>
             <div className="p-5">
-              <p className="mb-1 font-bold">{item.name}</p>
+              <p className="mb-1 font-bold">{note.name}</p>
               <p className="truncate text-sm text-muted-foreground">
                 Lorem, ipsum dolor sit amet consec
               </p>

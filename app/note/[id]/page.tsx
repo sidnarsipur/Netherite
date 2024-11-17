@@ -20,7 +20,6 @@ export default async function Page({
     return <></>;
   }
 
-  console.log(note);
   return (
     <Dialog>
       <div className="flex flex-1 flex-col items-start gap-5 p-10">

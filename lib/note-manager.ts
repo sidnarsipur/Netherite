@@ -26,13 +26,14 @@ export const getNote = async (noteID: string) => {
       throw new Error("No notes found for this user");
     }
 
-    const noteObj = noteSnapshot.data() as Note;
-    const blocks = await BlocksByID(noteObj.blockIDs);
+    const noteObj = noteSnapshot.data();
+    const blocks = await BlocksByID(noteObj?.blockIDs);
 
     return {
+      id: noteID,
       ...noteObj,
       blocks,
-    };
+    } as unknown as Note;
   } catch (error) {
     console.error("Database Error:", error);
     throw new Error("Failed to fetch card data.");
@@ -66,10 +67,19 @@ export const getFolders = async (userID: string) => {
   }
 
   const foldersDoc = await userDoc.ref.collection("folders").get();
-  const folders = foldersDoc.docs.map(
-    (folderDoc) => folderDoc.data() as Folder,
+  const folders = foldersDoc.docs.map((folderDoc) => folderDoc.data());
+  const folderObjs = await Promise.all(
+    folders.map(async (folder) => {
+      const notes = await Promise.all(
+        folder.noteIDs.map((id: string) => getNote(id)),
+      );
+      return {
+        ...folder,
+        notes,
+      } as Folder;
+    }),
   );
-  return folders;
+  return folderObjs;
 };
 
 // import { Note, SidebarItem } from "./definitions";
