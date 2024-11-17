@@ -1,5 +1,5 @@
 "use client";
-import { PlusIcon } from "lucide-react";
+import { PlusIcon, Star, ThumbsDown, ThumbsUp } from "lucide-react";
 import { Button } from "../ui/button";
 import { Card, CardContent } from "../ui/card";
 import { CarouselItem } from "../ui/carousel";
@@ -36,16 +36,18 @@ export function MatchSnippet({
   return (
     <CarouselItem className="basis-1/3">
       <Card className="flex h-80 flex-col overflow-hidden bg-[#202020] pb-3">
-        {!isDummy && (
+        {!isDummy && isProcessing ? (
+          <div className="flex flex-col gap-6 p-3">
+            <Skeleton className="h-10 w-40" />
+            <Skeleton className="h-10 w-80" />
+            <Skeleton className="h-10 w-52" />
+          </div>
+        ) : (
           <>
             <div className="flex items-center justify-end gap-2 p-3">
-              {!isProcessing ? (
-                <p className="mr-auto">{note?.name}</p>
-              ) : (
-                <Skeleton className="mr-auto h-10 w-full" />
-              )}
+              <p className="mr-auto">{note?.name}</p>
               <p className="text-sm text-muted-foreground">
-                {block.score}% match
+                {block?.score}% match
               </p>
               <Button
                 variant="secondary"
@@ -56,13 +58,23 @@ export function MatchSnippet({
               </Button>
             </div>
             <Separator />
-            {!isProcessing ? (
-              <p className="overflow-hidden p-3 text-sm leading-7">
-                {data.rawText}
-              </p>
-            ) : (
-              <Skeleton className="h-10 w-full p-3" />
-            )}
+            <p className="overflow-hidden p-3 text-sm leading-7">
+              {data.rawText}
+            </p>
+            <Separator className="mt-auto" />
+            <div className="flex w-12 items-center gap-4 px-4 pt-4 text-sm">
+              <Button variant="ghost" className="h-7 w-14">
+                <ThumbsUp />
+                42
+              </Button>
+              <Button variant="ghost" className="h-7 w-14">
+                <ThumbsDown />
+                12
+              </Button>
+              <Button variant="ghost" size="icon" className="h-7 w-7">
+                <Star />
+              </Button>
+            </div>
           </>
         )}
       </Card>
