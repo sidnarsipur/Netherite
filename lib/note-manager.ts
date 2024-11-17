@@ -4,25 +4,18 @@ import { db } from "@/lib/init";
 import { BlocksByID, EmbedAndInsertBlocks } from "@/lib/dataStore";
 import { v4 as uuidv4 } from "uuid";
 import { FieldValue } from "firebase-admin/firestore";
-import { Block, Folder, Note, ContentNode } from "@/lib/model";
-import { getCurrentUserSnapshot } from "./user-manager";
+import { Block, Folder, Note } from "@/lib/model";
+import { getCurrentUser, getCurrentUserSnapshot } from "./user-manager";
 import { revalidatePath } from "next/cache";
 
-export const createNote = async (
-  userID: string,
-  name: string,
-  path: string,
-) => {
-  const noteID = uuidv4();
-
-  const res = await db.collection("notes").add({
-    noteID: noteID,
+export const createNote = async (name: string, path: string) => {
+  const userID = (await getCurrentUser()).id;
+  await db.collection("notes").add({
     userID: userID,
     name: name,
-    path: path,
+    path: `${path}${name}`,
+    blockIDs: [],
   });
-
-  return res;
 };
 
 export const addBlocks = async (noteID: string, content: any) => {
