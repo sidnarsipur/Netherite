@@ -19,6 +19,14 @@ import PageBreak from "@/components/ui/page-break";
 import { MenuBar } from "./menu-bar";
 import { FloatingToolbar } from "./floating-toolbar";
 import { BubbleToolbar } from "./bubble-toolbar";
+import { get } from "http";
+import { getJSONByNoteID } from "@/lib/note-manager";
+
+const getContent = async (noteID: string) => {
+  const jsonString = await getJSONByNoteID(noteID);
+  console.log(jsonString);
+  return JSON.parse(jsonString);
+};
 
 export default function Editor() {
   const editor = useEditor({
@@ -53,7 +61,9 @@ export default function Editor() {
     },
     onCreate: async ({ editor }) => {
       const noteID = "eGNKGRIuIeNNUp3fv1MJ";
-      // editor.commands.setContent(json);
+      getContent(noteID);
+      const content = await getContent(noteID);
+      editor.commands.setContent(content);
     },
   });
 

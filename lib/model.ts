@@ -9,7 +9,7 @@ export interface Block {
   order: number;
   noteID: string;
   links: string[];
-  content: string;
+  content: string[];
   rawText: string;
 }
 

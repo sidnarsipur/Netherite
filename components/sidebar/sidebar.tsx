@@ -23,7 +23,6 @@ import { NavUser } from "./nav-user";
 
 export default async function AppSidebar() {
   const folders = await getFolders("p08IOziatZeJjDp9U35box6xxQy2");
-  console.log(folders);
   return (
     <Sidebar>
       <SidebarHeader className="flex flex-col gap-4 p-6">

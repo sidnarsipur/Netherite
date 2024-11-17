@@ -36,6 +36,8 @@ export function MenuBar({ editor }: MenuBarProps) {
     const json = editor.getJSON();
     const noteID = "eGNKGRIuIeNNUp3fv1MJ";
 
+    console.log(JSON.stringify(json));
+
     addBlocks(noteID, JSON.stringify(json));
   };
 
