@@ -1,10 +1,9 @@
 "use server";
-import { auth } from "./init"; // Assuming auth is correctly initialized
+import { auth, db } from "./init"; // Assuming auth is correctly initialized
+import { User } from "./model";
 
 export async function createUser(formData: FormData) {
   try {
-    console.log(formData);
-    // Extracting form data correctly
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
     const displayName = (formData.get("displayName") as string) || "Henry LOO"; // Optional
@@ -23,9 +22,29 @@ export async function createUser(formData: FormData) {
       disabled: false, // Set to `true` if you want to disable the user account
     });
 
+    const userRef = db.collection("users").doc(userRecord.uid);
+    await userRef.set({
+      email: email,
+      name: displayName,
+    });
+
     console.log("Successfully created new user:", userRecord.uid);
   } catch (error) {
     console.error("Error creating new user:", error);
     throw new Error("User creation failed");
   }
+}
+
+const userID = "p08IOziatZeJjDp9U35box6xxQy2";
+export async function getCurrentUserSnapshot() {
+  const user = await db.collection("users").doc(userID).get();
+  return user;
+}
+
+export async function getCurrentUser() {
+  const user = (await getCurrentUserSnapshot()).data();
+  return {
+    id: userID,
+    ...user,
+  } as User;
 }

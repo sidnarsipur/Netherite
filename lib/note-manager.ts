@@ -4,6 +4,8 @@ import { db, pc } from "@/lib/init";
 import { BlocksByID, EmbedAndInsertBlocks } from "@/lib/dataStore";
 import { v4 as uuidv4 } from "uuid";
 import { Block, Folder, Note, ContentNode } from "@/lib/model";
+import { getCurrentUserSnapshot } from "./user-manager";
+import { revalidatePath } from "next/cache";
 
 export const addNote = async (userID: string, blocks: Block[]) => {
   const noteID = uuidv4();
@@ -78,15 +80,17 @@ export const getNotes = async (userID: string) => {
   return noteIDs;
 };
 
-export const getFolders = async (userID: string) => {
-  const userRef = db.collection("users").doc(userID); // Replace "users" with your collection name
-  const userDoc = await userRef.get();
-  if (!userDoc.exists) {
-    throw new Error("no such user!");
-  }
+const getFolderCollection = async () => {
+  const userSnapshot = await getCurrentUserSnapshot();
+  return userSnapshot.ref.collection("folders");
+};
 
-  const foldersDoc = await userDoc.ref.collection("folders").get();
-  const folders = foldersDoc.docs.map((folderDoc) => folderDoc.data());
+export const getFolders = async () => {
+  const folderCollection = await getFolderCollection();
+  const folders = (await folderCollection.get()).docs.map((folderDoc) =>
+    folderDoc.data(),
+  );
+
   const folderObjs = await Promise.all(
     folders.map(async (folder) => {
       const notes = await Promise.all(
@@ -98,5 +102,17 @@ export const getFolders = async (userID: string) => {
       } as Folder;
     }),
   );
+
   return folderObjs;
+};
+
+export const addFolder = async (formData: FormData) => {
+  const folderName = formData.get("name") as string;
+  const folderCollection = await getFolderCollection();
+  await folderCollection.add({
+    name: folderName,
+    path: `${folderName}/`,
+    noteIDs: [],
+  });
+  revalidatePath("/note");
 };

@@ -1,4 +1,3 @@
-import { Copy, FolderPlus, Plus } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -7,23 +6,15 @@ import {
 } from "@/components/ui/sidebar";
 import { getFolders } from "@/lib/note-manager";
 import FolderButton from "./folder-button";
-import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
 import { Searchbar } from "./searchbar";
-import {
-  Dialog,
-  DialogTrigger,
-  DialogContent,
-  DialogTitle,
-  DialogClose,
-} from "@/components/ui/dialog";
-import { Input } from "../ui/input";
 import Logo from "../Logo";
 import { NavUser } from "./nav-user";
+import AddFolder from "./add-folder";
+import AddFile from "./add-file";
 
 export default async function AppSidebar() {
-  const folders = await getFolders("yS6XFCpOnwEKEUdsiNnC");
-  console.log(folders);
+  const folders = await getFolders();
   return (
     <Sidebar>
       <SidebarHeader className="flex flex-col gap-4 p-6">
@@ -33,27 +24,8 @@ export default async function AppSidebar() {
         </div>
         <div className="flex">
           <Searchbar className="mr-3 flex-1" />
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button size="icon" variant="ghost">
-                <FolderPlus />
-              </Button>
-            </DialogTrigger>
-            <DialogTrigger asChild>
-              <Button size="icon" variant="ghost">
-                <Plus />
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="w-80">
-              <DialogTitle>New File</DialogTitle>
-              <Input id="link" placeholder="Name" />
-              <DialogClose asChild>
-                <Button type="submit" size="sm" className="px-3">
-                  Save
-                </Button>
-              </DialogClose>
-            </DialogContent>
-          </Dialog>
+          <AddFolder />
+          <AddFile />
         </div>
       </SidebarHeader>
       <Separator className="bg-separator-gradient" />
