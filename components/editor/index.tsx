@@ -84,6 +84,12 @@ export default function Editor({ noteID }: { noteID: string }) {
     };
   }, [editor, cursorPosition]);
 
+  const insertTextAtCursor = (text: string) => {
+    if (editor && cursorPosition !== null) {
+      editor.chain().focus().insertContentAt(cursorPosition, text).run();
+    }
+  };
+
   if (!editor) {
     return null;
   }
