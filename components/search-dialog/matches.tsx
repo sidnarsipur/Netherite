@@ -19,7 +19,13 @@ const customStyle = {
 };
 
 const LENGTH = 3;
-export function Matches({ blocks }: { blocks: Block[] }) {
+export function Matches({
+  blocks,
+  isProcessing,
+}: {
+  blocks: Block[];
+  isProcessing: boolean;
+}) {
   return (
     <Carousel
       opts={{
@@ -32,7 +38,11 @@ export function Matches({ blocks }: { blocks: Block[] }) {
             <>
               <MatchSnippet />
               {blocks.map((block, idx) => (
-                <MatchSnippet key={idx} block={block} />
+                <MatchSnippet
+                  key={idx}
+                  block={block}
+                  isProcessing={isProcessing}
+                />
               ))}
               <MatchSnippet />
             </>

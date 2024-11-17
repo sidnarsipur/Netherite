@@ -20,22 +20,24 @@ export default function Page() {
     HighlightStore.useState((s) => s.blocks),
   );
   const [query, setQuery] = useState(HighlightStore.useState((s) => s.query));
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const handleSearch = useDebouncedCallback(async (term) => {
     if (term === "") {
       setBlocks([]);
       return;
     }
-
     const blocks = await GetSearchResults(term);
     setBlocks(blocks);
     HighlightStore.update((s) => {
       s.query = term;
       s.blocks = blocks;
     });
+    setIsProcessing(false);
   }, 500);
 
   useEffect(() => {
+    setIsProcessing(true);
     handleSearch(query);
   }, [query]);
 
@@ -64,7 +66,7 @@ export default function Page() {
           <span className="font-bold">Closest matches in context</span>{" "}
           <span className="text-gray-500">(32 results found)</span>
         </p>
-        <Matches blocks={blocks} />
+        <Matches blocks={blocks} isProcessing={isProcessing} />
         <ScrollArea className="h-80">
           <p className="p-2 font-bold">Saved Highlights</p>
           <div className="flex flex-col gap-2 pb-2">
