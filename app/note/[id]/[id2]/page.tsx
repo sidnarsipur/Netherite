@@ -47,7 +47,7 @@ export default function Page() {
         {note?.name}
       </p>
       <Separator />
-      {note && <Editor note={note} />}
+      <Editor noteID={id2} note={note} />
     </div>
   );
 }

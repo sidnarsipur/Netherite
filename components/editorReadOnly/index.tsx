@@ -22,7 +22,13 @@ const getContent = async (noteID: string) => {
   return JSON.parse(jsonString);
 };
 
-export default function Editor({ note }: { note: Note }) {
+export default function Editor({
+  note,
+  noteID,
+}: {
+  noteID: string;
+  note?: Note;
+}) {
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -59,7 +65,7 @@ export default function Editor({ note }: { note: Note }) {
     },
     editable: true, // Keep the editor editable
     onCreate: async ({ editor }) => {
-      const content = await getContent(note.id);
+      const content = await getContent(noteID);
       editor.commands.setContent(content);
     },
   });
@@ -81,7 +87,7 @@ export default function Editor({ note }: { note: Note }) {
 
   return (
     <div className="relative mx-auto flex h-full w-full flex-col rounded-lg border bg-background shadow-sm">
-      {editor && (
+      {editor && note && (
         <>
           <BubbleMenu editor={editor}>
             <BubbleToolbar editor={editor} title={note.name} />
