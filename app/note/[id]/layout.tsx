@@ -6,6 +6,7 @@ import { Dialog } from "@/components/ui/dialog";
 import { SearchDialog } from "@/components/search-dialog/search-dialog";
 import NavActions from "@/components/sidebar/nav-actions";
 import Editor from "@/components/editor";
+import { redirect } from "next/navigation";
 
 export default async function RootLayout({
   params,
@@ -18,7 +19,7 @@ export default async function RootLayout({
   const note = await getNote(id);
 
   if (!note) {
-    return <></>;
+    redirect("/note");
   }
 
   return (
