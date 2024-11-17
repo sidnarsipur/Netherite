@@ -1,8 +1,10 @@
-export interface ContentNode {
+export type ContentNode = {
   type: string;
   content?: ContentNode[];
+  attrs?: { [key: string]: any };
+  marks?: { [key: string]: any };
   text?: string;
-}
+};
 
 export interface Block {
   id: string;
@@ -11,6 +13,7 @@ export interface Block {
   links: string[];
   content: string[];
   rawText: string;
+  score?: number;
 }
 
 export interface Note {

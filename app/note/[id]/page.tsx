@@ -7,18 +7,23 @@ import { Button } from "@/components/ui/button";
 import { DialogFooter, DialogClose } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
+import { GetSearchResults } from "@/lib/dataStore";
 import { HighlightStore } from "@/lib/highlightStore";
 import { Block } from "@/lib/model";
 import { X, BetweenHorizontalEnd, Brain } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 
 export default function Page() {
   const highlights = HighlightStore.useState((s) => s.highlights);
+  const [blocks, setBlocks] = useState<Block[]>([]);
+  const [query, setQuery] = useState("");
 
-  const handleSearch = useDebouncedCallback((term) => {
-    console.log(`Searching... ${term}`);
-    // const blocks = await GetSearchResults("");
-    // console.log("fsefas henrnrnr", blocks);
+  const handleSearch = useDebouncedCallback(async (term) => {
+    console.log("searching");
+    const blocks = await GetSearchResults(term);
+    setBlocks(blocks);
+    console.log(blocks);
   }, 500);
 
   const insertText = () => {
@@ -33,7 +38,7 @@ export default function Page() {
   return (
     <>
       <div className="flex flex-row items-center justify-between p-2">
-        <Querybar onChange={(e) => handleSearch(e.target.value)} />
+        <Querybar value={query} onChange={(e) => setQuery(e.target.value)} />
         <DialogClose asChild>
           <Button variant="ghost" size="icon">
             <X />
@@ -75,30 +80,3 @@ export default function Page() {
     </>
   );
 }
-
-const blocks: Block[] = [
-  {
-    id: "block1",
-    order: 1,
-    noteID: "EkE0MTLjtAcGemWB9FOM",
-    links: ["https://example.com", "https://example.org"],
-    content: ["<p>This is the content of block 1</p>"],
-    rawText: "This is the content of block 1",
-  },
-  {
-    id: "block2",
-    order: 2,
-    noteID: "EkE0MTLjtAcGemWB9FOM",
-    links: ["https://example.com/block2"],
-    content: ["<p>This is the content of block 2</p>"],
-    rawText: "This is the content of block 2",
-  },
-  {
-    id: "block3",
-    order: 3,
-    noteID: "EkE0MTLjtAcGemWB9FOM",
-    links: [],
-    content: ["<p>This is the content of block 3</p>"],
-    rawText: "This is the content of block 3",
-  },
-];
