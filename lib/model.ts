@@ -13,6 +13,7 @@ export interface Block {
 }
 
 export interface Note {
+  id: string;
   userID: string;
   name: string;
   path: string;
@@ -23,7 +24,7 @@ export interface Note {
 export interface Folder {
   name: string;
   path: string;
-  noteIDs: string[];
+  notes: Note[];
 }
 
 export interface User {

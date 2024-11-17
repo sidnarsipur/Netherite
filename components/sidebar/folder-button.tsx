@@ -62,9 +62,9 @@ export default function FolderButton({ item }: { item: Folder }) {
         </ContextMenu>
       </FancyCard>
       <CollapsibleContent className="flex flex-col gap-4 pl-5">
-        {/* {item.noteIDs.map((item, idx) => (
-          <NoteButton key={idx} item={item} />
-        ))} */}
+        {item.notes.map((note, idx) => (
+          <NoteButton key={idx} note={note} />
+        ))}
       </CollapsibleContent>
     </Collapsible>
   );
