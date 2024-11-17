@@ -8,6 +8,7 @@ import {
   Code,
   CheckSquare,
   Search,
+  SquareSplitVertical,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DialogTrigger } from "@radix-ui/react-dialog";
@@ -106,6 +107,23 @@ export function FloatingToolbar({ editor }: FloatingToolbarProps) {
       >
         <Heading1 className="h-4 w-4" />
         <span>Heading 1</span>
+      </Button>
+
+      <Button
+        ref={(el) => {
+          if (el) {
+            buttonsRef.current.push(el);
+          }
+        }}
+        size="sm"
+        variant="ghost"
+        onClick={() =>
+          handleClick(() => editor.chain().focus().setPageBreak().run())
+        }
+        className="justify-start gap-2"
+      >
+        <SquareSplitVertical className="h-4 w-4" />
+        <span>Page Break</span>
       </Button>
 
       <Button

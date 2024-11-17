@@ -47,7 +47,11 @@ export default function Editor({ noteID }: { noteID: string }) {
       Link.configure({
         openOnClick: false,
       }),
-      Image,
+      Image.configure({
+        HTMLAttributes: {
+          class: "centered-image",
+        },
+      }),
       TextAlign.configure({
         types: ["heading", "paragraph"],
       }),
