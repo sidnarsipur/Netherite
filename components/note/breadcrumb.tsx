@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/breadcrumb";
 
 export default function BreadcrumbWithDropdown({ path }: { path: String }) {
-  const segments = path.split("/");
+  const segments = path.split("/").filter((segment) => segment !== "");
   return (
     <Breadcrumb>
       <BreadcrumbList>

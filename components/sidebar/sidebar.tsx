@@ -39,8 +39,8 @@ export default async function AppSidebar() {
       <SidebarFooter>
         <NavUser
           user={{
-            name: "shadcn",
-            email: "m@example.com",
+            name: "Henry Liu",
+            email: "dandyhack@example.com",
             avatar: "/avatars/evil-rabbit.png",
           }}
         />
