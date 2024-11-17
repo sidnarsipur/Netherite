@@ -141,7 +141,6 @@ export function MenuBar({ editor, noteID }: { noteID: string } & MenuBarProps) {
         size="sm"
         variant="ghost"
         onClick={() => editor.chain().focus().setPageBreak().run()}
-        className="h-8 w-8 p-1"
       >
         <SquareSplitVertical className="h-4 w-4" />
       </Button>
@@ -202,7 +201,6 @@ export function MenuBar({ editor, noteID }: { noteID: string } & MenuBarProps) {
             editor.chain().focus().setLink({ href: url }).run();
           }
         }}
-        className="h-8 w-8 p-1"
       >
         <Link className="h-4 w-4" />
       </Button>
