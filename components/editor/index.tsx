@@ -1,10 +1,11 @@
+// index.tsx
 "use client";
 
 import {
-	useEditor,
-	EditorContent,
-	BubbleMenu,
-	FloatingMenu,
+  useEditor,
+  EditorContent,
+  BubbleMenu,
+  FloatingMenu,
 } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import TaskList from "@tiptap/extension-task-list";
@@ -14,75 +15,80 @@ import Typography from "@tiptap/extension-typography";
 import Link from "@tiptap/extension-link";
 import Image from "@tiptap/extension-image";
 import TextAlign from "@tiptap/extension-text-align";
+import PageBreak from "@/components/ui/page-break";
 import { MenuBar } from "./menu-bar";
 import { FloatingToolbar } from "./floating-toolbar";
 import { BubbleToolbar } from "./bubble-toolbar";
 
 export default function Editor() {
-	const editor = useEditor({
-		extensions: [
-			StarterKit.configure({
-				heading: {
-					levels: [1, 2, 3],
-				},
-			}),
-			TaskList,
-			TaskItem.configure({
-				nested: true,
-			}),
-			Placeholder.configure({
-				placeholder: "Start writing...",
-			}),
-			Typography,
-			Link.configure({
-				openOnClick: false,
-			}),
-			Image,
-			TextAlign.configure({
-				types: ["heading", "paragraph"],
-			}),
-		],
-		editorProps: {
-			attributes: {
-				class:
-					"prose prose-sm sm:prose-base dark:prose-invert focus:outline-none max-w-full min-h-[500px] px-8 py-4",
-			},
-		},
-		onUpdate: ({ editor }) => {
-			// Get JSON output
-			const json = editor.getJSON();
-			console.log(json);
-		},
-	});
+  const editor = useEditor({
+    extensions: [
+      StarterKit.configure({
+        heading: {
+          levels: [1, 2, 3],
+        },
+      }),
+      TaskList,
+      TaskItem.configure({
+        nested: true,
+      }),
+      Placeholder.configure({
+        placeholder: "Start writing...",
+      }),
+      Typography,
+      Link.configure({
+        openOnClick: false,
+      }),
+      Image,
+      TextAlign.configure({
+        types: ["heading", "paragraph"],
+      }),
+      PageBreak, // Add the PageBreak extension here
+    ],
+    editorProps: {
+      attributes: {
+        class:
+          "prose prose-sm sm:prose-base dark:prose-invert focus:outline-none max-w-full min-h-[500px] px-8 py-4",
+      },
+    },
+    onCreate: async ({ editor }) => {
+      const noteID = "eGNKGRIuIeNNUp3fv1MJ";
+      // editor.commands.setContent(json);
+    },
+  });
 
-	if (!editor) {
-		return null;
-	}
+  if (!editor) {
+    return null;
+  }
 
-	return (
-		<div className="relative min-h-[500px] w-full max-w-4xl mx-auto border rounded-lg shadow-sm bg-background">
-			<MenuBar editor={editor} />
+  return (
+    <div className="relative mx-auto flex h-full w-full flex-col rounded-lg border bg-background shadow-sm">
+      <MenuBar editor={editor} />
 
-			{editor && (
-				<>
-					<BubbleMenu editor={editor}>
-						<BubbleToolbar editor={editor} />
-					</BubbleMenu>
+      {editor && (
+        <>
+          <BubbleMenu editor={editor}>
+            <BubbleToolbar editor={editor} />
+          </BubbleMenu>
+          <FloatingMenu
+            editor={editor}
+            shouldShow={({ state }) => {
+              const { $from } = state.selection;
+              const currentLineText = $from.nodeBefore?.textContent;
+              return currentLineText === "/";
+            }}
+            tippyOptions={{
+              interactive: true,
+              placement: "bottom-start",
+              appendTo: () => document.body,
+            }}
+          >
+            <FloatingToolbar editor={editor} />
+          </FloatingMenu>
+        </>
+      )}
 
-					<FloatingMenu
-						editor={editor}
-						shouldShow={({ state }) => {
-							const { $from } = state.selection;
-							const currentLineText = $from.nodeBefore?.textContent;
-							return currentLineText === "/";
-						}}
-					>
-						<FloatingToolbar editor={editor} />
-					</FloatingMenu>
-				</>
-			)}
-
-			<EditorContent editor={editor} />
-		</div>
-	);
+      <EditorContent editor={editor} />
+    </div>
+  );
 }
