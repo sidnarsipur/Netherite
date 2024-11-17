@@ -99,9 +99,7 @@ export default function Editor({ noteID }: { noteID: string }) {
   }, [insertText]);
 
   const insertTextAtCursor = (text: string) => {
-    console.log("inserting text", text, cursorPosition);
     if (editor && cursorPosition !== null) {
-      console.log("doing somethin");
       editor.chain().focus().insertContentAt(cursorPosition, text).run();
     }
   };

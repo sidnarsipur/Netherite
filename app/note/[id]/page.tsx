@@ -20,7 +20,11 @@ export default function Page() {
   const [query, setQuery] = useState("");
 
   const handleSearch = useDebouncedCallback(async (term) => {
-    console.log("searching");
+    if (term === "") {
+      setBlocks([]);
+      return;
+    }
+
     const blocks = await GetSearchResults(term);
     setBlocks(blocks);
     console.log(blocks);
@@ -67,10 +71,12 @@ export default function Page() {
       </div>
       <Separator />
       <DialogFooter className="justify-end p-2">
-        <Button variant="outline" onClick={insertText}>
-          Quote Highlights Directly
-          <BetweenHorizontalEnd />
-        </Button>
+        <DialogClose asChild>
+          <Button variant="outline" onClick={insertText}>
+            Quote Highlights Directly
+            <BetweenHorizontalEnd />
+          </Button>
+        </DialogClose>
         <Button
           variant="secondary"
           style={{
