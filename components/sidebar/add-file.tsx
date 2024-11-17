@@ -11,7 +11,7 @@ export default function AddFile() {
           <Plus />
         </Button>
       </DialogTrigger>
-      <AddFileDialog />
+      <AddFileDialog path="/" />
     </Dialog>
   );
 }

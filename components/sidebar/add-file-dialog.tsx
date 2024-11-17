@@ -3,11 +3,11 @@ import { Button } from "../ui/button";
 import { DialogContent, DialogTitle, DialogClose } from "../ui/dialog";
 import { Input } from "../ui/input";
 
-export default function AddFileDialog() {
+export default function AddFileDialog({ path }: { path: string }) {
   const handleSubmit = async (formData: FormData) => {
     "use server";
     const name = formData.get("name") as string;
-    await createNote(name, "/");
+    await createNote(name, path);
   };
 
   return (

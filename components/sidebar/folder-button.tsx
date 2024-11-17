@@ -60,7 +60,7 @@ export default function FolderButton({ item }: { item: Folder }) {
           ))}
         </CollapsibleContent>
       </Collapsible>
-      <AddFileDialog />
+      <AddFileDialog path={item.path} />
     </Dialog>
   );
 }

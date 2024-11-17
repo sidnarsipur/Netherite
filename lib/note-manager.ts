@@ -10,12 +10,23 @@ import { revalidatePath } from "next/cache";
 
 export const createNote = async (name: string, path: string) => {
   const userID = (await getCurrentUser()).id;
-  await db.collection("notes").add({
+  const note = await db.collection("notes").add({
     userID: userID,
     name: name,
     path: `${path}${name}`,
     blockIDs: [],
   });
+  console.log(note);
+  // add note under the folder
+  const folderCollection = await getFolderCollection();
+  const folderDoc = await folderCollection.where("path", "==", path).get();
+  const folderID = folderDoc.docs[0].id;
+  const folderRef = folderCollection.doc(folderID);
+  await folderRef.update({
+    noteIDs: FieldValue.arrayUnion(note.id),
+  });
+
+  revalidatePath("/note");
 };
 
 export const addBlocks = async (noteID: string, content: any) => {
@@ -53,9 +64,8 @@ export const addBlocks = async (noteID: string, content: any) => {
 export const getNote = async (noteID: string) => {
   try {
     const noteSnapshot = await db.collection("notes").doc(noteID).get();
-
     if (!noteSnapshot.exists) {
-      throw new Error("No notes found for this user");
+      throw new Error(`Note with ID ${noteID} not found.`);
     }
 
     const noteObj = noteSnapshot.data();
