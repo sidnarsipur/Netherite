@@ -26,6 +26,7 @@ export interface Folder {
   path: string;
   noteIDs: string[];
 }
+
 export interface User {
   name: string;
   folders: Folder[];
