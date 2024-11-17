@@ -44,7 +44,9 @@ export function MatchSnippet({
               ) : (
                 <Skeleton className="mr-auto h-10 w-full" />
               )}
-              <p className="text-sm text-muted-foreground">99.46% match</p>
+              <p className="text-sm text-muted-foreground">
+                {block.score}% match
+              </p>
               <Button
                 variant="secondary"
                 size="icon"
@@ -59,7 +61,7 @@ export function MatchSnippet({
                 {data.rawText}
               </p>
             ) : (
-              <Skeleton className="mr-auto h-10 w-full" />
+              <Skeleton className="h-10 w-full p-3" />
             )}
           </>
         )}

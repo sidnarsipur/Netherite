@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { DialogFooter, DialogClose } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import { GetSearchResults } from "@/lib/dataStore";
+import { GetSearchResults, GetSummary } from "@/lib/dataStore";
 import { HighlightStore } from "@/lib/highlightStore";
 import { Block } from "@/lib/model";
 import { X, BetweenHorizontalEnd, Brain } from "lucide-react";
@@ -50,6 +50,14 @@ export default function Page() {
     });
   };
 
+  const generateSummary = async () => {
+    const strs = highlights.map((highlight) => highlight.description);
+    const summary = await GetSummary(strs);
+    HighlightStore.update((s) => {
+      s.insertText = summary;
+    });
+  };
+
   return (
     <>
       <div className="flex flex-row items-center justify-between p-2">
@@ -84,15 +92,18 @@ export default function Page() {
             <BetweenHorizontalEnd />
           </Button>
         </DialogClose>
-        <Button
-          variant="secondary"
-          style={{
-            background:
-              "linear-gradient(91.7deg, #3E3850 0%, #29252B 43.5%, #322935 100%)",
-          }}
-        >
-          Add AI Summary to Notes <Brain />
-        </Button>
+        <DialogClose asChild>
+          <Button
+            variant="secondary"
+            style={{
+              background:
+                "linear-gradient(91.7deg, #3E3850 0%, #29252B 43.5%, #322935 100%)",
+            }}
+            onClick={generateSummary}
+          >
+            Add AI Summary to Notes <Brain />
+          </Button>
+        </DialogClose>
       </DialogFooter>
     </>
   );

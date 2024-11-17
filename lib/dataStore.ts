@@ -160,12 +160,8 @@ export async function GetSearchResults(query: string, numResults: number = 3) {
   return blocks.sort((a, b) => (b.score ?? 0) - (a.score ?? 0));
 }
 
-export async function GetSummary(blockIDs: string[]) {
-  const blocks = await BlocksByID(blockIDs);
-
-  const blockText = blocks.map((block) => block.rawText);
-
-  const union = blockText.join("\nNEW NOTE\n");
+export async function GetSummary(strs: string[]) {
+  const union = strs.join("\nNEW NOTE\n");
 
   const { text } = await generateText({
     model: google("gemini-1.5-pro-latest"),
