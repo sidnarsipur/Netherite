@@ -1,4 +1,4 @@
-import { Note } from "@/lib/definitions";
+import { Note } from "@/lib/model";
 import Link from "next/link";
 import FancyCard from "../fancy-card";
 import {
@@ -18,7 +18,7 @@ export default function NoteButton({ item }: { item: Note }) {
             <div className="p-5">
               <p className="mb-1 font-bold">{item.name}</p>
               <p className="truncate text-sm text-muted-foreground">
-                {item.content}
+                Lorem, ipsum dolor sit amet consec
               </p>
             </div>
           </ContextMenuTrigger>

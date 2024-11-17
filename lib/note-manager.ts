@@ -1,22 +1,22 @@
 "use server";
 
-import { db, pc } from "@/app/lib/init";
-import { BlocksByID, EmbedAndInsertBlocks } from "@/app/lib/dataStore";
+import { db, pc } from "@/lib/init";
+import { BlocksByID, EmbedAndInsertBlocks } from "@/lib/dataStore";
 import { v4 as uuidv4 } from "uuid";
-import { Block, Note, User } from "@/app/lib/model";
+import { Block, Folder, Note, User } from "@/lib/model";
 
-export const addNote = async (userID: string, blocks: Block[]) => {
-  const noteID = uuidv4();
-  const block_ids = await EmbedAndInsertBlocks(blocks, noteID);
+// export const addNote = async (userID: string, blocks: Block[]) => {
+//   const noteID = uuidv4();
+//   // const block_ids = await EmbedAndInsertBlocks(blocks, noteID);
 
-  const res = await db.collection("notes").add({
-    noteID: noteID,
-    userID: userID,
-    blockIDs: block_ids,
-  });
+//   const res = await db.collection("notes").add({
+//     noteID: noteID,
+//     userID: userID,
+//     blockIDs: block_ids,
+//   });
 
-  return res;
-};
+//   return res;
+// };
 
 export const getNote = async (noteID: string) => {
   try {
@@ -64,13 +64,15 @@ export const getNotes = async (userID: string) => {
 export const getFolders = async (userID: string) => {
   const userRef = db.collection("users").doc(userID); // Replace "users" with your collection name
   const userDoc = await userRef.get();
-
   if (!userDoc.exists) {
     throw new Error("no such user!");
   }
 
-  const data = userDoc.data() as User; // Returns the user object
-  return data.folders;
+  const foldersDoc = await userDoc.ref.collection("folders").get();
+  const folders = foldersDoc.docs.map(
+    (folderDoc) => folderDoc.data() as Folder,
+  );
+  return folders;
 };
 
 // import { Note, SidebarItem } from "./definitions";
