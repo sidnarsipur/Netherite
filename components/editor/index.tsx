@@ -20,7 +20,8 @@ import { MenuBar } from "./menu-bar";
 import { FloatingToolbar } from "./floating-toolbar";
 import { BubbleToolbar } from "./bubble-toolbar";
 
-export default function Editor() {
+export default function Editor({ noteID }: { noteID: string }) {
+  console.log(noteID);
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -63,7 +64,7 @@ export default function Editor() {
 
   return (
     <div className="relative mx-auto flex h-full w-full flex-col rounded-lg border bg-background shadow-sm">
-      <MenuBar editor={editor} />
+      <MenuBar editor={editor} noteID={noteID} />
 
       {editor && (
         <>

@@ -38,7 +38,7 @@ export default async function Page({
             defaultValue={note.name}
           />
           <Separator />
-          <Editor />
+          <Editor noteID={note.id} />
         </div>
         <DialogTrigger asChild>
           <Button>Open Semantic Search</Button>

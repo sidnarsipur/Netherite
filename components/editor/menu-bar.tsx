@@ -27,15 +27,13 @@ type MenuBarProps = {
   editor: Editor;
 };
 
-export function MenuBar({ editor }: MenuBarProps) {
+export function MenuBar({ editor, noteID }: { noteID: string } & MenuBarProps) {
   if (!editor) {
     return null;
   }
 
   const handleSave = () => {
     const json = editor.getJSON();
-    const noteID = "eGNKGRIuIeNNUp3fv1MJ";
-
     addBlocks(noteID, JSON.stringify(json));
   };
 
