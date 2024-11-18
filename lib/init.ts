@@ -16,14 +16,13 @@ if (!getApps().length) {
 export const auth = getAuth();
 export const db = getFirestore();
 export const pc = new Pinecone({
-  apiKey:
-    "pcsk_MhrCv_Bz9nnEFuBtBAN1NrX8FZfiAYe1j2sMpoNTFcyUAT3NvQXijF847XnmWxsnbXEbz",
+  apiKey: "",
 });
 export const index = pc.Index("embeddings");
 export const model = "multilingual-e5-large";
 
 export const google = createGoogleGenerativeAI({
-  apiKey: "AIzaSyCAHS9TwEI_pFpwsS7s3zrFKto7FETOao8",
+  apiKey: "",
 });
 
 export const sysPrompt = `

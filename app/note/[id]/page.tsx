@@ -72,8 +72,12 @@ export default function Page() {
       <Separator />
       <div className="flex flex-col px-2">
         <p className="p-2">
-          <span className="font-bold">Closest matches in context</span>{" "}
-          <span className="text-gray-500">(32 results found)</span>
+          <span className="font-bold">Relevant Community Notes </span>{" "}
+          {blocks.length > 0 && (
+            <span className="text-gray-500">
+              ({blocks.length} results found)
+            </span>
+          )}
         </p>
         <Matches blocks={blocks} isProcessing={isProcessing} />
         <ScrollArea className="h-80">
