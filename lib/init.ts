@@ -5,24 +5,32 @@ import { getAuth } from "firebase-admin/auth";
 import { createGoogleGenerativeAI } from "@ai-sdk/google";
 
 var admin = require("firebase-admin");
-var serviceAccount = require("./service_account_key.json");
+
+const firebaseConfig = {
+  apiKey: process.env.FIREBASE_API_KEY,
+  authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.FIREBASE_PROJECT_ID,
+  storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.FIREBASE_APP_ID,
+  databaseURL: process.env.FIREBASE_DATABASE_URL,
+};
 
 if (!getApps().length) {
-  initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-  });
+  initializeApp({});
 }
 
 export const auth = getAuth();
 export const db = getFirestore();
+
 export const pc = new Pinecone({
-  apiKey: "",
+  apiKey: process.env.PINECONE_KEY || "",
 });
 export const index = pc.Index("embeddings");
 export const model = "multilingual-e5-large";
 
 export const google = createGoogleGenerativeAI({
-  apiKey: "",
+  apiKey: process.env.GEMINI_KEY,
 });
 
 export const sysPrompt = `
