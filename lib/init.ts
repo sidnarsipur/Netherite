@@ -6,16 +6,10 @@ import { createGoogleGenerativeAI } from "@ai-sdk/google";
 
 var admin = require("firebase-admin");
 
-console.log("SERVICE KEY IS", process.env.SERVICE_ACCOUNT_KEY);
-
 const serviceAccountKey = JSON.parse(process.env.SERVICE_ACCOUNT_KEY || "");
 
-console.log("SERVICE KEY IS", serviceAccountKey);
-
 if (!getApps().length) {
-  initializeApp({
-    credential: admin.credential.cert(serviceAccountKey),
-  });
+  initializeApp(serviceAccountKey);
 }
 
 export const auth = getAuth();
