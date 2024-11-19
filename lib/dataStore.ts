@@ -42,24 +42,24 @@ export async function EmbedAndInsertBlocks(blocks: Block[], noteID: string) {
     }
   }
 
-  for (const block of cleanBlocks) {
-    block.noteID = noteID;
-
-    const ref = blocksRef.add({
-      id: block.id,
-      noteID: block.noteID,
-      order: block.order,
-      links: block.links,
-      content: block.content,
-      rawText: block.rawText,
-    });
-
-    block.id = (await ref).id;
-  }
-
-  const index1 = pc.Index("embeddings");
-
   if (cleanBlocks.length > 0) {
+    for (const block of cleanBlocks) {
+      block.noteID = noteID;
+
+      const ref = blocksRef.add({
+        id: block.id,
+        noteID: block.noteID,
+        order: block.order,
+        links: block.links,
+        content: block.content,
+        rawText: block.rawText,
+      });
+
+      block.id = (await ref).id;
+    }
+
+    const index1 = pc.Index("embeddings");
+
     const embeddings = await pc.inference.embed(
       model,
       cleanBlocks.map((cleanBlocks) => cleanBlocks.rawText),
@@ -82,9 +82,11 @@ export async function EmbedAndInsertBlocks(blocks: Block[], noteID: string) {
   return cleanBlocks.map((block) => block.id);
 }
 
-export async function BlocksByID(blockIDs: string[]): Promise<Block[]> {
+export async function BlocksByID(
+  blockIDs: string[] | null | undefined,
+): Promise<Block[]> {
   try {
-    if (blockIDs.length === 0) {
+    if (!blockIDs || blockIDs.length === 0) {
       return [];
     }
 
