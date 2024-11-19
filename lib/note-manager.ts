@@ -33,7 +33,7 @@ export const addBlocks = async (noteID: string, content: any) => {
   const blocks = parseBlocks(noteID, content);
   const block_ids = await EmbedAndInsertBlocks(blocks, noteID);
 
-  const res = await db
+  await db
     .collection("notes")
     .doc(noteID)
     .update({
@@ -49,7 +49,7 @@ export const getJSONByNoteID = async (noteID: string): Promise<string> => {
 
   const blocks: Block[] = await BlocksByID(note.blockIDs);
 
-  const bl: any[] = [];
+  const bl: Block[] = [];
 
   blocks.forEach((block: Block) => {
     block.content.forEach((content) => {
@@ -193,12 +193,12 @@ function parseBlocks(noteID: string, content: string): Block[] {
   return blocks;
 }
 
-export async function hasText(node: ContentNode[]): boolean {
+export async function hasText(node: ContentNode[]): Promise<boolean> {
   for (const child of node) {
     if (child.type === "text") {
       return true;
     }
-    if (child.content && hasText(child.content)) {
+    if (child.content && (await hasText(child.content))) {
       return true;
     }
   }

@@ -96,7 +96,7 @@ export function BubbleToolbar({ editor }: BubbleToolbarProps) {
       <Button
         size="sm"
         variant="ghost"
-        onClick={() => editor.chain().focus().setPageBreak().run()}
+        // onClick={() => editor.chain().focus().setPageBreak().run()}
         className="h-8 w-8 p-1"
       >
         <SquareSplitVertical className="h-4 w-4" />

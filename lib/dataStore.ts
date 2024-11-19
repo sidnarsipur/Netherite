@@ -1,10 +1,11 @@
 "use server";
 
 import { db, pc, model, google, sysPrompt } from "./init";
-import { Block, ContentNode } from "@/lib/model";
-import { FieldValue, FieldPath } from "firebase-admin/firestore";
+import { Block } from "@/lib/model";
+import { FieldPath } from "firebase-admin/firestore";
 import { generateText } from "ai";
 import { hasText } from "./note-manager";
+import { ContentNode } from "@/lib/model";
 
 export async function EmbedAndInsertBlocks(blocks: Block[], noteID: string) {
   const firebase = require("firebase/app");
@@ -37,7 +38,7 @@ export async function EmbedAndInsertBlocks(blocks: Block[], noteID: string) {
     if (
       block.content[0] !==
         '{"type":"paragraph","attrs":{"textAlign":"left"}}' &&
-      hasText(block.content) &&
+      (await hasText(block.content as unknown as ContentNode[])) &&
       block.content.length > 0
     ) {
       cleanBlocks.push(block);
@@ -118,7 +119,11 @@ export async function BlocksByID(blockIDs: string[]): Promise<Block[]> {
     return blocks;
   } catch (error) {
     console.error("Database Error:", error);
-    throw new Error("Failed to BlocksByID", error.message);
+    if (error instanceof Error) {
+      throw new Error(`Failed to BlocksByID: ${error.message}`);
+    } else {
+      throw new Error("Failed to BlocksByID: Unknown error");
+    }
   }
 }
 

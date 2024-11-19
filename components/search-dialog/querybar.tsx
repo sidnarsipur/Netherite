@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
-import { CornerDownLeft, SearchIcon } from "lucide-react";
+import { CornerDownLeft } from "lucide-react";
 
 const Querybar = React.forwardRef<
   HTMLInputElement,

@@ -20,9 +20,7 @@ export function BubbleToolbar({
     return null;
   }
   const buttonsRef = useRef<HTMLButtonElement[]>([]);
-  const handleClick = (callback: () => void) => {
-    // Close the bubble menu
-    // TODO: we'll need to pass the selected text to the search dialog
+  const handleClick = (_: () => void) => {
     editor.commands.focus();
   };
 

@@ -117,9 +117,9 @@ export function FloatingToolbar({ editor }: FloatingToolbarProps) {
         }}
         size="sm"
         variant="ghost"
-        onClick={() =>
-          handleClick(() => editor.chain().focus().setPageBreak().run())
-        }
+        // onClick={() =>
+        //   handleClick(() => editor.chain().focus().setPageBreak().run())
+        // }
         className="justify-start gap-2"
       >
         <SquareSplitVertical className="h-4 w-4" />

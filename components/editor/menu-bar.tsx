@@ -16,7 +16,6 @@ import {
   AlignCenter,
   AlignRight,
   Link,
-  Image,
   SquareSplitVertical,
   Save,
   Search,
@@ -146,7 +145,7 @@ export function MenuBar({ editor, noteID }: { noteID: string } & MenuBarProps) {
       <Button
         size="sm"
         variant="ghost"
-        onClick={() => editor.chain().focus().setPageBreak().run()}
+        // onClick={() => editor.chain().focus().setPageBreak().run()}
       >
         <SquareSplitVertical className="h-4 w-4" />
       </Button>
