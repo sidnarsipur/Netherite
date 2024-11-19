@@ -18,8 +18,13 @@ if (!getApps().length) {
 export const auth = getAuth();
 export const db = getFirestore();
 
+const pineconeKey = process.env.PINECONE_KEY;
+if (!pineconeKey) {
+  throw new Error("Pinecone API key is missing");
+}
+
 export const pc = new Pinecone({
-  apiKey: process.env.PINECONE_KEY || "",
+  apiKey: pineconeKey,
 });
 export const index = pc.Index("embeddings");
 export const model = "multilingual-e5-large";
