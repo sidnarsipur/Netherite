@@ -17,7 +17,7 @@ const firebaseConfig = {
 };
 
 if (!getApps().length) {
-  initializeApp({});
+  admin.initializeApp(firebaseConfig);
 }
 
 export const auth = getAuth();
