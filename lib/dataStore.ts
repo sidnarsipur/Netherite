@@ -8,9 +8,6 @@ import { hasText } from "./note-manager";
 import { ContentNode } from "@/lib/model";
 
 export async function EmbedAndInsertBlocks(blocks: Block[], noteID: string) {
-  const firebase = require("firebase/app");
-  require("firebase/firestore");
-
   const deletedBlockIDs: string[] = [];
 
   const blocksRef = db.collection("blocks");
