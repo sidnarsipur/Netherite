@@ -33,12 +33,14 @@ export const addBlocks = async (noteID: string, content: any) => {
   const blocks = parseBlocks(noteID, content);
   const block_ids = await EmbedAndInsertBlocks(blocks, noteID);
 
-  await db
-    .collection("notes")
-    .doc(noteID)
-    .update({
-      blockIDs: FieldValue.arrayUnion(...block_ids),
-    });
+  if (block_ids.length > 0) {
+    await db
+      .collection("notes")
+      .doc(noteID)
+      .update({
+        blockIDs: FieldValue.arrayUnion(...block_ids),
+      });
+  }
 };
 
 export const getJSONByNoteID = async (noteID: string): Promise<string> => {
