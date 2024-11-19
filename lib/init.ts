@@ -9,7 +9,10 @@ var admin = require("firebase-admin");
 const serviceAccountKey = JSON.parse(process.env.SERVICE_ACCOUNT_KEY || "");
 
 if (!getApps().length) {
-  initializeApp(serviceAccountKey);
+  initializeApp({
+    credential: admin.credential.cert(serviceAccountKey),
+    projectId: process.env.FIREBASE_PROJECT_ID,
+  });
 }
 
 export const auth = getAuth();
