@@ -35,7 +35,6 @@ export async function EmbedAndInsertBlocks(blocks: Block[], noteID: string) {
     if (
       block.content[0] !==
         '{"type":"paragraph","attrs":{"textAlign":"left"}}' &&
-      (await hasText(block.content as unknown as ContentNode[])) &&
       block.content.length > 0
     ) {
       cleanBlocks.push(block);
