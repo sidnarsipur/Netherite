@@ -59,18 +59,18 @@ export async function EmbedAndInsertBlocks(blocks: Block[], noteID: string) {
 
   const index1 = pc.Index("embeddings");
 
-  const embeddings = await pc.inference.embed(
-    model,
-    cleanBlocks.map((cleanBlocks) => cleanBlocks.rawText),
-    { inputType: "passage", truncate: "END" },
-  );
-
-  const records = cleanBlocks.map((block, i) => ({
-    id: block.id,
-    values: embeddings[i].values as number[],
-  }));
-
   if (cleanBlocks.length > 0) {
+    const embeddings = await pc.inference.embed(
+      model,
+      cleanBlocks.map((cleanBlocks) => cleanBlocks.rawText),
+      { inputType: "passage", truncate: "END" },
+    );
+
+    const records = cleanBlocks.map((block, i) => ({
+      id: block.id,
+      values: embeddings[i].values as number[],
+    }));
+
     await index1.namespace("namespace").upsert(records);
   }
 
