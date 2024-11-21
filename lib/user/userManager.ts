@@ -29,7 +29,6 @@ export async function createUser() {
       name: user.fullName || "",
       email: user.primaryEmailAddress,
       emailVerified: false,
-      displayName: name,
       disabled: false,
     });
 
