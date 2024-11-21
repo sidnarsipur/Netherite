@@ -11,6 +11,10 @@ export async function createUser() {
       throw new Error("No user found");
     }
 
+    if (!user.primaryEmailAddress) {
+      throw new Error("No email found");
+    }
+
     const userSnapshot = await db
       .collection("users")
       .where("email", "==", user.primaryEmailAddress?.emailAddress)
@@ -22,7 +26,7 @@ export async function createUser() {
     }
 
     const userRecord = await db.collection("users").add({
-      name: user.fullName,
+      name: user.fullName || "",
       email: user.primaryEmailAddress,
       emailVerified: false,
       displayName: name,
