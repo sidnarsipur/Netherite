@@ -35,12 +35,7 @@ export default async function RootLayout({
           </div>
         </div>
         <div className="w-full rounded-xl border border-border bg-card">
-          <input
-            className="w-full bg-transparent p-5 text-2xl font-bold focus-visible:outline-none"
-            defaultValue={note.name}
-          />
-          <Separator />
-          <Editor noteID={note.id} />
+          <Editor note={note} />
         </div>
         <SearchDialog>{children}</SearchDialog>
       </div>

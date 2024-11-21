@@ -20,16 +20,18 @@ import { MenuBar } from "./menu-bar";
 import { FloatingToolbar } from "./floating-toolbar";
 import { BubbleToolbar } from "./bubble-toolbar";
 import { get } from "http";
-import { getJSONByNoteID } from "@/lib/note/noteManager";
+import { getJSONByNoteID, updateNote } from "@/lib/note/noteManager";
 import { useEffect, useState } from "react";
 import { HighlightStore } from "@/lib/note/highlightStore";
+import { Separator } from "@/components/ui/separator";
+import { Note } from "@/lib/util/model";
 
 const getContent = async (noteID: string) => {
   const jsonString = await getJSONByNoteID(noteID);
   return JSON.parse(jsonString);
 };
 
-export default function Editor({ noteID }: { noteID: string }) {
+export default function Editor({ note }: { note: Note }) {
   const [cursorPosition, setCursorPosition] = useState<number | null>(null);
 
   const editor = useEditor({
@@ -67,7 +69,7 @@ export default function Editor({ noteID }: { noteID: string }) {
       },
     },
     onCreate: async ({ editor }) => {
-      const content = await getContent(noteID);
+      const content = await getContent(note.id);
       editor.commands.setContent(content);
     },
     onUpdate: ({ editor }) => {
@@ -109,7 +111,17 @@ export default function Editor({ noteID }: { noteID: string }) {
 
   return (
     <div className="relative mx-auto flex h-full w-full flex-col">
-      <MenuBar editor={editor} noteID={noteID} />
+      <input
+        className="w-full bg-transparent p-5 text-2xl font-bold focus-visible:outline-none"
+        defaultValue={note.name}
+        onBlur={(e) => {
+          if (e.target.value !== note.name) {
+            updateNote(note, e.target.value);
+          }
+        }}
+      />
+      <Separator />
+      <MenuBar editor={editor} noteID={note.id} />
 
       {editor && (
         <>

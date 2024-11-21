@@ -29,6 +29,19 @@ export const createNote = async (name: string, path: string) => {
   revalidatePath("/note");
 };
 
+export const updateNote = async (note: Note, name: string) => {
+  const segments = note.path.split("/");
+  segments[segments.length - 1] = name;
+
+  const newPath = segments.join("/");
+
+  await db.collection("notes").doc(note.id).update({
+    name: name,
+    path: newPath,
+  });
+  revalidatePath("/note");
+};
+
 export const addBlocks = async (noteID: string, content: any) => {
   const blocks = parseBlocks(noteID, content);
   const block_ids = await EmbedAndInsertBlocks(blocks, noteID);

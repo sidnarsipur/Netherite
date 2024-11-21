@@ -44,7 +44,7 @@ export default function Page() {
       </div>
       <Separator />
       <p className="w-full bg-transparent p-5 text-2xl font-bold focus-visible:outline-none">
-        {note?.name}
+        "{note?.name}"
       </p>
       <Separator />
       <Editor noteID={id2} note={note} />
