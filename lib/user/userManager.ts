@@ -22,7 +22,7 @@ export async function createUser() {
 
     if (!userSnapshot.empty) {
       console.log("User already exists");
-      return;
+      return userSnapshot.docs[0];
     }
 
     const userRecord = await db.collection("users").add({
