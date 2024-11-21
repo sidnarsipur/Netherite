@@ -22,6 +22,7 @@ export async function createUser() {
     }
 
     const userRecord = await db.collection("users").add({
+      name: user.fullName,
       email: user.primaryEmailAddress,
       emailVerified: false,
       displayName: name,
@@ -62,14 +63,18 @@ export async function getCurrentUserSnapshot() {
 }
 
 export async function getCurrentUser() {
-  const user = (await getCurrentUserSnapshot()).data();
+  const user = await getCurrentUserSnapshot();
 
-  if (user.empty) {
+  if (user.data() === undefined) {
     throw new Error("No user found");
   }
 
-  return {
+  const useRet = {
     id: user.id,
-    ...user,
+    ...user.data(),
   } as User;
+
+  console.log(useRet, user.id);
+
+  return useRet;
 }
