@@ -1,4 +1,4 @@
-import { createNote } from "@/lib/noteManager";
+import { createNote } from "@/lib/note/noteManager";
 import { Button } from "../ui/button";
 import { DialogContent, DialogTitle, DialogClose } from "../ui/dialog";
 import { Input } from "../ui/input";

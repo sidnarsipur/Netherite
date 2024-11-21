@@ -5,7 +5,7 @@ import {
   CollapsibleTrigger,
   CollapsibleContent,
 } from "@radix-ui/react-collapsible";
-import { Folder } from "@/lib/model";
+import { Folder } from "@/lib/util/model";
 import FancyCard from "../fancy-card";
 import {
   ContextMenu,

@@ -5,7 +5,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { MatchSnippet } from "./match-snippet";
-import { Block } from "@/lib/model";
+import { Block } from "@/lib/util/model";
 
 const customStyle = {
   mask: `linear-gradient(to right, 

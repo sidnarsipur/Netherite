@@ -1,11 +1,11 @@
 "use server";
 
-import { db } from "@/lib/init";
-import { BlocksByID, EmbedAndInsertBlocks } from "@/lib/dataStore";
+import { db } from "@/lib/note/init";
+import { BlocksByID, EmbedAndInsertBlocks } from "@/lib/note/dataStore";
 import { v4 as uuidv4 } from "uuid";
 import { FieldValue } from "firebase-admin/firestore";
-import { Block, Folder, Note, ContentNode } from "@/lib/model";
-import { getCurrentUser, getCurrentUserSnapshot } from "./userManager";
+import { Block, Folder, Note, ContentNode } from "@/lib/util/model";
+import { getCurrentUser, getCurrentUserSnapshot } from "../user/userManager";
 import { revalidatePath } from "next/cache";
 
 export const createNote = async (name: string, path: string) => {

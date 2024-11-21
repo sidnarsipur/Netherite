@@ -23,7 +23,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DialogTrigger } from "@radix-ui/react-dialog";
-import { addBlocks } from "@/lib/noteManager";
+import { addBlocks } from "@/lib/note/noteManager";
 import { UrlModal } from "../ui/UrlModal"; // Import the custom modal component
 
 type MenuBarProps = {

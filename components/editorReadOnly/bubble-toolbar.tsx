@@ -5,7 +5,7 @@ import { Editor } from "@tiptap/react";
 import { useRef } from "react";
 import { MessageSquareWarning, FileOutput } from "lucide-react"; // Import an icon for page breaks
 import { Button } from "@/components/ui/button";
-import { HighlightStore } from "@/lib/highlightStore";
+import { HighlightStore } from "@/lib/note/highlightStore";
 import { useParams, useRouter } from "next/navigation";
 
 type BubbleToolbarProps = {

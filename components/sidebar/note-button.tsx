@@ -7,7 +7,7 @@ import {
   ContextMenuShortcut,
   ContextMenuTrigger,
 } from "../ui/context-menu";
-import { Note } from "@/lib/model";
+import { Note } from "@/lib/util/model";
 
 export default function NoteButton({ note }: { note: Note }) {
   return (

@@ -7,9 +7,9 @@ import { Button } from "@/components/ui/button";
 import { DialogFooter, DialogClose } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import { GetSearchResults, GetSummary } from "@/lib/dataStore";
-import { HighlightStore } from "@/lib/highlightStore";
-import { Block } from "@/lib/model";
+import { GetSearchResults, GetSummary } from "@/lib/note/dataStore";
+import { HighlightStore } from "@/lib/note/highlightStore";
+import { Block } from "@/lib/util/model";
 import { X, BetweenHorizontalEnd, Brain } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
@@ -53,7 +53,6 @@ export default function Page() {
   const generateSummary = async () => {
     const strs = highlights.map((highlight) => highlight.description);
     const summary = (await GetSummary(strs)).replace(/^"|"$/g, "");
-    console.log(summary);
     HighlightStore.update((s) => {
       s.insertText = summary;
     });

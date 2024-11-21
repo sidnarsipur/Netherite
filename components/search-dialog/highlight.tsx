@@ -1,6 +1,6 @@
 import { Trash2 } from "lucide-react";
 import { Button } from "../ui/button";
-import { IHighlight } from "@/lib/highlightStore";
+import { IHighlight } from "@/lib/note/highlightStore";
 
 export default function Highlight({ highlight }: { highlight: IHighlight }) {
   return (

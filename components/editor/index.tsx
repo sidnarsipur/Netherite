@@ -20,13 +20,12 @@ import { MenuBar } from "./menu-bar";
 import { FloatingToolbar } from "./floating-toolbar";
 import { BubbleToolbar } from "./bubble-toolbar";
 import { get } from "http";
-import { getJSONByNoteID } from "@/lib/noteManager";
+import { getJSONByNoteID } from "@/lib/note/noteManager";
 import { useEffect, useState } from "react";
-import { HighlightStore } from "@/lib/highlightStore";
+import { HighlightStore } from "@/lib/note/highlightStore";
 
 const getContent = async (noteID: string) => {
   const jsonString = await getJSONByNoteID(noteID);
-  console.log(jsonString);
   return JSON.parse(jsonString);
 };
 
@@ -74,7 +73,6 @@ export default function Editor({ noteID }: { noteID: string }) {
     onUpdate: ({ editor }) => {
       const { from } = editor.state.selection;
       setCursorPosition(from);
-      console.log(cursorPosition);
     },
   });
 

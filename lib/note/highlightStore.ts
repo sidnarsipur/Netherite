@@ -1,5 +1,5 @@
 import { Store } from "pullstate";
-import { Block } from "./model";
+import { Block } from "../util/model";
 
 export interface IHighlight {
   id: number;

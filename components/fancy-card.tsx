@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/util/utils";
 
 export default function FancyCard({
   borderGradient = "linear-gradient(263.62deg, rgba(255, 255, 255, 0.6) 3.64%, rgba(130, 102, 255, 0.0966) 19.2%, rgba(136, 141, 178, 0.6) 71.23%, rgba(184, 188, 255, 0) 110.09%)",

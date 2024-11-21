@@ -1,7 +1,7 @@
 "use server";
 
 import { db, pc, model, google, sysPrompt } from "./init";
-import { Block } from "@/lib/model";
+import { Block } from "@/lib/util/model";
 import { FieldPath } from "firebase-admin/firestore";
 import { generateText } from "ai";
 
@@ -71,7 +71,6 @@ export async function EmbedAndInsertBlocks(blocks: Block[], noteID: string) {
   }
 
   if (deletedBlockIDs.length > 0) {
-    console.log("Deleting", deletedBlockIDs);
     await index.namespace("namespace").deleteMany(deletedBlockIDs);
   }
 
@@ -141,8 +140,6 @@ export async function GetSearchResults(query: string, numResults: number = 3) {
   queryResponse.matches.forEach((match) => {
     blockIDs.push(match.id);
   });
-
-  console.log("Block IDs", blockIDs);
 
   const blocks = await BlocksByID(blockIDs);
 

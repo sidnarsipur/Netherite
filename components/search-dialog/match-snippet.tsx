@@ -4,10 +4,10 @@ import { Button } from "../ui/button";
 import { Card, CardContent } from "../ui/card";
 import { CarouselItem } from "../ui/carousel";
 import { Separator } from "../ui/separator";
-import { Block, Note } from "@/lib/model";
+import { Block, Note } from "@/lib/util/model";
 import { useRouter, usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { getNote } from "@/lib/noteManager";
+import { getNote } from "@/lib/note/noteManager";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export function MatchSnippet({
