@@ -7,7 +7,7 @@ AI-powered GitHub for notes, enabling users to share their notes publicly and di
 <p align="center">
   DandyHacks '24 Winner
 </p>
-<p align="center"><a href="https://devpost.com/software/voluntix-pnf9hy">Devpost</a></p>
+<p align="center"><a href="https://devpost.com/software/netherite">Devpost</a></p>
 </p>
 
 ## Features
