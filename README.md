@@ -1,36 +1,36 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/b1207ec5-70be-4636-ae27-9c4028147df1"/>
+</p>
+<p align="center">
+AI-powered GitHub for notes, enabling users to share their notes publicly and discover relevant ones in the community through smart vector search.
+</p>
+<p align="center">
+  DandyHacks '24 Winner
+</p>
+<p align="center"><a href="https://devpost.com/software/voluntix-pnf9hy">Devpost</a></p>
+</p>
 
-## Getting Started
+## Features
 
-First, run the development server:
+<li>Create and edit notes with fully-fledged text editor</li>
+<li>Search the community database for relevant note segments</li>
+<li>Highlight your favorite notes in the community and add them into yours</li>
+<li>AI note summaries</li>
+<li>Engage and support other notes through likes and stars</li>
+
+## Screenshots
+
+<img width="500" alt="Screenshot 2024-11-17 at 9 45 34 AM" src="https://github.com/user-attachments/assets/5b56f847-a497-46dc-9cd2-b458101fc390">
+<img width="500" alt="Screenshot 2024-11-17 at 9 47 23 AM" src="https://github.com/user-attachments/assets/d853b669-bbf5-4f13-8504-89d85f7c5938">
+<br><br>
+<img width="500" alt="Screenshot 2024-11-17 at 9 47 39 AM" src="https://github.com/user-attachments/assets/b6064c4f-ae27-4afc-994d-e1732af6bb59">
+<img width="500" alt="Screenshot 2024-11-17 at 9 48 23 AM" src="https://github.com/user-attachments/assets/d8fe2c25-fc6b-4f28-9a79-d2c4cde11f18">
+
+
+
+## Run App Locally
 
 ```bash
+npm i
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
