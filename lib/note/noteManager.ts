@@ -1,6 +1,6 @@
 "use server";
 
-import { db } from "@/lib/note/init";
+import { db, pc } from "@/lib/note/init";
 import { BlocksByID, EmbedAndInsertBlocks } from "@/lib/note/dataStore";
 import { v4 as uuidv4 } from "uuid";
 import { FieldValue } from "firebase-admin/firestore";
@@ -41,6 +41,58 @@ export const addBlocks = async (noteID: string, content: any) => {
         blockIDs: FieldValue.arrayUnion(...block_ids),
       });
   }
+};
+
+export const deleteNote = async (noteID: string) => {
+  const note = await getNote(noteID);
+
+  if (!note) {
+    throw new Error(`Note with ID ${noteID} not found.`);
+  }
+
+  await deleteBlocks(noteID);
+
+  const folderCollection = await getFolderCollection();
+  // Check if noteID is in folder's noteIDs array
+  const folderDoc = await folderCollection
+    .where("noteIDs", "array-contains", noteID)
+    .get();
+
+  const folderID = folderDoc.docs[0].id;
+  const folderRef = folderCollection.doc(folderID);
+  await folderRef.update({
+    noteIDs: FieldValue.arrayRemove(noteID),
+  });
+
+  await db.collection("notes").doc(noteID).delete();
+  revalidatePath("/note");
+};
+
+//Delete all blocks associated with a note from Firestore and the vector index
+export const deleteBlocks = async (noteID: string) => {
+  const deletedBlockIDs: string[] = [];
+
+  const blocksRef = db.collection("blocks");
+  const snapshot = await blocksRef.where("noteID", "==", noteID).get();
+
+  if (!snapshot.empty) {
+    snapshot.forEach((doc) => {
+      deletedBlockIDs.push(doc.id);
+    });
+
+    const deletePromises = snapshot.docs.map((doc) => doc.ref.delete());
+    await Promise.all(deletePromises);
+  }
+
+  await db.collection("notes").doc(noteID).update({ blockIDs: null });
+
+  const index = pc.Index("embeddings");
+
+  if (deletedBlockIDs.length > 0) {
+    await index.namespace("namespace").deleteMany(deletedBlockIDs);
+  }
+
+  return deletedBlockIDs;
 };
 
 export const getJSONByNoteID = async (noteID: string): Promise<string> => {
@@ -125,6 +177,11 @@ export const getNotes = async (userID: string) => {
 
 const getFolderCollection = async () => {
   const userSnapshot = await getCurrentUserSnapshot();
+
+  if (!userSnapshot) {
+    throw new Error("No user found");
+  }
+
   return userSnapshot.ref.collection("folders");
 };
 
@@ -193,18 +250,6 @@ function parseBlocks(noteID: string, content: string): Block[] {
   });
 
   return blocks;
-}
-
-export async function hasText(node: ContentNode[]): Promise<boolean> {
-  for (const child of node) {
-    if (child.type === "text") {
-      return true;
-    }
-    if (child.content && (await hasText(child.content))) {
-      return true;
-    }
-  }
-  return false;
 }
 
 function extractText(node: ContentNode): string {

@@ -4,27 +4,12 @@ import { db, pc, model, google, sysPrompt } from "./init";
 import { Block } from "@/lib/util/model";
 import { FieldPath } from "firebase-admin/firestore";
 import { generateText } from "ai";
+import { deleteBlocks } from "./noteManager";
 
 export async function EmbedAndInsertBlocks(blocks: Block[], noteID: string) {
-  const deletedBlockIDs: string[] = [];
+  deleteBlocks(noteID);
 
   const blocksRef = db.collection("blocks");
-  const snapshot = await blocksRef.where("noteID", "==", noteID).get();
-
-  if (!snapshot.empty) {
-    snapshot.forEach((doc) => {
-      deletedBlockIDs.push(doc.id);
-    });
-
-    const deletePromises = snapshot.docs.map((doc) => doc.ref.delete());
-    await Promise.all(deletePromises);
-  }
-
-  const notesSnapshot = await db
-    .collection("notes")
-    .doc(noteID)
-    .update({ blockIDs: null });
-  const index = pc.Index("embeddings");
 
   const cleanBlocks: Block[] = [];
 
@@ -54,7 +39,7 @@ export async function EmbedAndInsertBlocks(blocks: Block[], noteID: string) {
       block.id = (await ref).id;
     }
 
-    const index1 = pc.Index("embeddings");
+    const index = pc.Index("embeddings");
 
     const embeddings = await pc.inference.embed(
       model,
@@ -67,11 +52,7 @@ export async function EmbedAndInsertBlocks(blocks: Block[], noteID: string) {
       values: embeddings[i].values as number[],
     }));
 
-    await index1.namespace("namespace").upsert(records);
-  }
-
-  if (deletedBlockIDs.length > 0) {
-    await index.namespace("namespace").deleteMany(deletedBlockIDs);
+    await index.namespace("namespace").upsert(records);
   }
 
   return cleanBlocks.map((block) => block.id);

@@ -21,7 +21,6 @@ export async function createUser() {
       .get();
 
     if (!userSnapshot.empty) {
-      console.log("User already exists");
       return userSnapshot.docs[0];
     }
 
@@ -76,8 +75,6 @@ export async function getCurrentUser() {
     id: user.id,
     ...user.data(),
   } as User;
-
-  console.log(useRet, user.id);
 
   return useRet;
 }

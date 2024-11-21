@@ -21,7 +21,6 @@ function SignUpContent() {
     if (user) {
       createUser();
       router.push("/note");
-      // You can add additional user data processing here if needed
     }
   }, [user, router]);
 
@@ -29,5 +28,5 @@ function SignUpContent() {
     return <SignUp routing="hash" />;
   }
 
-  return null; // Render nothing while navigating
+  return null;
 }
