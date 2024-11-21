@@ -21,7 +21,7 @@ export async function createUser() {
       .get();
 
     if (!userSnapshot.empty) {
-      console.error("User already exists");
+      console.log("User already exists");
       return;
     }
 
