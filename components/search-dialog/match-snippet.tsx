@@ -7,7 +7,7 @@ import { Separator } from "../ui/separator";
 import { Block, Note } from "@/lib/model";
 import { useRouter, usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { getNote } from "@/lib/note-manager";
+import { getNote } from "@/lib/noteManager";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export function MatchSnippet({

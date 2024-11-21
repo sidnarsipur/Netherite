@@ -1,4 +1,4 @@
-import { addFolder } from "@/lib/note-manager";
+import { addFolder } from "@/lib/noteManager";
 import { Button } from "../ui/button";
 import { DialogContent, DialogTitle, DialogClose } from "../ui/dialog";
 import { Input } from "../ui/input";

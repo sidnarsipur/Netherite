@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { DialogClose } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
 import { Note } from "@/lib/model";
-import { getNote } from "@/lib/note-manager";
+import { getNote } from "@/lib/noteManager";
 import { ArrowLeft, X } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";

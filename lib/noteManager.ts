@@ -5,7 +5,7 @@ import { BlocksByID, EmbedAndInsertBlocks } from "@/lib/dataStore";
 import { v4 as uuidv4 } from "uuid";
 import { FieldValue } from "firebase-admin/firestore";
 import { Block, Folder, Note, ContentNode } from "@/lib/model";
-import { getCurrentUser, getCurrentUserSnapshot } from "./user-manager";
+import { getCurrentUser, getCurrentUserSnapshot } from "./userManager";
 import { revalidatePath } from "next/cache";
 
 export const createNote = async (name: string, path: string) => {

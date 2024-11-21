@@ -20,7 +20,7 @@ import { MenuBar } from "./menu-bar";
 import { FloatingToolbar } from "./floating-toolbar";
 import { BubbleToolbar } from "./bubble-toolbar";
 import { get } from "http";
-import { getJSONByNoteID } from "@/lib/note-manager";
+import { getJSONByNoteID } from "@/lib/noteManager";
 import { useEffect, useState } from "react";
 import { HighlightStore } from "@/lib/highlightStore";
 

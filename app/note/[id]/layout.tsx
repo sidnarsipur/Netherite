@@ -1,7 +1,7 @@
 import Breadcrumb from "@/components/note/breadcrumb";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import { getNote } from "@/lib/note-manager";
+import { getNote } from "@/lib/noteManager";
 import { Dialog } from "@/components/ui/dialog";
 import { SearchDialog } from "@/components/search-dialog/search-dialog";
 import NavActions from "@/components/sidebar/nav-actions";

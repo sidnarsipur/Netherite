@@ -13,13 +13,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { createUser } from "@/lib/userManager";
 
-export function SignUpForm() {
+export function SignInForm() {
   return (
     <Card className="mx-auto max-w-sm">
       <CardHeader>
-        <CardTitle className="text-2xl">Sign Up</CardTitle>
+        <CardTitle className="text-2xl">Sign In</CardTitle>
         <CardDescription>
-          Enter your email below to sign up to your account
+          Enter your email below to sign in to your account
         </CardDescription>
       </CardHeader>
       <CardContent>

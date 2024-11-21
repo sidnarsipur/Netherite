@@ -4,8 +4,6 @@ import { db, pc, model, google, sysPrompt } from "./init";
 import { Block } from "@/lib/model";
 import { FieldPath } from "firebase-admin/firestore";
 import { generateText } from "ai";
-import { hasText } from "./note-manager";
-import { ContentNode } from "@/lib/model";
 
 export async function EmbedAndInsertBlocks(blocks: Block[], noteID: string) {
   const deletedBlockIDs: string[] = [];
@@ -26,7 +24,6 @@ export async function EmbedAndInsertBlocks(blocks: Block[], noteID: string) {
     .collection("notes")
     .doc(noteID)
     .update({ blockIDs: null });
-
   const index = pc.Index("embeddings");
 
   const cleanBlocks: Block[] = [];

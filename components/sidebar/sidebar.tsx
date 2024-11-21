@@ -4,7 +4,7 @@ import {
   SidebarFooter,
   SidebarHeader,
 } from "@/components/ui/sidebar";
-import { getFolders } from "@/lib/note-manager";
+import { getFolders } from "@/lib/noteManager";
 import FolderButton from "./folder-button";
 import { Separator } from "../ui/separator";
 import { Searchbar } from "./searchbar";
