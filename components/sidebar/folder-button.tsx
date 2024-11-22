@@ -43,18 +43,6 @@ export default function FolderButton({ item }: { item: Folder }) {
                   <ContextMenuShortcut>⌘N</ContextMenuShortcut>
                 </ContextMenuItem>
               </DialogTrigger>
-              <ContextMenuItem inset>
-                New Folder
-                <ContextMenuShortcut>⌘M</ContextMenuShortcut>
-              </ContextMenuItem>
-              <ContextMenuItem inset>
-                Rename
-                <ContextMenuShortcut>F2</ContextMenuShortcut>
-              </ContextMenuItem>
-              <ContextMenuItem inset>
-                Delete
-                <ContextMenuShortcut>Del</ContextMenuShortcut>
-              </ContextMenuItem>
             </ContextMenuContent>
           </ContextMenu>
         </FancyCard>

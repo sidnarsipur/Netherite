@@ -32,14 +32,6 @@ export default function NoteButton({ note }: { note: Note }) {
           </Link>
         </ContextMenuTrigger>
         <ContextMenuContent className="w-64">
-          <ContextMenuItem inset>
-            New Note
-            <ContextMenuShortcut>⌘M</ContextMenuShortcut>
-          </ContextMenuItem>
-          <ContextMenuItem inset>
-            Rename
-            <ContextMenuShortcut>F2</ContextMenuShortcut>
-          </ContextMenuItem>
           <ContextMenuItem inset onClick={handleDelete}>
             Delete
             <ContextMenuShortcut>Del</ContextMenuShortcut>
