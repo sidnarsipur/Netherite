@@ -81,6 +81,7 @@ export function MenuBar({ editor, noteID }: { noteID: string } & MenuBarProps) {
     <div className="flex flex-wrap gap-2 border-b p-2">
       <Button size="sm" variant="ghost" onClick={handleSave}>
         {isSaved ? <Check className="h-4 w-4" /> : <Save className="h-4 w-4" />}
+        Save
       </Button>
 
       <Button

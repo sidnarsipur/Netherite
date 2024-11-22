@@ -109,7 +109,7 @@ export default function NavActions() {
       <Button variant="ghost" size="icon" className="h-7 w-7">
         <Star />
       </Button>
-      <Popover open={isOpen} onOpenChange={setIsOpen}>
+      {/* <Popover open={isOpen} onOpenChange={setIsOpen}>
         <PopoverTrigger asChild>
           <Button
             variant="ghost"
@@ -143,7 +143,7 @@ export default function NavActions() {
             </SidebarContent>
           </Sidebar>
         </PopoverContent>
-      </Popover>
+      </Popover> */}
     </div>
   );
 }
