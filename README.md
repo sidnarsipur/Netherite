@@ -11,6 +11,7 @@ AI-powered GitHub for notes, enabling users to share their notes publicly and di
 </p>
 </p>
 <p align="center"><a href="https://netherite.vercel.com">Try it out</a></p>
+<p align="center">(If you get an error when signing in, just refresh the page a few times)</p>
 </p>
 
 ## Features
