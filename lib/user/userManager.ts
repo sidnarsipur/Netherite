@@ -8,10 +8,10 @@ export async function createUser() {
     const user = await currentUser();
 
     if (!user) {
-      throw new Error("No user found");
+      throw new Error("No user is found");
     }
 
-    if (!user.primaryEmailAddress) {
+    if (!user.primaryEmailAddress?.emailAddress) {
       throw new Error("No email found");
     }
 
@@ -26,7 +26,7 @@ export async function createUser() {
 
     const userRecord = await db.collection("users").add({
       name: user.fullName || "",
-      email: user.primaryEmailAddress,
+      email: user.primaryEmailAddress?.emailAddress,
       emailVerified: false,
       disabled: false,
     });
