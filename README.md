@@ -10,7 +10,7 @@ AI-powered GitHub for notes, enabling users to share their notes publicly and di
 <p align="center"><a href="https://devpost.com/software/netherite">Devpost</a></p>
 </p>
 </p>
-<p align="center"><a href="https://netherite.vercel.com">Try it out</a></p>
+<p align="center"><a href="https://netherite.vercel.app">Try it out</a></p>
 <p align="center">(If you get an error when signing in, just refresh the page a few times)</p>
 </p>
 
