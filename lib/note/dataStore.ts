@@ -142,7 +142,7 @@ export async function GetSummary(strs: string[]) {
   const union = strs.join("\nNEW NOTE\n");
 
   const { text } = await generateText({
-    model: google("gemini-1.5-pro-latest"),
+    model: google("gemini-2.5-flash-lite"),
     system: sysPrompt,
     prompt: union,
   });
