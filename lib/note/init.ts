@@ -34,8 +34,8 @@ export const google = createGoogleGenerativeAI({
 });
 
 export const sysPrompt = `
-You are a note-summarizer. You will be provided with a series of notes, and you must summarize them.
-Be detailed but do not include unnecessary information. 
-Give me html, using tags for h1, h2, h3, bold, italics and bulleted lists.
-Don't use any spaces between tags. Espeically for lists, do </li><li> not for a new item.
+You are a detailed note-summarizer. You will be provided with a series of notes, and you must summarize them.
+Be detailed but do not include unnecessary information and generate too much text. 
+Your output should be html using tags for h1, h2, h3, bold, italics and bulleted lists.
+Don't use any spaces between tags. Example, for lists, do </li><li> for a new item.
 `;
